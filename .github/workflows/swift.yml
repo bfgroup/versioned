@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: ["main"]
 
+env:
+  SWIFTLY_INIT: init –skip-install --quiet-shell-followup --verbose
+  SWIFTLY_INSTALL: install --use --verbose
+  SWIFTLY_DL: https://download.swift.org/swiftly
+
 jobs:
   build:
     strategy:
@@ -22,22 +27,22 @@ jobs:
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
-          cd ..
-          curl -O https://download.swift.org/swiftly/darwin/swiftly.pkg
+          cd $GITHUB_WORKSPACE/..
+          curl -O $SWIFTLY_DL/darwin/swiftly.pkg
           installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
-          ~/.swiftly/bin/swiftly init --quiet-shell-followup
-          ~/.swiftly/bin/swiftly install --use ${{ matrix.swift-version }}
+          ~/.swiftly/bin/swiftly $SWIFTLY_INIT
+          ~/.swiftly/bin/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
 
       - name: Install/Linux
         if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
         shell: bash
         run: |
           sudo apt-get -y install libcurl4-openssl-dev
-          cd ..
-          curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz
+          cd $GITHUB_WORKSPACE/..
+          curl -O $SWIFTLY_DL/linux/swiftly-$(uname -m).tar.gz
           tar zxf swiftly-$(uname -m).tar.gz
-          ./swiftly init --quiet-shell-followup
-          ./swiftly install --use ${{ matrix.swift-version }}
+          $GITHUB_WORKSPACE/swiftly $SWIFTLY_INIT
+          $GITHUB_WORKSPACE/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
 
       - name: Info
         shell: bash
