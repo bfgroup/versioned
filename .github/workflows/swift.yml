@@ -39,22 +39,22 @@ jobs:
           cd $GITHUB_WORKSPACE/..
           curl -O $SWIFTLY_DL/linux/swiftly-$(uname -m).tar.gz
           tar vzxf swiftly-$(uname -m).tar.gz
-          $GITHUB_WORKSPACE/swiftly $SWIFTLY_INIT
-          $GITHUB_WORKSPACE/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
+          $GITHUB_WORKSPACE/../swiftly $SWIFTLY_INIT
+          $GITHUB_WORKSPACE/../swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
 
       - uses: actions/checkout@master
 
       - name: Info
         shell: bash
         run: |
-          . ~/.local/share/swiftly/env.sh && hash -r
+          . ~/.swiftly/env.sh && hash -r
           cd swift
           swift --version -v
 
       - name: Build
         shell: bash
         run: |
-          . ~/.local/share/swiftly/env.sh && hash -r
+          . ~/.swiftly/env.sh && hash -r
           cd swift
           swift build -v
 
