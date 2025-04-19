@@ -32,7 +32,7 @@ jobs:
         if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
         shell: bash
         run: |
-          apt-get -y install libcurl4-openssl-dev
+          sudo apt-get -y install libcurl4-openssl-dev
           cd ..
           curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz
           tar zxf swiftly-$(uname -m).tar.gz
@@ -42,17 +42,20 @@ jobs:
       - name: Info
         shell: bash
         run: |
+          . ~/.local/share/swiftly/env.sh && hash -r
           cd swift
           swift --version -v
 
       - name: Build
         shell: bash
         run: |
+          . ~/.local/share/swiftly/env.sh && hash -r
           cd swift
           swift build -v
 
       - name: Test
         shell: bash
         run: |
+          . ~/.local/share/swiftly/env.sh && hash -r
           cd swift
           swift test -v
