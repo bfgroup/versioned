@@ -60,7 +60,7 @@ jobs:
       - name: Info
         shell: bash
         run: |
-          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }}
+          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }} --global-default
           hash -r
           cd swift
           swift --version -v
@@ -68,7 +68,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }}
+          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }} --global-default
           hash -r
           cd swift
           swift build -v
@@ -76,7 +76,7 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }}
+          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }} --global-default
           hash -r
           cd swift
           swift test -v
