@@ -10,26 +10,46 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ["macos-latest", "ubuntu-latest", "windows-latest"]
+        os: ["macos-latest", "ubuntu-latest"]
         swift-version: ["6.1", "6.0"]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.swift-version }}/${{ matrix.os }}
     steps:
       - uses: actions/checkout@master
-      - name: Install
-        uses: sushichop/gha-swift-env@V1
-        with:
-          swift-version: ${{ matrix.swift-version }}
+
+      - name: Install/macOS
+        if: ${{ startsWith( matrix.os, 'macos' ) }}
+        shell: bash
+        run: |
+          cd ..
+          curl -O https://download.swift.org/swiftly/darwin/swiftly.pkg
+          installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
+          ~/.swiftly/bin/swiftly install --use ${{ matrix.swift-version }} --quiet-shell-followup
+
+      - name: Install/Linux
+        if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
+        shell: bash
+        run: |
+          cd ..
+          curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz
+          tar zxf swiftly-$(uname -m).tar.gz
+          ./swiftly install --use ${{ matrix.swift-version }} --quiet-shell-followup
+
       - name: Info
+        shell: bash
         run: |
           cd swift
           swift --version -v
+
       - name: Build
+        shell: bash
         run: |
           cd swift
           swift build -v
+
       - name: Test
+        shell: bash
         run: |
           cd swift
           swift test -v
