@@ -27,18 +27,19 @@ jobs:
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
-          mkdir $SWIFTLY_HOME_DIR
-          cd $SWIFTLY_HOME_DIR
+          mkdir -p $SWIFTLY_HOME_DIR/install
+          cd $SWIFTLY_HOME_DIR/install
           curl -O $SWIFTLY_DL/darwin/swiftly.pkg
           installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
+          ln $HOME/usr/local/bin/swiftly swiftly
 
       - name: Install/Pre/Linux
         if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
         shell: bash
         run: |
           sudo apt-get -y install libcurl4-openssl-dev
-          mkdir $SWIFTLY_HOME_DIR
-          cd $SWIFTLY_HOME_DIR
+          mkdir -p $SWIFTLY_HOME_DIR/install
+          cd $SWIFTLY_HOME_DIR/install
           curl -O $SWIFTLY_DL/linux/swiftly-$(uname -m).tar.gz
           tar vzxf swiftly-$(uname -m).tar.gz
 
@@ -47,8 +48,9 @@ jobs:
         shell: bash
         run: |
           cd $SWIFTLY_HOME_DIR
-          $SWIFTLY_HOME_DIR/swiftly $SWIFTLY_INIT
-          $SWIFTLY_HOME_DIR/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
+          ls -laF ./install
+          $SWIFTLY_HOME_DIR/install/swiftly $SWIFTLY_INIT
+          $SWIFTLY_HOME_DIR/bin/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
           if [ -f $SWIFTLY_HOME_DIR/post-install.sh ]; then
             . $SWIFTLY_HOME_DIR/post-install.sh
           fi
