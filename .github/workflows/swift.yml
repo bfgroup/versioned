@@ -7,8 +7,8 @@ on:
     branches: ["main"]
 
 env:
-  SWIFTLY_INIT: init --skip-install --quiet-shell-followup --verbose
-  SWIFTLY_INSTALL: install --use --verbose
+  SWIFTLY_INIT: init --skip-install --verbose --assume-yes
+  SWIFTLY_INSTALL: install --use --verbose --assume-yes
   SWIFTLY_DL: https://download.swift.org/swiftly
 
 jobs:
@@ -21,8 +21,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.swift-version }}/${{ matrix.os }}
     steps:
-      - uses: actions/checkout@master
-
       - name: Install/macOS
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         shell: bash
@@ -40,9 +38,11 @@ jobs:
           sudo apt-get -y install libcurl4-openssl-dev
           cd $GITHUB_WORKSPACE/..
           curl -O $SWIFTLY_DL/linux/swiftly-$(uname -m).tar.gz
-          tar zxf swiftly-$(uname -m).tar.gz
+          tar vzxf swiftly-$(uname -m).tar.gz
           $GITHUB_WORKSPACE/swiftly $SWIFTLY_INIT
           $GITHUB_WORKSPACE/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
+
+      - uses: actions/checkout@master
 
       - name: Info
         shell: bash
