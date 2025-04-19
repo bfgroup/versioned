@@ -31,7 +31,7 @@ jobs:
           cd $SWIFTLY_HOME_DIR/install
           curl -O $SWIFTLY_DL/darwin/swiftly.pkg
           installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
-          ln $HOME/usr/local/bin/swiftly swiftly
+          ln $HOME/local/bin/swiftly swiftly
 
       - name: Install/Pre/Linux
         if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
@@ -60,20 +60,23 @@ jobs:
       - name: Info
         shell: bash
         run: |
-          . $SWIFTLY_HOME_DIR/env.sh && hash -r
+          $SWIFTLY_HOME_DIR/bin/swiftly use ${{ matrix.swift-version }}
+          hash -r
           cd swift
           swift --version -v
 
       - name: Build
         shell: bash
         run: |
-          . $SWIFTLY_HOME_DIR/env.sh && hash -r
+          $SWIFTLY_HOME_DIR/bin/swiftly use ${{ matrix.swift-version }}
+          hash -r
           cd swift
           swift build -v
 
       - name: Test
         shell: bash
         run: |
-          . $SWIFTLY_HOME_DIR/env.sh && hash -r
+          $SWIFTLY_HOME_DIR/bin/swiftly use ${{ matrix.swift-version }}
+          hash -r
           cd swift
           swift test -v
