@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 env:
-  SWIFTLY_INIT: init –skip-install --quiet-shell-followup --verbose
+  SWIFTLY_INIT: init -–skip-install --quiet-shell-followup --verbose
   SWIFTLY_INSTALL: install --use --verbose
   SWIFTLY_DL: https://download.swift.org/swiftly
 
