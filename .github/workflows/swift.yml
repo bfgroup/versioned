@@ -10,8 +10,6 @@ env:
   SWIFTLY_INIT: init --skip-install --verbose --assume-yes
   SWIFTLY_INSTALL: install --use --verbose --assume-yes --post-install-file=post-install.sh
   SWIFTLY_DL: https://download.swift.org/swiftly
-  SWIFTLY_HOME_DIR: ${{ github.workspace }}/../_swiftly
-  SWIFTLY_BIN_DIR: ${{ github.workspace }}/../_swiftly/bin
 
 jobs:
   build:
@@ -27,8 +25,8 @@ jobs:
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
-          mkdir -p $SWIFTLY_HOME_DIR/install
-          cd $SWIFTLY_HOME_DIR/install
+          mkdir -p $HOME/.swiftly/install
+          cd $HOME/.swiftly/install
           curl -O $SWIFTLY_DL/darwin/swiftly.pkg
           installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
           ln $HOME/.swiftly/bin/swiftly swiftly
@@ -38,8 +36,8 @@ jobs:
         shell: bash
         run: |
           sudo apt-get -y install libcurl4-openssl-dev
-          mkdir -p $SWIFTLY_HOME_DIR/install
-          cd $SWIFTLY_HOME_DIR/install
+          mkdir -p $HOME/.swiftly/install
+          cd $HOME/.swiftly/install
           curl -O $SWIFTLY_DL/linux/swiftly-$(uname -m).tar.gz
           tar vzxf swiftly-$(uname -m).tar.gz
 
@@ -47,12 +45,12 @@ jobs:
         if: ${{ startsWith( matrix.os, 'ubuntu' ) || startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
-          cd $SWIFTLY_HOME_DIR
+          cd $HOME/.swiftly
           ls -laF ./install
-          $SWIFTLY_HOME_DIR/install/swiftly $SWIFTLY_INIT
-          $SWIFTLY_HOME_DIR/bin/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
-          if [ -f $SWIFTLY_HOME_DIR/post-install.sh ]; then
-            . $SWIFTLY_HOME_DIR/post-install.sh
+          ./install/swiftly $SWIFTLY_INIT
+          ./bin/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
+          if [ -f ./post-install.sh ]; then
+            . ./post-install.sh
           fi
 
       - uses: actions/checkout@master
@@ -60,7 +58,7 @@ jobs:
       - name: Info
         shell: bash
         run: |
-          $SWIFTLY_HOME_DIR/bin/swiftly use ${{ matrix.swift-version }}
+          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }}
           hash -r
           cd swift
           swift --version -v
@@ -68,7 +66,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          $SWIFTLY_HOME_DIR/bin/swiftly use ${{ matrix.swift-version }}
+          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }}
           hash -r
           cd swift
           swift build -v
@@ -76,7 +74,7 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          $SWIFTLY_HOME_DIR/bin/swiftly use ${{ matrix.swift-version }}
+          $HOME/.swiftly/bin/swiftly use ${{ matrix.swift-version }}
           hash -r
           cd swift
           swift test -v
