@@ -10,8 +10,8 @@ env:
   SWIFTLY_INIT: init --skip-install --verbose --assume-yes
   SWIFTLY_INSTALL: install --use --verbose --assume-yes --post-install-file=post-install.sh
   SWIFTLY_DL: https://download.swift.org/swiftly
-  SWIFTLY_HOME_DIR: $GITHUB_WORKSPACE/../_swiftly
-  SWIFTLY_BIN_DIR: $GITHUB_WORKSPACE/../_swiftly/bin
+  SWIFTLY_HOME_DIR: ${{ github.workspace }}/../_swiftly
+  SWIFTLY_BIN_DIR: ${{ github.workspace }}/../_swiftly/bin
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.swift-version }}/${{ matrix.os }}
     steps:
-      - name: Install/macOS
+      - name: Install/Pre/macOS
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
@@ -32,7 +32,7 @@ jobs:
           curl -O $SWIFTLY_DL/darwin/swiftly.pkg
           installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
 
-      - name: Install/Linux
+      - name: Install/Pre/Linux
         if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
         shell: bash
         run: |
@@ -42,7 +42,7 @@ jobs:
           curl -O $SWIFTLY_DL/linux/swiftly-$(uname -m).tar.gz
           tar vzxf swiftly-$(uname -m).tar.gz
 
-      - name: Install/Post
+      - name: Install/Post/POSIX
         if: ${{ startsWith( matrix.os, 'ubuntu' ) || startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
