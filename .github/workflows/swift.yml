@@ -47,6 +47,7 @@ jobs:
         run: |
           cd $HOME/.swiftly
           ls -laF ./install
+          export SWIFTLY_HOME_DIR=$HOME/.swiftly
           ./install/swiftly $SWIFTLY_INIT
           ./bin/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
           if [ -f ./post-install.sh ]; then
