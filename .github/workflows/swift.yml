@@ -8,8 +8,10 @@ on:
 
 env:
   SWIFTLY_INIT: init --skip-install --verbose --assume-yes
-  SWIFTLY_INSTALL: install --use --verbose --assume-yes
+  SWIFTLY_INSTALL: install --use --verbose --assume-yes --post-install-file=post-install.sh
   SWIFTLY_DL: https://download.swift.org/swiftly
+  SWIFTLY_HOME_DIR: $GITHUB_WORKSPACE/../_swiftly
+  SWIFTLY_BIN_DIR: $GITHUB_WORKSPACE/../_swiftly/bin
 
 jobs:
   build:
@@ -25,22 +27,31 @@ jobs:
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
-          cd $GITHUB_WORKSPACE/..
+          mkdir $GITHUB_WORKSPACE/../_swiftly
+          cd $GITHUB_WORKSPACE/../_swiftly
           curl -O $SWIFTLY_DL/darwin/swiftly.pkg
-          installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
-          ~/.swiftly/bin/swiftly $SWIFTLY_INIT
-          ~/.swiftly/bin/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
+          installer -pkg swiftly.pkg -target $SWIFTLY_HOME_DIR
 
       - name: Install/Linux
         if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
         shell: bash
         run: |
           sudo apt-get -y install libcurl4-openssl-dev
-          cd $GITHUB_WORKSPACE/..
+          mkdir $GITHUB_WORKSPACE/../_swiftly
+          cd $GITHUB_WORKSPACE/../_swiftly
           curl -O $SWIFTLY_DL/linux/swiftly-$(uname -m).tar.gz
           tar vzxf swiftly-$(uname -m).tar.gz
-          $GITHUB_WORKSPACE/../swiftly $SWIFTLY_INIT
-          $GITHUB_WORKSPACE/../swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
+
+      - name: Install/Post
+        if: ${{ startsWith( matrix.os, 'ubuntu' ) || startsWith( matrix.os, 'macos' ) }}
+        shell: bash
+        run: |
+          cd $SWIFTLY_HOME_DIR/_swiftly
+          $SWIFTLY_HOME_DIR/_swiftly/swiftly $SWIFTLY_INIT
+          $SWIFTLY_HOME_DIR/_swiftly/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
+          if [ -f $SWIFTLY_HOME_DIR/_swiftly/post-install.sh ]; then
+            . $SWIFTLY_HOME_DIR/_swiftly/post-install.sh
+          fi
 
       - uses: actions/checkout@master
 
