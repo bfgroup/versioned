@@ -31,6 +31,7 @@ jobs:
           cd $SWIFTLY_HOME_DIR/install
           curl -O $SWIFTLY_DL/darwin/swiftly.pkg
           installer -pkg swiftly.pkg -target CurrentUserHomeDirectory
+          find $HOME swiftly
           ln $HOME/local/bin/swiftly swiftly
 
       - name: Install/Pre/Linux
