@@ -30,6 +30,7 @@ jobs:
           cd $HOME
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -v
           rustup install ${{ matrix.rust-version }}
+          rustup default ${{ matrix.rust-version }}
           mv ${GITHUB_PATH} ${GITHUB_PATH}.orig
           echo "${CARGO_HOME}/bin" >> ${GITHUB_PATH}
           cat ${GITHUB_PATH}.orig >> ${GITHUB_PATH}
@@ -38,9 +39,6 @@ jobs:
 
       - name: Info
         run: |
-          echo "==="
-          cat "${CARGO_HOME}/env"
-          echo "==="
           which rustup
           rustup --version -v
           which cargo
