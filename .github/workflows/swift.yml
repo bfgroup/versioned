@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 env:
-  SWIFTLY_INIT: init --skip-install --verbose --assume-yes
+  SWIFTLY_INIT: init --verbose --assume-yes
   SWIFTLY_INSTALL: install --use --verbose --assume-yes --post-install-file=post-install.sh
   SWIFTLY_DL: https://download.swift.org/swiftly
 
@@ -60,13 +60,8 @@ jobs:
       - name: Info
         shell: bash
         run: |
-          cat $HOME/.swiftly/env.sh
           . $HOME/.swiftly/env.sh
-          env | sort
           hash -r
-          ls -laF $HOME/.swiftly/
-          which swift
-          ls -laF $HOME/.swiftly/bin/
           cd swift
           swift --version -v
 
