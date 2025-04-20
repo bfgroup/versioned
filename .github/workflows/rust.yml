@@ -10,15 +10,15 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUSTUP_HOME: ${{ github.workspace }}/../.my/.rustup
-  CARGO_HOME: ${{ github.workspace }}/../.my/.cargo
+  RUSTUP_HOME: ${{ github.workspace }}/../_rust/.rustup
+  CARGO_HOME: ${{ github.workspace }}/../_rust/.cargo
 
 jobs:
   build:
     strategy:
       matrix:
         os: ["macos-latest", "ubuntu-latest"]
-        rust-version: ["stable"]
+        rust-version: ["stable", "1.85", "1.84"]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.rust-version }}/${{ matrix.os }}
@@ -28,11 +28,8 @@ jobs:
         shell: bash
         run: |
           cd $HOME
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -v
-          ls -laF $RUSTUP_HOME
-          ls -laF $CARGO_HOME
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -v install ${{ matrix.rust-version }}
           mv ${GITHUB_PATH} ${GITHUB_PATH}.orig
-          echo "${RUSTUP_HOME}/bin" >> ${GITHUB_PATH}
           echo "${CARGO_HOME}/bin" >> ${GITHUB_PATH}
           cat ${GITHUB_PATH}.orig >> ${GITHUB_PATH}
 
@@ -41,7 +38,7 @@ jobs:
       - name: Info
         run: |
           echo "==="
-          cat $GITHUB_PATH
+          cat "${CARGO_HOME}/env"
           echo "==="
           which rustup
           which cargo
