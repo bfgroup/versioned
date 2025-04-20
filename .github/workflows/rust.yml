@@ -29,7 +29,12 @@ jobs:
         run: |
           cd $HOME
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -v
-          ls -laF $HOME/.my $HOME/.my/*
+          ls -laF $RUSTUP_HOME
+          ls -laF $CARGO_HOME
+          mv ${GITHUB_PATH} ${GITHUB_PATH}.orig
+          echo "${RUSTUP_HOME}/bin" >> ${GITHUB_PATH}
+          echo "${CARGO_HOME}/bin" >> ${GITHUB_PATH}
+          cat ${GITHUB_PATH}.orig >> ${GITHUB_PATH}
 
       - uses: actions/checkout@master
 
