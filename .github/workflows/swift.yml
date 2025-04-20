@@ -3,8 +3,10 @@ name: Swift
 on:
   push:
     branches: ["main"]
+    paths: ["swift/**"]
   pull_request:
     branches: ["main"]
+    paths: ["swift/**"]
 
 env:
   SWIFTLY_INIT: init --skip-install --verbose --assume-yes
@@ -61,8 +63,9 @@ jobs:
         run: |
           . $HOME/.swiftly/env.sh
           hash -r
-          find $HOME -name swift
           $HOME/.swiftly/bin/swiftly --version
+          find $HOME -name swift
+          which swift
           swift --version -v
 
       - name: Build
@@ -70,7 +73,6 @@ jobs:
         run: |
           . $HOME/.swiftly/env.sh
           hash -r
-          which swift
           cd swift
           swift build -v
 
@@ -79,6 +81,5 @@ jobs:
         run: |
           . $HOME/.swiftly/env.sh
           hash -r
-          which swift
           cd swift
           swift test -v

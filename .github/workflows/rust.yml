@@ -2,29 +2,38 @@ name: Rust
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths: ["rust/**"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths: ["rust/**"]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        os: ["macos-latest", "ubuntu-latest"]
+        rust-version: ["default"]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.rust-version }}/${{ matrix.os }}
     steps:
-    - uses: actions/checkout@master
-    - name: Info
-      run: |
-        cargo --version -v
-        rustc --version -v
-    - name: Build
-      run: |
-        cd rust
-        cargo build --verbose
-    - name: Test
-      run: |
-        cd rust
-        cargo test --verbose
+      - uses: actions/checkout@master
+
+      - name: Info
+        run: |
+          cargo --version -v
+          rustc --version -v
+
+      - name: Build
+        run: |
+          cd rust
+          cargo build --verbose
+
+      - name: Test
+        run: |
+          cd rust
+          cargo test --verbose
