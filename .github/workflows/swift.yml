@@ -62,7 +62,7 @@ jobs:
           . $HOME/.swiftly/env.sh
           hash -r
           find $HOME -name swift
-          $HOME/.swiftly/install/swiftly --version
+          $HOME/.swiftly/bin/swiftly --version
           swift --version -v
 
       - name: Build
