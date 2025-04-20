@@ -10,6 +10,8 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  RUSTUP_HOME: ${{ github.workspace }}/../.my/.rustup
+  CARGO_HOME: ${{ github.workspace }}/../.my/.cargo
 
 jobs:
   build:
@@ -26,13 +28,16 @@ jobs:
         shell: bash
         run: |
           cd $HOME
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          ls -laF
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --help
+          ls -laF $HOME/.my $HOME/.my/*
 
       - uses: actions/checkout@master
 
       - name: Info
         run: |
+          echo "==="
+          cat $GITHUB_PATH
+          echo "==="
           which rustup
           which cargo
           cargo --version -v
