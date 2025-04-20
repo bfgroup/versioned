@@ -54,19 +54,19 @@ jobs:
             . ./post-install.sh
           fi
 
-      - name: Install/Post/macOS
-        if: ${{ startsWith( matrix.os, 'macos' ) }}
-        shell: bash
-        run: |
-          SWIFT=`ls -1 $HOME/Library/Developer/Toolchain/*${{ matrix.swift-version }}*/usr/bin/swift`
-          ln $SWIFT $HOME/swift
+      # - name: Install/Post/macOS
+      #   if: ${{ startsWith( matrix.os, 'macos' ) }}
+      #   shell: bash
+      #   run: |
+      #     SWIFT=`ls -1 $HOME/Library/Developer/Toolchain/*${{ matrix.swift-version }}*/usr/bin/swift`
+      #     ln $SWIFT $HOME/swift
 
-      - name: Install/Post/Linux
-        if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
-        shell: bash
-        run: |
-          SWIFT=`ls -1 $HOME/.swiftly/toolchains/*${{ matrix.swift-version }}*/usr/bin/swift`
-          ln $SWIFT $HOME/swift
+      # - name: Install/Post/Linux
+      #   if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
+      #   shell: bash
+      #   run: |
+      #     SWIFT=`ls -1 $HOME/.swiftly/toolchains/*${{ matrix.swift-version }}*/usr/bin/swift`
+      #     ln $SWIFT $HOME/swift
 
       - uses: actions/checkout@master
 
@@ -74,7 +74,6 @@ jobs:
         shell: bash
         run: |
           . $HOME/.swiftly/env.sh
-          export PATH="$HOME:$PATH"
           hash -r
           find $HOME -name swift
           cd swift
@@ -84,7 +83,6 @@ jobs:
         shell: bash
         run: |
           . $HOME/.swiftly/env.sh
-          export PATH="$HOME:$PATH"
           hash -r
           which swift
           cd swift
@@ -94,7 +92,6 @@ jobs:
         shell: bash
         run: |
           . $HOME/.swiftly/env.sh
-          export PATH="$HOME:$PATH"
           hash -r
           which swift
           cd swift
