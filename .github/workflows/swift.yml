@@ -8,7 +8,7 @@ on:
 
 env:
   SWIFTLY_INIT: init --skip-install --verbose --assume-yes
-  SWIFTLY_INSTALL: install --use --verbose --assume-yes --post-install-file=post-install.sh
+  SWIFTLY_INSTALL: install --use --verbose --assume-yes --post-install-file=$HOME/.swiftly/install/post-install.sh
   SWIFTLY_DL: https://download.swift.org/swiftly
 
 jobs:
@@ -50,23 +50,9 @@ jobs:
           export SWIFTLY_BIN_DIR=$HOME/.swiftly/bin
           ./install/swiftly $SWIFTLY_INIT
           ./bin/swiftly $SWIFTLY_INSTALL ${{ matrix.swift-version }}
-          if [ -f ./post-install.sh ]; then
-            . ./post-install.sh
+          if [ -f .$HOME/.swiftly/install/post-install.sh ]; then
+            . $HOME/.swiftly/install/post-install.sh
           fi
-
-      # - name: Install/Post/macOS
-      #   if: ${{ startsWith( matrix.os, 'macos' ) }}
-      #   shell: bash
-      #   run: |
-      #     SWIFT=`ls -1 $HOME/Library/Developer/Toolchain/*${{ matrix.swift-version }}*/usr/bin/swift`
-      #     ln $SWIFT $HOME/swift
-
-      # - name: Install/Post/Linux
-      #   if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
-      #   shell: bash
-      #   run: |
-      #     SWIFT=`ls -1 $HOME/.swiftly/toolchains/*${{ matrix.swift-version }}*/usr/bin/swift`
-      #     ln $SWIFT $HOME/swift
 
       - uses: actions/checkout@master
 
@@ -76,7 +62,7 @@ jobs:
           . $HOME/.swiftly/env.sh
           hash -r
           find $HOME -name swift
-          cd swift
+          $HOME/.swiftly/install/swiftly --version
           swift --version -v
 
       - name: Build
