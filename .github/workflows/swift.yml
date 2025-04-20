@@ -3,10 +3,10 @@ name: Swift
 on:
   push:
     branches: ["main"]
-    paths: ["swift/**"]
+    paths: [".github/workflows/swift*.yml", "swift/**"]
   pull_request:
     branches: ["main"]
-    paths: ["swift/**"]
+    paths: [".github/workflows/swift*.yml", "swift/**"]
 
 env:
   SWIFTLY_INIT: init --skip-install --verbose --assume-yes
