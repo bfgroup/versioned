@@ -21,34 +21,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.rust-version }}/${{ matrix.os }}
     steps:
-      - name: Install/Pre/macOS
-        if: ${{ startsWith( matrix.os, 'macos' ) }}
-        shell: bash
-        run: |
-          mkdir -p $HOME/.rustup/
-          cd $HOME/.rustup/
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-      - name: Install/Pre/Linux
-        if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
-        shell: bash
-        run: |
-          mkdir -p $HOME/.rustup/
-          cd $HOME/.rustup/
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
       - name: Install/POSIX
         if: ${{ startsWith( matrix.os, 'ubuntu' ) || startsWith( matrix.os, 'macos' ) }}
         shell: bash
         run: |
-          cd $HOME/.rustup/
+          cd $HOME
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           ls -laF
 
       - uses: actions/checkout@master
 
       - name: Info
         run: |
+          which rustup
+          which cargo
           cargo --version -v
+          which rustc
           rustc --version -v
 
       - name: Build
