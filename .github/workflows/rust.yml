@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           cd $HOME
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -v install ${{ matrix.rust-version }}
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -v ${{ matrix.rust-version }}
           mv ${GITHUB_PATH} ${GITHUB_PATH}.orig
           echo "${CARGO_HOME}/bin" >> ${GITHUB_PATH}
           cat ${GITHUB_PATH}.orig >> ${GITHUB_PATH}
