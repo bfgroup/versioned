@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir -p $HOME/.rustup/
           cd $HOME/.rustup/
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh-s -- -y
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
       - name: Install/Pre/Linux
         if: ${{ startsWith( matrix.os, 'ubuntu' ) }}
@@ -35,7 +35,7 @@ jobs:
         run: |
           mkdir -p $HOME/.rustup/
           cd $HOME/.rustup/
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh-s -- -y
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
       - name: Install/POSIX
         if: ${{ startsWith( matrix.os, 'ubuntu' ) || startsWith( matrix.os, 'macos' ) }}
