@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         os: ["macos-latest", "ubuntu-latest"]
-        swift-version: ["6.1", "6.0"]
+        swift-version: ["6.1", "6.0", "5.10", "5.9"]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.swift-version }}/${{ matrix.os }}
