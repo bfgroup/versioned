@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           cd $HOME
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --help
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -v
           ls -laF $HOME/.my $HOME/.my/*
 
       - uses: actions/checkout@master
