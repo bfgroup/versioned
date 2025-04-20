@@ -60,9 +60,10 @@ jobs:
       - name: Info
         shell: bash
         run: |
+          ls -laF $HOME/.swiftly/
           cat $HOME/.swiftly/env.sh
           . $HOME/.swiftly/env.sh
-          env  sort
+          env | sort
           hash -r
           which swift
           cd swift
