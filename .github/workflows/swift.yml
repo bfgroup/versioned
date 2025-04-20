@@ -73,14 +73,17 @@ jobs:
       - name: Info
         shell: bash
         run: |
+          . $HOME/.swiftly/env.sh
           export PATH="$HOME:$PATH"
           hash -r
+          find $HOME -name swift
           cd swift
           swift --version -v
 
       - name: Build
         shell: bash
         run: |
+          . $HOME/.swiftly/env.sh
           export PATH="$HOME:$PATH"
           hash -r
           which swift
@@ -90,6 +93,7 @@ jobs:
       - name: Test
         shell: bash
         run: |
+          . $HOME/.swiftly/env.sh
           export PATH="$HOME:$PATH"
           hash -r
           which swift
