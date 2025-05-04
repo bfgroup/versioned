@@ -91,7 +91,7 @@ jobs:
         uses: alandefreitas/cpp-actions/cmake-workflow@master
         with:
           source-dir: cpp
-          cmake-path: ${{ steps.setup-cmake.path }}
+          cmake-path: ${{ steps.setup-cmake.outputs.path }}
           generator: ${{ matrix.generator }}
           generator-toolset: ${{ matrix.generator-toolset }}
           build-type: ${{ matrix.build-type }}
