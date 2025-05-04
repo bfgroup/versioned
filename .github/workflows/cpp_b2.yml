@@ -104,9 +104,8 @@ jobs:
           git clone --branch=release --depth=1 https://github.com/bfgroup/b2.git 
           cd b2
           bootstrap
-          ./b2 install b2-install-layout=portable
+          b2 install b2-install-layout=portable
           echo "using %B2_TOOLSET% : : %CXX_PATH% ;" > %HOME%/user-config.jam
-          set
 
       - name: Clone Library
         uses: actions/checkout@master
@@ -135,3 +134,27 @@ jobs:
           set -e
           cd cpp
           b2 -d+2 --debug-configuration ${B2_ARGS} test
+
+      - name: Test
+        if: runner.os == 'Windows'
+        env:
+          B2_ARGS: >-
+            ${{ matrix.b2-toolset && format('toolset={0}',matrix.b2-toolset) || '' }}
+            ${{ matrix.build_dir && format('--build-dir={0}',matrix.build_dir) || '' }}
+            ${{ matrix.address_model && format('address-model={0}',matrix.address_model) || '' }}
+            ${{ matrix.cxxstd && format('cxxstd={0}',matrix.cxxstd) || '' }}
+            ${{ matrix.build_type && format('variant={0}',matrix.build_type) || '' }}
+            ${{ matrix.extra_args || '' }}
+            ${{ matrix.cxxflags && format('cxxflags={0}',matrix.cxxflags) || '' }}
+            ${{ matrix.ccflags && format('cflags={0}',matrix.ccflags) || '' }}
+            ${{ matrix.linkflags && format('linkflags={0}',matrix.linkflags) || '' }}
+            ${{ matrix.threading && format('threading={0}',matrix.threading) || '' }}
+            ${{ matrix.asan == true && 'address-sanitizer=on' || '' }}
+            ${{ matrix.ubsan == true && 'undefined-sanitizer=on' || '' }}
+            ${{ matrix.tsan == true && 'thread-sanitizer=on' || '' }}
+            ${{ matrix.shared == true && 'link=shared' || 'link=static' }}
+            ${{ matrix.runtime_link == true && 'runtime-link=shared' || 'link=static' }}
+        shell: cmd
+        run: |
+          cd cpp
+          b2 -d+2 --debug-configuration %B2_ARGS% test
