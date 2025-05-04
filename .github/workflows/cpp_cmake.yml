@@ -1,0 +1,110 @@
+name: C++ w/B2
+
+on:
+  push:
+    branches: ["main"]
+    paths: [".github/workflows/cpp_cmake.yml", "cpp/**"]
+  pull_request:
+    branches: ["main"]
+    paths: [".github/workflows/cpp_cmake.yml", "cpp/**"]
+
+jobs:
+  cpp-matrix:
+    runs-on: ubuntu-latest
+    name: Generate Test Matrix
+    outputs:
+      matrix: ${{ steps.cpp-matrix.outputs.matrix }}
+    steps:
+      - name: Generate Test Matrix
+        uses: alandefreitas/cpp-actions/cpp-matrix@master
+        id: cpp-matrix
+        with:
+          compilers: |
+            gcc >= 4.8
+            clang >= 3.9
+            msvc >= 14.0
+            apple-clang *
+            mingw *
+            clang-cl *
+          standards: ">=11"
+          latest-factors: |
+            gcc Asan TSan UBSan
+            clang BoundsSan IntSan
+          factors: |
+            gcc Shared
+            msvc Shared x86
+            mingw Shared
+          subrange-policy: |
+            msvc: one-per-minor
+          trace-commands: true
+
+  build:
+    needs: cpp-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.cpp-matrix.outputs.matrix) }}
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+
+    steps:
+      # GitHub Actions no longer support older containers.
+      # The workaround is to install our own Node.js for the actions.
+      - name: Patch Node
+        # The containers that need Node.js 20 will have volumes set up so that
+        # the Node.js 20 installation can go there.
+        if: ${{ matrix.container.volumes }}
+        run: |
+          set -x
+          apt-get update
+          apt-get install -y curl xz-utils
+          curl -LO https://unofficial-builds.nodejs.org/download/release/v20.9.0/node-v20.9.0-linux-x64-glibc-217.tar.xz
+          tar -xf node-v20.9.0-linux-x64-glibc-217.tar.xz --strip-components 1 -C /node20217
+          ldd /__e/node20/bin/node
+
+      - name: Setup C++ Compiler
+        uses: alandefreitas/cpp-actions/setup-cpp@master
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
+      - name: Install Packages
+        if: matrix.install != ''
+        uses: alandefreitas/cpp-actions/package-install@master
+        id: package-install
+        with:
+          apt-get: ${{ matrix.install }}
+
+      - name: Setup CMake
+        uses: alandefreitas/cpp-actions/setup-cmake@master
+        id: setup-cmake
+        with:
+          check-latest: true
+          trace-commands: true
+
+      - name: Clone Library
+        uses: actions/checkout@master
+
+      - name: Test
+        uses: alandefreitas/cpp-actions/cmake-workflow@master
+        with:
+          source-dir: cpp
+          cmake-path: ${{ steps.setup-cmake.path }}
+          generator: ${{ matrix.generator }}
+          generator-toolset: ${{ matrix.generator-toolset }}
+          build-type: ${{ matrix.build-type }}
+          run-tests: true
+          cxxstd: ${{ matrix.cxxstd }}
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          ccflags: ${{ matrix.ccflags }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          cxxflags: ${{ matrix.cxxflags }}
+          shared: ${{ matrix.shared }}
+          extra-args: >-
+            ${{ ( matrix.no-deps && '-D CPP_ACTIONS_NO_DEPS=ON' ) || '' }}
+          export-compile-commands: ${{ matrix.time-trace }}
+          package: true
+          package-artifact: ${{ matrix.is-main }}
+          trace-commands: true
