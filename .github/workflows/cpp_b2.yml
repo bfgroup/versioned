@@ -103,7 +103,7 @@ jobs:
           cd %HOME%
           git clone --branch=release --depth=1 https://github.com/bfgroup/b2.git 
           cd b2
-          bootstrap
+          cmd.exe /c bootstrap.bat
           .\b2.exe -d+2 install b2-install-layout=portable
           echo "using %B2_TOOLSET% : : %CXX_PATH% ;" > %HOME%/user-config.jam
 
