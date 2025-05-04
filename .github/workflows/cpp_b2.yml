@@ -3,10 +3,10 @@ name: C++ w/B2
 on:
   push:
     branches: ["main"]
-    paths: [".github/workflows/cpp_*.yml", "cpp/**"]
+    paths: [".github/workflows/cpp_b2.yml", "cpp/**"]
   pull_request:
     branches: ["main"]
-    paths: [".github/workflows/cpp_*.yml", "cpp/**"]
+    paths: [".github/workflows/cpp_b2.yml", "cpp/**"]
 
 jobs:
   cpp-matrix:
