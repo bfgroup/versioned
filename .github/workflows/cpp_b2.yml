@@ -19,9 +19,6 @@ jobs:
         uses: alandefreitas/cpp-actions/cpp-matrix@master
         id: cpp-matrix
         with:
-          extra-values: |
-            boost-lib: accumulators
-            scan-dirs: test
           compilers: |
             gcc >= 4.8
             clang >= 3.9
@@ -95,6 +92,21 @@ jobs:
           ./bootstrap.sh
           ./b2 install b2-install-layout=portable --prefix=/usr/local/bin
           echo "using ${B2_TOOLSET} : : ${CXX_PATH} ;" > ${HOME}/user-config.jam
+
+      - name: Setup B2
+        if: runner.os == 'Windows'
+        env:
+          B2_TOOLSET: ${{ matrix.b2-toolset }}
+          CXX_PATH: ${{ steps.setup-cpp.outputs.cxx || '' }}
+        shell: cmd
+        run: |
+          cd %HOME%
+          git clone --branch=release --depth=1 https://github.com/bfgroup/b2.git 
+          cd b2
+          bootstrap
+          ./b2 install b2-install-layout=portable
+          echo "using %B2_TOOLSET% : : %CXX_PATH% ;" > %HOME%/user-config.jam
+          set
 
       - name: Clone Library
         uses: actions/checkout@master
