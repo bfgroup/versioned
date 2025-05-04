@@ -1,0 +1,103 @@
+name: C++ w/B2
+
+on:
+  push:
+    branches: ["main"]
+    paths: [".github/workflows/cpp_*.yml", "cpp/**"]
+  pull_request:
+    branches: ["main"]
+    paths: [".github/workflows/cpp_*.yml", "cpp/**"]
+
+jobs:
+  cpp-matrix:
+    runs-on: ubuntu-latest
+    name: Generate Test Matrix
+    outputs:
+      matrix: ${{ steps.cpp-matrix.outputs.matrix }}
+    steps:
+      - name: Generate Test Matrix
+        uses: alandefreitas/cpp-actions/cpp-matrix@master
+        id: cpp-matrix
+        with:
+          extra-values: |
+            boost-lib: accumulators
+            scan-dirs: test
+          compilers: |
+            gcc >= 4.8
+            clang >= 3.9
+            msvc >= 14.0
+            apple-clang *
+            mingw *
+            clang-cl *
+          standards: ">=11"
+          latest-factors: |
+            gcc Asan TSan UBSan
+            clang BoundsSan IntSan
+          factors: |
+            gcc Shared
+            msvc Shared x86
+            mingw Shared
+          subrange-policy: |
+            msvc: one-per-minor
+          trace-commands: true
+
+  build:
+    needs: cpp-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.cpp-matrix.outputs.matrix) }}
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+
+    steps:
+      # GitHub Actions no longer support older containers.
+      # The workaround is to install our own Node.js for the actions.
+      - name: Patch Node
+        # The containers that need Node.js 20 will have volumes set up so that
+        # the Node.js 20 installation can go there.
+        if: ${{ matrix.container.volumes }}
+        run: |
+          set -x
+          apt-get update
+          apt-get install -y curl xz-utils
+          curl -LO https://unofficial-builds.nodejs.org/download/release/v20.9.0/node-v20.9.0-linux-x64-glibc-217.tar.xz
+          tar -xf node-v20.9.0-linux-x64-glibc-217.tar.xz --strip-components 1 -C /node20217
+          ldd /__e/node20/bin/node
+
+      - name: Setup C++ Compiler
+        uses: alandefreitas/cpp-actions/setup-cpp@master
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
+      - name: Install Packages
+        if: matrix.install != ''
+        uses: alandefreitas/cpp-actions/package-install@master
+        id: package-install
+        with:
+          apt-get: ${{ matrix.install }}
+
+      - name: Clone Library
+        uses: actions/checkout@master
+
+      - name: B2 Workflow
+        uses: alandefreitas/cpp-actions/b2-workflow@master
+        with:
+          source-dir: cpp
+          modules: ${{ matrix.boost-lib }}
+          toolset: ${{ matrix.b2-toolset }}
+          build-variant: ${{ matrix.build-type }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || '' }}
+          cxxstd: ${{ matrix.cxxstd }}
+          address-model: ${{ matrix.address-model }}
+          asan: ${{ matrix.asan }}
+          ubsan: ${{ matrix.ubsan }}
+          tsan: ${{ matrix.tsan }}
+          shared: ${{ matrix.shared }}
+          abbreviate-paths: false
+          hash: false
+          debug-configuration: true
+          trace-commands: true
