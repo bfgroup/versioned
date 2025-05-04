@@ -157,4 +157,4 @@ jobs:
         shell: cmd
         run: |
           cd cpp
-          b2 -d+2 --debug-configuration %B2_ARGS% test
+          C:\b2\b2.exe -d+2 --debug-configuration %B2_ARGS% test
