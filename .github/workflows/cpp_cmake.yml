@@ -1,4 +1,4 @@
-name: C++ w/B2
+name: C++ w/CMake
 
 on:
   push:
