@@ -78,12 +78,14 @@ jobs:
         uses: alandefreitas/cpp-actions/package-install@master
         id: package-install
         with:
-          apt-get: ${{ matrix.install }}
+          apt-get: ${{ matrix.install }} unzip wget
 
       - name: Setup B2
+        if: runner.os != 'Windows'
         env:
           B2_TOOLSET: ${{ matrix.b2-toolset }}
           CXX_PATH: ${{ steps.setup-cpp.outputs.cxx || '' }}
+        shell: bash
         run: |
           set -e
           cd $HOME
@@ -98,6 +100,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Test
+        if: runner.os != 'Windows'
         env:
           B2_ARGS: >-
             ${{ matrix.b2-toolset && format('toolset={0}',matrix.b2-toolset) || '' }} \
@@ -115,6 +118,7 @@ jobs:
             ${{ matrix.tsan == true && 'thread-sanitizer=on' || '' }} \
             ${{ matrix.shared == true && 'link=shared' || 'link=static' }} \
             ${{ matrix.runtime_link == true && 'runtime-link=shared' || 'link=static' }}
+        shell: bash
         run: |
           set -e
           cd cpp
