@@ -103,20 +103,20 @@ jobs:
         if: runner.os != 'Windows'
         env:
           B2_ARGS: >-
-            ${{ matrix.b2-toolset && format('toolset={0}',matrix.b2-toolset) || '' }} \
-            ${{ matrix.build_dir && format('--build-dir={0}',matrix.build_dir) || '' }} \
-            ${{ matrix.address_model && format('address-model={0}',matrix.address_model) || '' }} \
-            ${{ matrix.cxxstd && format('cxxstd={0}',matrix.cxxstd) || '' }} \
-            ${{ matrix.build_type && format('variant={0}',matrix.build_type) || '' }} \
-            ${{ matrix.extra_args || '' }} \
-            ${{ matrix.cxxflags && format('cxxflags={0}',matrix.cxxflags) || '' }} \
-            ${{ matrix.ccflags && format('cflags={0}',matrix.ccflags) || '' }} \
-            ${{ matrix.linkflags && format('linkflags={0}',matrix.linkflags) || '' }} \
-            ${{ matrix.threading && format('threading={0}',matrix.threading) || '' }} \
-            ${{ matrix.asan == true && 'address-sanitizer=on' || '' }} \
-            ${{ matrix.ubsan == true && 'undefined-sanitizer=on' || '' }} \
-            ${{ matrix.tsan == true && 'thread-sanitizer=on' || '' }} \
-            ${{ matrix.shared == true && 'link=shared' || 'link=static' }} \
+            ${{ matrix.b2-toolset && format('toolset={0}',matrix.b2-toolset) || '' }}
+            ${{ matrix.build_dir && format('--build-dir={0}',matrix.build_dir) || '' }}
+            ${{ matrix.address_model && format('address-model={0}',matrix.address_model) || '' }}
+            ${{ matrix.cxxstd && format('cxxstd={0}',matrix.cxxstd) || '' }}
+            ${{ matrix.build_type && format('variant={0}',matrix.build_type) || '' }}
+            ${{ matrix.extra_args || '' }}
+            ${{ matrix.cxxflags && format('cxxflags={0}',matrix.cxxflags) || '' }}
+            ${{ matrix.ccflags && format('cflags={0}',matrix.ccflags) || '' }}
+            ${{ matrix.linkflags && format('linkflags={0}',matrix.linkflags) || '' }}
+            ${{ matrix.threading && format('threading={0}',matrix.threading) || '' }}
+            ${{ matrix.asan == true && 'address-sanitizer=on' || '' }}
+            ${{ matrix.ubsan == true && 'undefined-sanitizer=on' || '' }}
+            ${{ matrix.tsan == true && 'thread-sanitizer=on' || '' }}
+            ${{ matrix.shared == true && 'link=shared' || 'link=static' }}
             ${{ matrix.runtime_link == true && 'runtime-link=shared' || 'link=static' }}
         shell: bash
         run: |
