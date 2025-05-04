@@ -93,7 +93,7 @@ jobs:
           unzip b2.zip
           cd b2-release
           ./bootstrap.sh
-          ./b2 install b2-install-layout=portable --prefix=/usr/bin
+          ./b2 install b2-install-layout=portable --prefix=/usr/local/bin
           echo "using ${B2_TOOLSET} : : ${CXX_PATH} ;" > ${HOME}/user-config.jam
 
       - name: Clone Library
