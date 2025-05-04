@@ -90,7 +90,7 @@ jobs:
           unzip b2.zip
           cd b2-release
           ./bootstrap.sh
-          ./b2 install b2-install-layout=portable --prefix=/usr/local/bin
+          ./b2 -d+2 install b2-install-layout=portable --prefix=/usr/local/bin
           echo "using ${B2_TOOLSET} : : ${CXX_PATH} ;" > ${HOME}/user-config.jam
 
       - name: Setup B2
@@ -104,7 +104,7 @@ jobs:
           git clone --branch=release --depth=1 https://github.com/bfgroup/b2.git 
           cd b2
           bootstrap
-          b2 install b2-install-layout=portable
+          .\b2.exe -d+2 install b2-install-layout=portable
           echo "using %B2_TOOLSET% : : %CXX_PATH% ;" > %HOME%/user-config.jam
 
       - name: Clone Library
