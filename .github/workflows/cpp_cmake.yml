@@ -93,6 +93,7 @@ jobs:
         with:
           source-dir: cpp
           cmake-path: ${{ steps.setup-cmake.outputs.path }}
+          cmake-version: ${{ steps.setup-cmake.outputs.version }}
           generator: ${{ matrix.generator }}
           generator-toolset: ${{ matrix.generator-toolset }}
           build-type: ${{ matrix.build-type }}
