@@ -27,6 +27,7 @@ jobs:
             mingw *
             clang-cl *
           standards: ">=11"
+          max-standards: 6
           latest-factors: |
             gcc Asan TSan UBSan
             clang BoundsSan IntSan
