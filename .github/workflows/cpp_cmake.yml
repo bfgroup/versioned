@@ -81,6 +81,7 @@ jobs:
         uses: alandefreitas/cpp-actions/setup-cmake@master
         id: setup-cmake
         with:
+          version: ">=3.31"
           check-latest: true
           trace-commands: true
 
