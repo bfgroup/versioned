@@ -105,4 +105,5 @@ jobs:
           extra-args: >-
             ${{ ( matrix.no-deps && '-D CPP_ACTIONS_NO_DEPS=ON' ) || '' }}
           export-compile-commands: ${{ matrix.time-trace }}
+          install: false
           trace-commands: true
