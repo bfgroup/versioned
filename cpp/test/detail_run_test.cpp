@@ -2,6 +2,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cstdint>
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -75,7 +76,6 @@ int main()
 		auto all = [&](const char * context, from_chars_f f) {
 			std::cout << "TEST: " << context << "\n";
 			for (auto & v : vs) check(v, f);
-			std::cout << "------\n";
 		};
 		all("versioned::detail::from_chars_10",
 			&versioned::detail::from_chars_10<int>);
@@ -95,6 +95,47 @@ int main()
 			BOOST_TEST_EQ(
 				std::to_string(n), versioned::detail::to_string_10(n));
 		}
+	}
+	{
+		std::cout << "TEST: hash_combine\n";
+		const std::uint32_t numbers[] = {
+			0,
+			1,
+			2,
+			9,
+			99,
+			999,
+			1234567890,
+		};
+		std::uint32_t ha = 0;
+		std::uint32_t hb = 0;
+		for (auto n : numbers)
+		{
+			ha = versioned::detail::hash_combine(ha, n);
+			hb = versioned::detail::hash_combine(n, hb);
+		}
+		std::cout << "> ha = " << ha << ", hb = " << hb << "\n";
+		BOOST_TEST_NE(ha, hb);
+	}
+	{
+		const std::uint64_t numbers[] = {
+			0,
+			1,
+			2,
+			9,
+			99,
+			999,
+			1234567890,
+		};
+		std::uint64_t ha = 0;
+		std::uint64_t hb = 0;
+		for (auto n : numbers)
+		{
+			ha = versioned::detail::hash_combine(ha, n);
+			hb = versioned::detail::hash_combine(n, hb);
+		}
+		std::cout << "> ha = " << ha << ", hb = " << hb << "\n";
+		BOOST_TEST_NE(ha, hb);
 	}
 	return boost::report_errors();
 }

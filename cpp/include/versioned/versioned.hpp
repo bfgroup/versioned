@@ -7,6 +7,8 @@
 #define VERSIONED_VERSIONED_HPP
 
 #include <algorithm>
+#include <cstdint>
+#include <limits>
 #include <system_error>
 #include <tuple>
 #include <type_traits>
@@ -55,23 +57,50 @@ inline int chars_cmp(
 	return *a0 - *b0;
 }
 
+template <typename N>
+constexpr N masked_max(N value)
+{
+	return value & std::numeric_limits<N>::max();
+}
+
 // Simple hash values combine.
 template <class... N>
-std::size_t hash_combine(std::size_t seed, N... an)
+std::uint32_t hash_combine(std::uint32_t seed, N... an)
 {
-	std::size_t args[] = { an... };
+	std::uint32_t args[] = { an... };
 	// Init.
-	std::size_t result = seed;
+	std::uint32_t result = seed;
 	// Combine.
 	for (auto a : args)
 	{
-		result ^= a + 3772387269305686495 + (result << 30) + (result >> 13);
+		result ^= a + masked_max(3772387269305686495) + (result << 15)
+			+ (result >> 6);
+	}
+	// Mix.
+	result ^= (result >> 8);
+	result *= masked_max(448100074733706);
+	result ^= (result << 4);
+	result += masked_max(190056597654806);
+	result ^= (result >> 5);
+	return result;
+}
+template <class... N>
+std::uint64_t hash_combine(std::uint64_t seed, N... an)
+{
+	std::uint64_t args[] = { an... };
+	// Init.
+	std::uint64_t result = seed;
+	// Combine.
+	for (auto a : args)
+	{
+		result ^= a + masked_max(3772387269305686495) + (result << 30)
+			+ (result >> 13);
 	}
 	// Mix.
 	result ^= (result >> 16);
-	result *= 448100074733706;
+	result *= masked_max(448100074733706);
 	result ^= (result << 8);
-	result += 190056597654806;
+	result += masked_max(190056597654806);
 	result ^= (result >> 11);
 	return result;
 }
@@ -80,7 +109,7 @@ std::size_t hash_combine(std::size_t seed, N... an)
 inline std::string to_string_10(std::size_t value)
 {
 	std::string result;
-	result.reserve(30);
+	result.reserve(std::numeric_limits<std::size_t>::max_digits10);
 	do
 	{
 		result += '0' + (value % 10);
