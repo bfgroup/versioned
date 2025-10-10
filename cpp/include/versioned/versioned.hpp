@@ -57,8 +57,8 @@ inline int chars_cmp(
 	return *a0 - *b0;
 }
 
-template <typename N>
-constexpr N masked_max(N value)
+template <typename N, typename U>
+constexpr N masked_max(U value)
 {
 	return value & std::numeric_limits<N>::max();
 }
@@ -73,14 +73,14 @@ std::uint32_t hash_combine(std::uint32_t seed, N... an)
 	// Combine.
 	for (auto a : args)
 	{
-		result ^= a + masked_max(3772387269305686495) + (result << 15)
-			+ (result >> 6);
+		result ^= a + masked_max<std::uint32_t>(3772387269305686495)
+			+ (result << 15) + (result >> 6);
 	}
 	// Mix.
 	result ^= (result >> 8);
-	result *= masked_max(448100074733706);
+	result *= masked_max<std::uint32_t>(448100074733706);
 	result ^= (result << 4);
-	result += masked_max(190056597654806);
+	result += masked_max<std::uint32_t>(190056597654806);
 	result ^= (result >> 5);
 	return result;
 }
@@ -93,14 +93,14 @@ std::uint64_t hash_combine(std::uint64_t seed, N... an)
 	// Combine.
 	for (auto a : args)
 	{
-		result ^= a + masked_max(3772387269305686495) + (result << 30)
-			+ (result >> 13);
+		result ^= a + masked_max<std::uint64_t>(3772387269305686495)
+			+ (result << 30) + (result >> 13);
 	}
 	// Mix.
 	result ^= (result >> 16);
-	result *= masked_max(448100074733706);
+	result *= masked_max<std::uint64_t>(448100074733706);
 	result ^= (result << 8);
-	result += masked_max(190056597654806);
+	result += masked_max<std::uint64_t>(190056597654806);
 	result ^= (result >> 11);
 	return result;
 }

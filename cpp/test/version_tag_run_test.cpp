@@ -3,6 +3,7 @@
 // file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <algorithm>
+#include <cstdint>
 #include <cstring>
 #include <iostream>
 #include <random>
@@ -23,6 +24,8 @@ struct V
 		, p({ b... })
 	{}
 };
+std::mt19937 mtx(std::int32_t s) { return std::mt19937(s); }
+std::mt19937_64 mtx(std::int64_t s) { return std::mt19937_64(s); }
 int main()
 {
 	BOOST_TEST(true);
@@ -163,8 +166,7 @@ int main()
 			base_vals.push_back(a);
 		}
 		std::vector<versioned::version_tag> test_vals = base_vals;
-		std::shuffle(test_vals.begin(), test_vals.end(),
-			std::mt19937(versioned::detail::masked_max(291020249555917)));
+		std::shuffle(test_vals.begin(), test_vals.end(), mtx(291020249555917));
 		std::sort(test_vals.begin(), test_vals.end());
 		for (std::size_t i = 0; i < base_vals.size(); ++i)
 		{
