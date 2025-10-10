@@ -4,13 +4,10 @@
 
 #include <boost/core/lightweight_test.hpp>
 
-int sqr( int x )
-{
-    return x * x;
-}
+int sqr(int x) { return x * x; }
 
 int main()
 {
 	BOOST_TEST(true);
-    return boost::report_errors();
+	return boost::report_errors();
 }

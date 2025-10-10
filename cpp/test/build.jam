@@ -9,9 +9,23 @@ import testing ;
 project
 	: requirements
 		<include>ext_boost_core/include
+	: default-build
+		<cxxstd>11
+		<warnings>pedantic
+		<warnings-as-errors>on
 	;
 
 for local test in [ glob *_run_test.cpp ]
 {
 	run $(test) : : : <use>/bfg/versioned//bfg_versioned ;
 }
+
+local benchmark ;
+for local test in [ glob *_time_test.cpp ]
+{
+	benchmark += $(test:B:S=) ;
+	explicit [
+		run $(test) : : : <use>/bfg/versioned//bfg_versioned
+		] ;
+}
+explicit [ alias benchmark : $(benchmark) : : <variant>release <optimization>speed ] ;
