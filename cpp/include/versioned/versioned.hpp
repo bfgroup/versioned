@@ -76,6 +76,21 @@ std::size_t hash_combine(std::size_t seed, N... an)
 	return result;
 }
 
+// Backfill to_string as it's missing on some runtimes.
+std::string to_string_10(std::size_t value)
+{
+	std::string result;
+	result.reserve(30);
+	do
+	{
+		result += '0' + (value % 10);
+		value /= 10;
+	}
+	while (value > 0);
+	std::reverse(result.begin(), result.end());
+	return result;
+}
+
 } // namespace detail
 
 struct from_chars_result
@@ -122,14 +137,16 @@ class version_core
 	element_t & at(std::size_t i)
 	{
 		if (i >= element_c)
-			throw std::out_of_range("No such component: " + std::to_string(i));
+			throw std::out_of_range(
+				"No such component: " + detail::to_string_10(i));
 		return number[i];
 	}
 
 	const element_t & at(std::size_t i) const
 	{
 		if (i >= element_c)
-			throw std::out_of_range("No such component: " + std::to_string(i));
+			throw std::out_of_range(
+				"No such component: " + detail::to_string_10(i));
 		return number[i];
 	}
 
@@ -173,7 +190,7 @@ from_chars_result from_chars(
 	for (std::size_t i = 0; i < version_core<N, C>::element_c; ++i)
 	{
 		result.ptr = detail::from_chars_10(result.ptr, last, number[i]);
-		if (*result.ptr != '.') break;
+		if (result.ptr == last || *result.ptr != '.') break;
 		result.ptr += 1;
 	}
 
@@ -191,9 +208,9 @@ std::string to_string(const version_core<N, C> & value)
 	{
 		std::size_t n = i - 1;
 		if (n == 0)
-			result = std::to_string(value.number[n]) + result;
+			result = detail::to_string_10(value.number[n]) + result;
 		else if (value.number[n] > 0)
-			result = "." + std::to_string(value.number[n]) + result;
+			result = "." + detail::to_string_10(value.number[n]) + result;
 	}
 	return result;
 }
@@ -283,7 +300,8 @@ class version_tag
 	range_element_t range_at(std::size_t i) const
 	{
 		if (i >= parts_.size())
-			throw std::out_of_range("No such component: " + std::to_string(i));
+			throw std::out_of_range(
+				"No such component: " + detail::to_string_10(i));
 		return std::make_tuple(info_.c_str() + (i == 0 ? 0 : parts_[i - 1] + 1),
 			info_.c_str() + parts_[i]);
 	}

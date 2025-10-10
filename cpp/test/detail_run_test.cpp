@@ -80,5 +80,21 @@ int main()
 		all("versioned::detail::from_chars_10",
 			&versioned::detail::from_chars_10<int>);
 	}
+	{
+		const std::size_t numbers[] = {
+			0,
+			1,
+			2,
+			9,
+			99,
+			999,
+			1234567890,
+		};
+		for (auto n : numbers)
+		{
+			BOOST_TEST_EQ(
+				std::to_string(n), versioned::detail::to_string_10(n));
+		}
+	}
 	return boost::report_errors();
 }
