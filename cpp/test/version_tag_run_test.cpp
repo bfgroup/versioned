@@ -163,8 +163,8 @@ int main()
 			base_vals.push_back(a);
 		}
 		std::vector<versioned::version_tag> test_vals = base_vals;
-		std::shuffle(
-			test_vals.begin(), test_vals.end(), std::mt19937(291020249555917));
+		std::shuffle(test_vals.begin(), test_vals.end(),
+			std::mt19937(versioned::detail::masked_max(291020249555917)));
 		std::sort(test_vals.begin(), test_vals.end());
 		for (std::size_t i = 0; i < base_vals.size(); ++i)
 		{
