@@ -77,7 +77,7 @@ std::size_t hash_combine(std::size_t seed, N... an)
 }
 
 // Backfill to_string as it's missing on some runtimes.
-std::string to_string_10(std::size_t value)
+inline std::string to_string_10(std::size_t value)
 {
 	std::string result;
 	result.reserve(30);
