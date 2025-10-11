@@ -121,9 +121,6 @@ jobs:
             ${{ matrix.cxxstd && format('cxxstd={0}',matrix.cxxstd) || '' }}
             ${{ matrix.build_type && format('variant={0}',matrix.build_type) || '' }}
             ${{ matrix.extra_args || '' }}
-            ${{ matrix.cxxflags && format('cxxflags="{0}"',matrix.cxxflags) || '' }}
-            ${{ matrix.ccflags && format('cflags="{0}"',matrix.ccflags) || '' }}
-            ${{ matrix.linkflags && format('linkflags="{0}"',matrix.linkflags) || '' }}
             ${{ matrix.threading && format('threading={0}',matrix.threading) || '' }}
             ${{ matrix.asan == true && 'address-sanitizer=on' || '' }}
             ${{ matrix.ubsan == true && 'undefined-sanitizer=on' || '' }}
@@ -146,9 +143,6 @@ jobs:
             ${{ matrix.cxxstd && format('cxxstd={0}',matrix.cxxstd) || '' }}
             ${{ matrix.build_type && format('variant={0}',matrix.build_type) || '' }}
             ${{ matrix.extra_args || '' }}
-            ${{ matrix.cxxflags && format('cxxflags="{0}"',matrix.cxxflags) || '' }}
-            ${{ matrix.ccflags && format('cflags="{0}"',matrix.ccflags) || '' }}
-            ${{ matrix.linkflags && format('linkflags="{0}"',matrix.linkflags) || '' }}
             ${{ matrix.threading && format('threading={0}',matrix.threading) || '' }}
             ${{ matrix.asan == true && 'address-sanitizer=on' || '' }}
             ${{ matrix.ubsan == true && 'undefined-sanitizer=on' || '' }}
