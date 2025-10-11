@@ -64,24 +64,9 @@ constexpr N masked_max(U value)
 }
 
 // Simple hash values combine.
-template <int C>
-struct hash_combine_val
-{};
-template <>
-struct hash_combine_val<4>
-{
-	static constexpr char shift[] = { 15, 6, 8, 4, 5 };
-};
-template <>
-struct hash_combine_val<8>
-{
-	static constexpr char shift[] = { 30, 13, 16, 8, 11 };
-};
-
 template <class T, class... N>
 T hash_combine(T seed, N... an)
 {
-	using h = hash_combine_val<sizeof(T)>;
 	T args[] = { an... };
 	// Init.
 	T result = seed;
@@ -89,14 +74,15 @@ T hash_combine(T seed, N... an)
 	for (auto a : args)
 	{
 		result ^= a + masked_max<T>(3772387269305686495)
-			+ (result << h::shift[0]) + (result >> h::shift[1]);
+			+ (result << (30 * 2 / sizeof(T)))
+			+ (result >> (13 * 2 / sizeof(T)));
 	}
 	// Mix.
-	result ^= (result >> h::shift[2]);
+	result ^= (result >> (16 * 2 / sizeof(T)));
 	result *= masked_max<T>(448100074733706);
-	result ^= (result << h::shift[3]);
+	result ^= (result << (8 * 2 / sizeof(T)));
 	result += masked_max<T>(190056597654806);
-	result ^= (result >> h::shift[4]);
+	result ^= (result >> (11 * 2 / sizeof(T)));
 	return result;
 }
 
