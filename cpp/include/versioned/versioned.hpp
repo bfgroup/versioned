@@ -60,48 +60,43 @@ inline int chars_cmp(
 template <typename N, typename U>
 constexpr N masked_max(U value)
 {
-	return value & std::numeric_limits<N>::max();
+	return value & static_cast<U>(std::numeric_limits<N>::max());
 }
 
 // Simple hash values combine.
-template <class... N>
-std::uint32_t hash_combine(std::uint32_t seed, N... an)
+template <int C>
+struct hash_combine_val
+{};
+template <>
+struct hash_combine_val<4>
 {
-	std::uint32_t args[] = { an... };
+	static constexpr char shift[] = { 15, 6, 8, 4, 5 };
+};
+template <>
+struct hash_combine_val<8>
+{
+	static constexpr char shift[] = { 30, 13, 16, 8, 11 };
+};
+
+template <class T, class... N>
+T hash_combine(T seed, N... an)
+{
+	using h = hash_combine_val<sizeof(T)>;
+	T args[] = { an... };
 	// Init.
-	std::uint32_t result = seed;
+	T result = seed;
 	// Combine.
 	for (auto a : args)
 	{
-		result ^= a + masked_max<std::uint32_t>(3772387269305686495)
-			+ (result << 15) + (result >> 6);
+		result ^= a + masked_max<T>(3772387269305686495)
+			+ (result << h::shift[0]) + (result >> h::shift[1]);
 	}
 	// Mix.
-	result ^= (result >> 8);
-	result *= masked_max<std::uint32_t>(448100074733706);
-	result ^= (result << 4);
-	result += masked_max<std::uint32_t>(190056597654806);
-	result ^= (result >> 5);
-	return result;
-}
-template <class... N>
-std::uint64_t hash_combine(std::uint64_t seed, N... an)
-{
-	std::uint64_t args[] = { an... };
-	// Init.
-	std::uint64_t result = seed;
-	// Combine.
-	for (auto a : args)
-	{
-		result ^= a + masked_max<std::uint64_t>(3772387269305686495)
-			+ (result << 30) + (result >> 13);
-	}
-	// Mix.
-	result ^= (result >> 16);
-	result *= masked_max<std::uint64_t>(448100074733706);
-	result ^= (result << 8);
-	result += masked_max<std::uint64_t>(190056597654806);
-	result ^= (result >> 11);
+	result ^= (result >> h::shift[2]);
+	result *= masked_max<T>(448100074733706);
+	result ^= (result << h::shift[3]);
+	result += masked_max<T>(190056597654806);
+	result ^= (result >> h::shift[4]);
 	return result;
 }
 
