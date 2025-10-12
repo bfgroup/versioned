@@ -14,9 +14,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace versioned {
-
-namespace detail {
+namespace versioned { namespace detail {
 
 // The decimal digits.
 inline constexpr bool is_digit(const char c) { return c >= '0' && c <= '9'; }
@@ -101,8 +99,9 @@ inline std::string to_string_10(std::size_t value)
 	return result;
 }
 
-} // namespace detail
+}} // namespace versioned::detail
 
+namespace versioned {
 struct from_chars_result
 {
 	const char * ptr;
@@ -119,7 +118,9 @@ struct from_chars_result
 		return (a.ptr == b.ptr) && (a.ec == b.ec);
 	}
 };
+} // namespace versioned
 
+namespace versioned {
 template <class Number, std::size_t Count = 3>
 class version_core
 {
@@ -261,7 +262,21 @@ std::size_t hash(const version_core<N, C> & value)
 	for (auto n : value.number) result = detail::hash_combine(result, h(n));
 	return result;
 }
+} // namespace versioned
 
+namespace std {
+template <class N, std::size_t C>
+struct hash<versioned::version_core<N, C>>
+{
+	std::size_t operator()(
+		const versioned::version_core<N, C> & value) const noexcept
+	{
+		return versioned::hash(value);
+	}
+};
+} // namespace std
+
+namespace versioned {
 class version_tag
 {
 	public:
@@ -424,7 +439,20 @@ inline std::size_t hash(const version_tag & value)
 {
 	return std::hash<decltype(value.info_)> {}(value.info_);
 }
+} // namespace versioned
 
+namespace std {
+template <>
+struct hash<versioned::version_tag>
+{
+	std::size_t operator()(const versioned::version_tag & value) const noexcept
+	{
+		return versioned::hash(value);
+	}
+};
+} // namespace std
+
+namespace versioned {
 template <class Number>
 class prerelease_version : public version_tag
 {
@@ -524,10 +552,29 @@ std::size_t hash(const prerelease_version<N> & value)
 {
 	return hash(static_cast<const version_tag &>(value));
 }
+} // namespace versioned
 
+namespace std {
+template <class N>
+struct hash<versioned::prerelease_version<N>>
+{
+	std::size_t operator()(
+		const versioned::prerelease_version<N> & value) const noexcept
+	{
+		return versioned::hash(value);
+	}
+};
+} // namespace std
+
+namespace versioned {
 class build_metadata : public version_tag
 {};
+} // namespace versioned
 
+namespace std {
+}
+
+namespace versioned {
 template <class Number = int,
 	class Prerelease = prerelease_version<Number>,
 	class Build = build_metadata>
@@ -651,39 +698,9 @@ std::size_t hash(const semver<N, P, B> & value)
 	return detail::hash_combine(versioned::hash(value.core_),
 		versioned::hash(value.pre_), versioned::hash(value.build_));
 }
-
 } // namespace versioned
 
 namespace std {
-template <class N, std::size_t C>
-struct hash<versioned::version_core<N, C>>
-{
-	std::size_t operator()(
-		const versioned::version_core<N, C> & value) const noexcept
-	{
-		return versioned::hash(value);
-	}
-};
-
-template <>
-struct hash<versioned::version_tag>
-{
-	std::size_t operator()(const versioned::version_tag & value) const noexcept
-	{
-		return versioned::hash(value);
-	}
-};
-
-template <class N>
-struct hash<versioned::prerelease_version<N>>
-{
-	std::size_t operator()(
-		const versioned::prerelease_version<N> & value) const noexcept
-	{
-		return versioned::hash(value);
-	}
-};
-
 template <class N, class P, class B>
 struct hash<versioned::semver<N, P, B>>
 {
