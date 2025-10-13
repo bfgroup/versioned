@@ -7,7 +7,6 @@
 #define VERSIONED_VERSIONED_HPP
 
 #include <algorithm>
-#include <cstdint>
 #include <limits>
 #include <system_error>
 #include <tuple>
@@ -119,6 +118,10 @@ struct from_chars_result
 	}
 };
 } // namespace versioned
+
+/* tag::reference[]
+== `versioned::version_core`
+end::reference[] */
 
 namespace versioned {
 template <class Number, std::size_t Count = 3>
@@ -275,6 +278,10 @@ struct hash<versioned::version_core<N, C>>
 	}
 };
 } // namespace std
+
+/* tag::reference[]
+== `versioned::version_tag`
+end::reference[] */
 
 namespace versioned {
 class version_tag
@@ -452,6 +459,10 @@ struct hash<versioned::version_tag>
 };
 } // namespace std
 
+/* tag::reference[]
+== `versioned::prerelease_version`
+end::reference[] */
+
 namespace versioned {
 template <class Number>
 class prerelease_version : public version_tag
@@ -565,6 +576,10 @@ struct hash<versioned::prerelease_version<N>>
 	}
 };
 } // namespace std
+
+/* tag::reference[]
+== `versioned::build_metadata`
+end::reference[] */
 
 namespace versioned {
 class build_metadata : public version_tag
