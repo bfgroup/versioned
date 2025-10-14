@@ -194,5 +194,56 @@ int main()
 			BOOST_TEST_EQ(m[a], value);
 		}
 	}
+	{
+		std::cout << "TEST: semver<> structured binding\n";
+		struct T
+		{
+			const char * full;
+			int major;
+			int minor;
+			int patch;
+			const char * pre;
+			const char * build;
+		};
+		T data[] = {
+			{ "0", 0, 0, 0, "", "" },
+			{ "0.0", 0, 0, 0, "", "" },
+			{ "0.0.0", 0, 0, 0, "", "" },
+			{ "1", 1, 0, 0, "", "" },
+			{ "1.1-alpha.1", 1, 1, 0, "alpha.1", "" },
+			{ "1.1.1", 1, 1, 1, "", "" },
+			{ "1.0.0", 1, 0, 0, "", "" },
+			{ "9.9.9-0.3.7", 9, 9, 9, "0.3.7", "" },
+			{ "99.99.99-alpha+21AF26D3----117B344092BD", 99, 99, 99, "alpha",
+				"21AF26D3----117B344092BD" },
+			{ "999.999.999", 999, 999, 999, "", "" },
+			{ "9999.9999.9999+20130313144700", 9999, 9999, 9999, "",
+				"20130313144700" },
+			{ "99999.99999.99999", 99999, 99999, 99999, "", "" },
+			{ "999999.999999.999999", 999999, 999999, 999999, "", "" },
+			{ "9999999.9999999.9999999", 9999999, 9999999, 9999999, "", "" },
+			{ "99999999.99999999.99999999", 99999999, 99999999, 99999999, "",
+				"" },
+			{ "13.72.6", 13, 72, 6, "", "" },
+		};
+		for (auto & d : data)
+		{
+			std::cout << "> " << d.full << "\n";
+			versioned::semver<> ver;
+			const char * first = d.full;
+			const char * last = first + std::strlen(first);
+			auto r = from_chars(first, last, ver);
+			BOOST_TEST_EQ(int(r.ec), int(std::errc {}));
+#if defined(__cpp_structured_bindings) && (__cpp_structured_bindings >= 201606L)
+			auto [v, p, b] = ver;
+			auto [x, y, z] = v;
+			BOOST_TEST_EQ(x, d.major);
+			BOOST_TEST_EQ(y, d.minor);
+			BOOST_TEST_EQ(z, d.patch);
+			BOOST_TEST_EQ(to_string(p), d.pre);
+			BOOST_TEST_EQ(to_string(b), d.build);
+#endif
+		}
+	}
 	return boost::report_errors();
 }

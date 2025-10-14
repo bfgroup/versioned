@@ -243,5 +243,45 @@ int main()
 			BOOST_TEST_EQ(m[a], value);
 		}
 	}
+	{
+		std::cout << "TEST: version_core<int, 3> structured binding, get\n";
+		struct test_value
+		{
+			const char * s;
+			int x;
+			int y;
+			int z;
+		};
+		test_value values[] = {
+			{ "0", 0, 0, 0 },
+			{ "1", 1, 0, 0 },
+			{ "1.1", 1, 1, 0 },
+			{ "1.1.1", 1, 1, 1 },
+			{ "9.9.9", 9, 9, 9 },
+			{ "99.99.99", 99, 99, 99 },
+			{ "999.999.999", 999, 999, 999 },
+			{ "9999.9999.9999", 9999, 9999, 9999 },
+			{ "99999.99999.99999", 99999, 99999, 99999 },
+			{ "999999.999999.999999", 999999, 999999, 999999 },
+			{ "9999999.9999999.9999999", 9999999, 9999999, 9999999 },
+			{ "99999999.99999999.99999999", 99999999, 99999999, 99999999 },
+			{ "13.72.6", 13, 72, 6 },
+		};
+		for (auto & value : values)
+		{
+			std::cout << "> " << value.s << "\n";
+			versioned::version_core<int, 3> version(value.x, value.y, value.z);
+			auto s = to_string(version);
+			BOOST_TEST_EQ(::versioned::get<0>(version), value.x);
+			BOOST_TEST_EQ(::versioned::get<1>(version), value.y);
+			BOOST_TEST_EQ(::versioned::get<2>(version), value.z);
+#if defined(__cpp_structured_bindings) && (__cpp_structured_bindings >= 201606L)
+			auto [a, b, c] = version;
+			BOOST_TEST_EQ(a, value.x);
+			BOOST_TEST_EQ(b, value.y);
+			BOOST_TEST_EQ(c, value.z);
+#endif
+		}
+	}
 	return boost::report_errors();
 }

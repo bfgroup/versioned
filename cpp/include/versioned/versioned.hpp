@@ -265,6 +265,13 @@ template <class N, ::std::size_t C>
 	for (auto n : value.number) result = detail::hash_combine(result, h(n));
 	return result;
 }
+
+template <size_t I, class N, ::std::size_t C>
+const typename version_core<N, C>::element_t & get(
+	const version_core<N, C> & value)
+{
+	return value.at(I);
+}
 } // namespace versioned
 
 namespace std {
@@ -276,6 +283,18 @@ struct hash<::versioned::version_core<N, C>>
 	{
 		return ::versioned::hash(value);
 	}
+};
+
+template <class N, ::std::size_t C>
+struct tuple_size<::versioned::version_core<N, C>>
+	: integral_constant<::std::size_t,
+		  ::versioned::version_core<N, C>::element_c>
+{};
+
+template <size_t I, class N, ::std::size_t C>
+struct tuple_element<I, ::versioned::version_core<N, C>>
+{
+	using type = const typename ::versioned::version_core<N, C>::element_t;
 };
 } // namespace std
 
@@ -719,6 +738,31 @@ template <class N, class P, class B>
 	return detail::hash_combine(versioned::hash(value.core_),
 		versioned::hash(value.pre_), versioned::hash(value.build_));
 }
+
+template <::std::size_t I, class N, class P, class B>
+typename ::std::enable_if<I == 0,
+	const typename ::std::tuple_element<I, semver<N, P, B>>::type>::type &
+	get(const semver<N, P, B> & value)
+{
+	return value.version();
+}
+
+template <::std::size_t I, class N, class P, class B>
+typename ::std::enable_if<I == 1,
+	const typename ::std::tuple_element<I, semver<N, P, B>>::type>::type &
+	get(const semver<N, P, B> & value)
+{
+	return value.prerelease();
+}
+
+template <::std::size_t I, class N, class P, class B>
+typename ::std::enable_if<I == 2,
+	const typename ::std::tuple_element<I, semver<N, P, B>>::type>::type &
+	get(const semver<N, P, B> & value)
+{
+	return value.build();
+}
+
 } // namespace versioned
 
 namespace std {
@@ -730,6 +774,21 @@ struct hash<::versioned::semver<N, P, B>>
 	{
 		return ::versioned::hash(value);
 	}
+};
+
+template <class N, class P, class B>
+struct tuple_size<::versioned::semver<N, P, B>> : integral_constant<size_t, 3>
+{};
+
+template <size_t I, class N, class P, class B>
+struct tuple_element<I, ::versioned::semver<N, P, B>>
+{
+	using version_t = typename ::versioned::semver<N, P, B>::version_t;
+	using prerelease_t = typename ::versioned::semver<N, P, B>::prerelease_t;
+	using build_t = typename ::versioned::semver<N, P, B>::build_t;
+	using type = const typename conditional<I == 0,
+		version_t,
+		typename conditional<I == 1, prerelease_t, build_t>::type>::type;
 };
 } // namespace std
 
