@@ -1,0 +1,51 @@
+= Versioned
+:copyright: Copyright René Ferdinand Rivera Morell
+:author: René Ferdinand Rivera Morell
+:email: grafikrobot@gmail.com
+:revnumber: 0.1.0
+:version-label!:
+:reproducible:
+:nofooter:
+:sectanchors:
+:sectnums:
+:sectnumlevels: 2
+// :stylesheet: amber.css
+:icons: font
+:source-highlighter: rouge
+:rouge-style: base16.solarized
+:source-language: c++
+:tabsize: 4
+:toc: left
+:toclevels: 2
+:caution-caption: ⚑
+:important-caption: ‼
+:note-caption: ℹ
+:tip-caption: ☀
+:warning-caption: ⚠
+:PP: ++
+:P: +
+:tabsize: 4
+
+
+== Introduction
+
+=== License
+
+Distributed under the highly permissive Boost Software License, Version 1.0.
+(See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+== Reference
+
+:leveloffset: +1
+
+include::../include/versioned/versioned.hpp[tag=semver]
+
+include::../include/versioned/versioned.hpp[tag=version_core]
+
+include::../include/versioned/versioned.hpp[tag=version_tag]
+
+include::../include/versioned/versioned.hpp[tag=prerelease_version]
+
+include::../include/versioned/versioned.hpp[tag=build_metadata]
+
+:leveloffset: -1

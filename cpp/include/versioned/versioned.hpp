@@ -119,18 +119,23 @@ struct from_chars_result
 };
 } // namespace versioned
 
-/* tag::reference[]
-== `versioned::version_core`
-end::reference[] */
+/* tag::version_core[]
+[#version_core]
+== Class `versioned::version_core`
+end::version_core[] */
 
+/* tag::version_core[]
+[#version_core-syn]
+=== Class `versioned::version_core` synopsis
+
+[source]
+----
+end::version_core[] */
+// tag::version_core[]
 namespace versioned {
 template <class Number, ::std::size_t Count = 3>
 class version_core
 {
-	static_assert(::std::is_integral<Number>::value,
-		"Version element type is not an integral type.");
-	static_assert(Count > 0, "Version must contain at least one part.");
-
 	public:
 	using element_t = Number;
 	static constexpr ::std::size_t element_c = Count;
@@ -141,30 +146,17 @@ class version_core
 	version_core & operator=(const version_core &) = default;
 
 	template <class... I>
-	explicit version_core(element_t a0, I... an)
-	{
-		element_t args[] = { a0, an... };
-		::std::size_t i = 0;
-		for (auto a : args) number[i++] = a;
-	}
+	explicit version_core(element_t a0, I... an);
 
-	element_t & at(::std::size_t i)
-	{
-		if (i >= element_c)
-			throw ::std::out_of_range(
-				"No such component: " + detail::to_string_10(i));
-		return number[i];
-	}
-
-	const element_t & at(::std::size_t i) const
-	{
-		if (i >= element_c)
-			throw ::std::out_of_range(
-				"No such component: " + detail::to_string_10(i));
-		return number[i];
-	}
+	element_t & at(::std::size_t i);
+	const element_t & at(::std::size_t i) const;
+	// end::version_core[]
 
 	private:
+	static_assert(::std::is_integral<Number>::value,
+		"Version element type is not an integral type.");
+	static_assert(Count > 0, "Version must contain at least one part.");
+
 	element_t number[element_c] = {};
 
 	template <class N, ::std::size_t C>
@@ -188,7 +180,42 @@ class version_core
 
 	template <class N, ::std::size_t C>
 	friend ::std::size_t hash(const version_core<N, C> & value);
+	// tag::version_core[]
 };
+} // namespace versioned
+// end::version_core[]
+/* tag::version_core[]
+----
+end::version_core[] */
+
+namespace versioned {
+template <class N, ::std::size_t C>
+template <class... I>
+version_core<N, C>::version_core(element_t a0, I... an)
+{
+	element_t args[] = { a0, an... };
+	::std::size_t i = 0;
+	for (auto a : args) number[i++] = a;
+}
+
+template <class N, ::std::size_t C>
+typename version_core<N, C>::element_t & version_core<N, C>::at(::std::size_t i)
+{
+	if (i >= element_c)
+		throw ::std::out_of_range(
+			"No such component: " + detail::to_string_10(i));
+	return number[i];
+}
+
+template <class N, ::std::size_t C>
+const typename version_core<N, C>::element_t & version_core<N, C>::at(
+	::std::size_t i) const
+{
+	if (i >= element_c)
+		throw ::std::out_of_range(
+			"No such component: " + detail::to_string_10(i));
+	return number[i];
+}
 
 template <class N, ::std::size_t C>
 from_chars_result from_chars(
@@ -298,10 +325,18 @@ struct tuple_element<I, ::versioned::version_core<N, C>>
 };
 } // namespace std
 
-/* tag::reference[]
+/* tag::version_tag[]
 == `versioned::version_tag`
-end::reference[] */
+end::version_tag[] */
 
+/* tag::version_tag[]
+[#version_tag-syn]
+=== Class `versioned::version_tag` synopsis
+
+[source]
+----
+end::version_tag[] */
+// tag::version_tag[]
 namespace versioned {
 class version_tag
 {
@@ -315,52 +350,16 @@ class version_tag
 	version_tag & operator=(const version_tag &) = default;
 
 	template <class... S>
-	explicit version_tag(const char * a0, S... an)
-	{
-		info_ += a0;
-		parts_.emplace_back(info_.size());
-		const char * args[] = { an... };
-		for (auto a : args)
-		{
-			info_ += ".";
-			info_ += a;
-			parts_.emplace_back(info_.size());
-		}
-	}
+	explicit version_tag(const char * a0, S... an);
 
 	template <class... S>
-	explicit version_tag(const ::std::string & a0, S... an)
-	{
-		info_ += a0;
-		parts_.emplace_back(info_.size());
-		const char * args[] = { an... };
-		for (auto a : args)
-		{
-			info_ += ".";
-			info_ += a;
-			parts_.emplace_back(info_.size());
-		}
-	}
+	explicit version_tag(const ::std::string & a0, S... an);
 
-	element_t at(::std::size_t i) const
-	{
-		auto r = this->range_at(i);
-		return ::std::string(::std::get<0>(r), ::std::get<1>(r));
-	}
-
-	range_element_t range_at(::std::size_t i) const
-	{
-		if (i >= parts_.size())
-			throw ::std::out_of_range(
-				"No such component: " + detail::to_string_10(i));
-		return ::std::make_tuple(
-			info_.c_str() + (i == 0 ? 0 : parts_[i - 1] + 1),
-			info_.c_str() + parts_[i]);
-	}
-
-	bool empty() const { return info_.empty(); }
-
-	::std::size_t size() const { return parts_.size(); }
+	element_t at(::std::size_t i) const;
+	range_element_t range_at(::std::size_t i) const;
+	bool empty() const;
+	::std::size_t size() const;
+	// end::version_tag[]
 
 	private:
 	// The info contains the part that is parsed from any original data.
@@ -379,7 +378,61 @@ class version_tag
 	friend bool operator<(const version_tag & a, const version_tag & b);
 
 	friend ::std::size_t hash(const version_tag & value);
+	// tag::version_tag[]
 };
+} // namespace versioned
+// end::version_tag[]
+/* tag::version_tag[]
+----
+end::version_tag[] */
+
+namespace versioned {
+template <class... S>
+version_tag::version_tag(const char * a0, S... an)
+{
+	info_ += a0;
+	parts_.emplace_back(info_.size());
+	const char * args[] = { an... };
+	for (auto a : args)
+	{
+		info_ += ".";
+		info_ += a;
+		parts_.emplace_back(info_.size());
+	}
+}
+
+template <class... S>
+version_tag::version_tag(const ::std::string & a0, S... an)
+{
+	info_ += a0;
+	parts_.emplace_back(info_.size());
+	const char * args[] = { an... };
+	for (auto a : args)
+	{
+		info_ += ".";
+		info_ += a;
+		parts_.emplace_back(info_.size());
+	}
+}
+
+inline version_tag::element_t version_tag::at(::std::size_t i) const
+{
+	auto r = this->range_at(i);
+	return ::std::string(::std::get<0>(r), ::std::get<1>(r));
+}
+
+inline version_tag::range_element_t version_tag::range_at(::std::size_t i) const
+{
+	if (i >= parts_.size())
+		throw ::std::out_of_range(
+			"No such component: " + detail::to_string_10(i));
+	return ::std::make_tuple(info_.c_str() + (i == 0 ? 0 : parts_[i - 1] + 1),
+		info_.c_str() + parts_[i]);
+}
+
+inline bool version_tag::empty() const { return info_.empty(); }
+
+inline ::std::size_t version_tag::size() const { return parts_.size(); }
 
 inline from_chars_result from_chars(
 	const char * first, const char * last, version_tag & value)
@@ -484,10 +537,18 @@ struct hash<::versioned::version_tag>
 };
 } // namespace std
 
-/* tag::reference[]
+/* tag::prerelease_version[]
 == `versioned::prerelease_version`
-end::reference[] */
+end::prerelease_version[] */
 
+/* tag::prerelease_version[]
+[#prerelease_version-syn]
+=== Class `versioned::prerelease_version` synopsis
+
+[source]
+----
+end::prerelease_version[] */
+// tag::prerelease_version[]
 namespace versioned {
 template <class Number>
 class prerelease_version : public version_tag
@@ -495,19 +556,10 @@ class prerelease_version : public version_tag
 	public:
 	using number_element_t = Number;
 
-	number_element_t number_at(::std::size_t i) const
-	{
-		number_element_t n {};
-		if (!is_number_at(i, n))
-			throw ::std::invalid_argument("Element is not a number.");
-		return n;
-	}
+	number_element_t number_at(::std::size_t i) const;
 
-	bool is_number_at(::std::size_t i) const
-	{
-		number_element_t n {};
-		return is_number_at(i, n);
-	}
+	bool is_number_at(::std::size_t i) const;
+	// end::prerelease_version[]
 
 	private:
 	bool is_number_at(::std::size_t i, number_element_t & n) const
@@ -532,7 +584,31 @@ class prerelease_version : public version_tag
 
 	template <class N>
 	::std::size_t hash(const prerelease_version<N> & value);
+	// tag::prerelease_version[]
 };
+} // namespace versioned
+// end::prerelease_version[]
+/* tag::prerelease_version[]
+----
+end::prerelease_version[] */
+
+namespace versioned {
+template <class N>
+typename prerelease_version<N>::number_element_t prerelease_version<
+	N>::number_at(::std::size_t i) const
+{
+	number_element_t n {};
+	if (!is_number_at(i, n))
+		throw ::std::invalid_argument("Element is not a number.");
+	return n;
+}
+
+template <class N>
+bool prerelease_version<N>::is_number_at(::std::size_t i) const
+{
+	number_element_t n {};
+	return is_number_at(i, n);
+}
 
 template <class N0, class N1>
 int compare(const prerelease_version<N0> & a, const prerelease_version<N1> & b)
@@ -602,18 +678,42 @@ struct hash<::versioned::prerelease_version<N>>
 };
 } // namespace std
 
-/* tag::reference[]
+/* tag::build_metadata[]
 == `versioned::build_metadata`
-end::reference[] */
+end::build_metadata[] */
 
+/* tag::build_metadata[]
+[#build_metadata-syn]
+=== Class `versioned::build_metadata` synopsis
+
+[source]
+----
+end::build_metadata[] */
+// tag::build_metadata[]
 namespace versioned {
 class build_metadata : public version_tag
 {};
 } // namespace versioned
+// end::build_metadata[]
+/* tag::build_metadata[]
+----
+end::build_metadata[] */
 
 namespace std {
 }
 
+/* tag::semver[]
+== `versioned::semver`
+end::semver[] */
+
+/* tag::semver[]
+[#semver-syn]
+=== Class `versioned::semver` synopsis
+
+[source]
+----
+end::semver[] */
+// tag::semver[]
 namespace versioned {
 template <class Number = int,
 	class Prerelease = prerelease_version<Number>,
@@ -625,17 +725,18 @@ class semver
 	using prerelease_t = Prerelease;
 	using build_t = Build;
 
-	const version_t & version() const { return core_; }
-	const prerelease_t & prerelease() const { return pre_; }
-	const build_t & build() const { return build_; }
+	const version_t & version() const;
+	const prerelease_t & prerelease() const;
+	const build_t & build() const;
 
-	version_t & version() { return core_; }
-	prerelease_t & prerelease() { return pre_; }
-	build_t & build() { return build_; }
+	version_t & version();
+	prerelease_t & prerelease();
+	build_t & build();
 
-	typename version_t::element_t major() const { return core_.at(0); }
-	typename version_t::element_t minor() const { return core_.at(1); }
-	typename version_t::element_t patch() const { return core_.at(2); }
+	typename version_t::element_t major() const;
+	typename version_t::element_t minor() const;
+	typename version_t::element_t patch() const;
+	// end::semver[]
 
 	private:
 	version_t core_;
@@ -663,8 +764,153 @@ class semver
 
 	template <class N, class P, class B>
 	friend ::std::size_t hash(const semver<N, P, B> & value);
+	// tag::semver[]
 };
+} // namespace versioned
+// end::semver[]
+/* tag::semver[]
+----
+end::semver[] */
 
+/* tag::semver[]
+[#semver-types]
+=== Class `versioned::semver` types
+
+
+[horizontal]
+`version_t`:: `version_core< _Number_, 3>`
+`prerelease_t`:: `_Prerelease_`
+`build_t`:: `_Build_`
+
+end::semver[] */
+
+/* tag::semver[]
+[#semver-method]
+=== Class `versioned::semver` functions
+end::semver[] */
+
+namespace versioned {
+/* tag::semver[]
+[#semver-method-version]
+==== Function `versioned::semver::version`
+----
+template <class N, class P, class B>
+const typename semver<N, P, B>::version_t & semver<N, P, B>::version() const
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t & semver<N, P, B>::version()
+----
+end::semver[] */
+template <class N, class P, class B>
+const typename semver<N, P, B>::version_t & semver<N, P, B>::version() const
+{
+	return core_;
+}
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t & semver<N, P, B>::version()
+{
+	return core_;
+}
+
+/* tag::semver[]
+[#semver-method-prerelease]
+==== Function `versioned::semver::prerelease`
+----
+template <class N, class P, class B>
+const typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
+	const
+template <class N, class P, class B>
+typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
+----
+end::semver[] */
+template <class N, class P, class B>
+const typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
+	const
+{
+	return pre_;
+}
+template <class N, class P, class B>
+typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
+{
+	return pre_;
+}
+
+/* tag::semver[]
+[#semver-func-build]
+==== Function `versioned::semver::build`
+----
+template <class N, class P, class B>
+const typename semver<N, P, B>::build_t & semver<N, P, B>::build() const
+template <class N, class P, class B>
+typename semver<N, P, B>::build_t & semver<N, P, B>::build()
+----
+end::semver[] */
+template <class N, class P, class B>
+const typename semver<N, P, B>::build_t & semver<N, P, B>::build() const
+{
+	return build_;
+}
+template <class N, class P, class B>
+typename semver<N, P, B>::build_t & semver<N, P, B>::build()
+{
+	return build_;
+}
+
+/* tag::semver[]
+[#semver-func-major]
+==== Function `versioned::semver::major`
+----
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::major() const
+----
+end::semver[] */
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::major() const
+{
+	return core_.at(0);
+}
+
+/* tag::semver[]
+[#semver-func-minor]
+==== Function `versioned::semver::minor`
+----
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::minor() const
+----
+end::semver[] */
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::minor() const
+{
+	return core_.at(1);
+}
+
+/* tag::semver[]
+[#semver-func-patch]
+==== Function `versioned::semver::patch`
+----
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::patch() const
+----
+end::semver[] */
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::patch() const
+{
+	return core_.at(2);
+}
+
+/* tag::semver[]
+[#semver-func]
+=== Class `versioned::semver` non-member functions
+end::semver[] */
+
+/* tag::semver[]
+[#semver-func-from_chars]
+==== Function `versioned::from_chars`
+----
+template <class N, class P, class B>
+from_chars_result from_chars(
+	const char * first, const char * last, semver<N, P, B> & value)
+----
+end::semver[] */
 template <class N, class P, class B>
 from_chars_result from_chars(
 	const char * first, const char * last, semver<N, P, B> & value)
@@ -703,6 +949,14 @@ from_chars_result from_chars(
 	return result;
 }
 
+/* tag::semver[]
+[#semver-func-to_string]
+==== Function `versioned::to_string`
+----
+template <class N, class P, class B>
+::std::string to_string(const semver<N, P, B> & value)
+----
+end::semver[] */
 template <class N, class P, class B>
 ::std::string to_string(const semver<N, P, B> & value)
 {
@@ -712,6 +966,14 @@ template <class N, class P, class B>
 	return result;
 }
 
+/* tag::semver[]
+[#semver-func-compare]
+==== Function `versioned::compare`
+----
+template <class N0, class P0, class B0, class N1, class P1, class B1>
+int compare(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
+----
+end::semver[] */
 template <class N0, class P0, class B0, class N1, class P1, class B1>
 int compare(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
 {
@@ -720,18 +982,42 @@ int compare(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
 	return x;
 }
 
+/* tag::semver[]
+[#semver-func-equal]
+==== Function `versioned::operator==`
+----
+template <class N0, class P0, class B0, class N1, class P1, class B1>
+bool operator==(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
+----
+end::semver[] */
 template <class N0, class P0, class B0, class N1, class P1, class B1>
 bool operator==(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
 {
 	return compare(a, b) == 0;
 }
 
+/* tag::semver[]
+[#semver-func-less]
+==== Function `versioned::operator<`
+----
+template <class N0, class P0, class B0, class N1, class P1, class B1>
+bool operator<(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
+----
+end::semver[] */
 template <class N0, class P0, class B0, class N1, class P1, class B1>
 bool operator<(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
 {
 	return compare(a, b) < 0;
 }
 
+/* tag::semver[]
+[#semver-func-hash]
+==== Function `versioned::hash`
+----
+template <class N, class P, class B>
+::std::size_t hash(const semver<N, P, B> & value)
+----
+end::semver[] */
 template <class N, class P, class B>
 ::std::size_t hash(const semver<N, P, B> & value)
 {
@@ -739,6 +1025,15 @@ template <class N, class P, class B>
 		versioned::hash(value.pre_), versioned::hash(value.build_));
 }
 
+/* tag::semver[]
+[#semver-func-get]
+==== Function `versioned::get`
+----
+template <::std::size_t I, class N, class P, class B>
+const typename ::std::tuple_element<I, semver<N, P, B>>::type &
+	get(const semver<N, P, B> & value)
+----
+end::semver[] */
 template <::std::size_t I, class N, class P, class B>
 typename ::std::enable_if<I == 0,
 	const typename ::std::tuple_element<I, semver<N, P, B>>::type>::type &
