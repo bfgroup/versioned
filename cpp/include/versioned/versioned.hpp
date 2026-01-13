@@ -188,7 +188,34 @@ class version_core
 ----
 end::version_core[] */
 
+/* tag::version_core[]
+[#version_core-types-vars]
+=== Class `versioned::version_core` types & variables
+
+
+`element_t` <= `_Number_`::
+The type of the components of the version. This is a numeric type.
+
+`element_c` <= `_Count_`::
+The number of components of the version. Default is `3`.
+
+end::version_core[] */
+
+/* tag::version_core[]
+[#version_core-method]
+=== Class `versioned::version_core` functions
+end::version_core[] */
+
 namespace versioned {
+/* tag::version_core[]
+[#version_core-method-ctor]
+==== Function `versioned::version_core::version_core`
+----
+template <class N, ::std::size_t C>
+template <class... I>
+version_core<N, C>::version_core(element_t a0, I... an)
+----
+end::version_core[] */
 template <class N, ::std::size_t C>
 template <class... I>
 version_core<N, C>::version_core(element_t a0, I... an)
@@ -198,6 +225,17 @@ version_core<N, C>::version_core(element_t a0, I... an)
 	for (auto a : args) number[i++] = a;
 }
 
+/* tag::version_core[]
+[#version_core-method-at]
+==== Function `versioned::version_core::at`
+----
+template <class N, ::std::size_t C>
+typename version_core<N, C>::element_t & version_core<N, C>::at(::std::size_t i)
+template <class N, ::std::size_t C>
+const typename version_core<N, C>::element_t & version_core<N, C>::at(
+	::std::size_t i) const
+----
+end::version_core[] */
 template <class N, ::std::size_t C>
 typename version_core<N, C>::element_t & version_core<N, C>::at(::std::size_t i)
 {
@@ -217,6 +255,20 @@ const typename version_core<N, C>::element_t & version_core<N, C>::at(
 	return number[i];
 }
 
+/* tag::version_core[]
+[#version_core-func]
+=== Class `versioned::version_core` non-member functions
+end::version_core[] */
+
+/* tag::version_core[]
+[#version_core-func-from_chars]
+==== Function `versioned::from_chars`
+----
+template <class N, ::std::size_t C>
+from_chars_result from_chars(
+	const char * first, const char * last, version_core<N, C> & value)
+----
+end::version_core[] */
 template <class N, ::std::size_t C>
 from_chars_result from_chars(
 	const char * first, const char * last, version_core<N, C> & value)
@@ -241,6 +293,14 @@ from_chars_result from_chars(
 	return result;
 }
 
+/* tag::version_core[]
+[#version_core-func-to_string]
+==== Function `versioned::to_string`
+----
+template <class N, ::std::size_t C>
+::std::string to_string(const version_core<N, C> & value)
+----
+end::version_core[] */
 template <class N, ::std::size_t C>
 ::std::string to_string(const version_core<N, C> & value)
 {
@@ -256,6 +316,14 @@ template <class N, ::std::size_t C>
 	return result;
 }
 
+/* tag::version_core[]
+[#version_core-func-compare]
+==== Function `versioned::compare`
+----
+template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
+int compare(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
+----
+end::version_core[] */
 template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
 int compare(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
 {
@@ -272,18 +340,42 @@ int compare(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
 		- int(version_core<N1, C1>::element_c);
 }
 
+/* tag::version_core[]
+[#version_core-func-equal]
+==== Function `versioned::operator==`
+----
+template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
+bool operator==(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
+----
+end::version_core[] */
 template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
 bool operator==(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
 {
 	return compare(a, b) == 0;
 }
 
+/* tag::version_core[]
+[#version_core-func-less]
+==== Function `versioned::operator<`
+----
+template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
+bool operator<(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
+----
+end::version_core[] */
 template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
 bool operator<(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
 {
 	return compare(a, b) < 0;
 }
 
+/* tag::version_core[]
+[#version_core-func-hash]
+==== Function `versioned::hash`
+----
+template <class N, ::std::size_t C>
+::std::size_t hash(const version_core<N, C> & value)
+----
+end::version_core[] */
 template <class N, ::std::size_t C>
 ::std::size_t hash(const version_core<N, C> & value)
 {
@@ -293,6 +385,15 @@ template <class N, ::std::size_t C>
 	return result;
 }
 
+/* tag::version_core[]
+[#version_core-func-get]
+==== Function `versioned::get`
+----
+template <size_t I, class N, ::std::size_t C>
+const typename version_core<N, C>::element_t & get(
+	const version_core<N, C> & value)
+----
+end::version_core[] */
 template <size_t I, class N, ::std::size_t C>
 const typename version_core<N, C>::element_t & get(
 	const version_core<N, C> & value)
@@ -301,9 +402,27 @@ const typename version_core<N, C>::element_t & get(
 }
 } // namespace versioned
 
+/* tag::version_core[]
+[#version_core-helpers]
+=== Class `versioned::version_core` helpers
+end::version_core[] */
+
 namespace std {
+
+/* tag::version_core[]
+[#version_core-helpers-hash]
+==== Class `std::hash<::versioned::version_core>`
+
+[source]
+----
+end::version_core[] */
+// tag::version_core[]
 template <class N, ::std::size_t C>
 struct hash<::versioned::version_core<N, C>>
+// end::version_core[]
+/* tag::version_core[]
+----
+end::version_core[] */
 {
 	::std::size_t operator()(
 		const ::versioned::version_core<N, C> & value) const noexcept
@@ -312,14 +431,38 @@ struct hash<::versioned::version_core<N, C>>
 	}
 };
 
+/* tag::version_core[]
+[#version_core-helpers-tuple_size]
+==== Class `std::tuple_size<::versioned::version_core>`
+
+[source]
+----
+end::version_core[] */
+// tag::version_core[]
 template <class N, ::std::size_t C>
 struct tuple_size<::versioned::version_core<N, C>>
+// end::version_core[]
+/* tag::version_core[]
+----
+end::version_core[] */
 	: integral_constant<::std::size_t,
 		  ::versioned::version_core<N, C>::element_c>
 {};
 
+/* tag::version_core[]
+[#version_core-helpers-tuple_element]
+==== Class `std::tuple_element<size_t, ::versioned::version_core>`
+
+[source]
+----
+end::version_core[] */
+// tag::version_core[]
 template <size_t I, class N, ::std::size_t C>
 struct tuple_element<I, ::versioned::version_core<N, C>>
+// end::version_core[]
+/* tag::version_core[]
+----
+end::version_core[] */
 {
 	using type = const typename ::versioned::version_core<N, C>::element_t;
 };
@@ -386,7 +529,35 @@ class version_tag
 ----
 end::version_tag[] */
 
+/* tag::version_tag[]
+[#version_tag-types-vars]
+=== Class `versioned::version_tag` types & variables
+
+
+`element_t` <= `::std::string`::
+The type of the tag value.
+
+`range_element_t` <= `::std::tuple<const char *, const char *>`::
+The type for subranges of the components of the tag.
+
+end::version_tag[] */
+
+/* tag::version_tag[]
+[#version_tag-method]
+=== Class `versioned::version_tag` functions
+end::version_tag[] */
+
 namespace versioned {
+/* tag::version_tag[]
+[#version_tag-method-ctor]
+==== Function `versioned::version_tag::version_tag`
+----
+template <class... S>
+version_tag::version_tag(const char * a0, S... an)
+template <class... S>
+version_tag::version_tag(const ::std::string & a0, S... an)
+----
+end::version_tag[] */
 template <class... S>
 version_tag::version_tag(const char * a0, S... an)
 {
@@ -433,6 +604,11 @@ inline version_tag::range_element_t version_tag::range_at(::std::size_t i) const
 inline bool version_tag::empty() const { return info_.empty(); }
 
 inline ::std::size_t version_tag::size() const { return parts_.size(); }
+
+/* tag::version_tag[]
+[#version_tag-func]
+=== Class `versioned::version_tag` non-member functions
+end::version_tag[] */
 
 inline from_chars_result from_chars(
 	const char * first, const char * last, version_tag & value)
@@ -525,6 +701,11 @@ inline ::std::size_t hash(const version_tag & value)
 }
 } // namespace versioned
 
+/* tag::version_tag[]
+[#version_tag-helpers]
+=== Class `versioned::version_tag` helpers
+end::version_tag[] */
+
 namespace std {
 template <>
 struct hash<::versioned::version_tag>
@@ -592,6 +773,21 @@ class prerelease_version : public version_tag
 ----
 end::prerelease_version[] */
 
+/* tag::prerelease_version[]
+[#prerelease_version-types-vars]
+=== Class `versioned::prerelease_version` types & variables
+
+
+`number_element_t` <= `_Number_`::
+The type of the pre-release version component, if a component is numeric.
+
+end::prerelease_version[] */
+
+/* tag::prerelease_version[]
+[#prerelease_version-method]
+=== Class `versioned::prerelease_version` functions
+end::prerelease_version[] */
+
 namespace versioned {
 template <class N>
 typename prerelease_version<N>::number_element_t prerelease_version<
@@ -609,6 +805,11 @@ bool prerelease_version<N>::is_number_at(::std::size_t i) const
 	number_element_t n {};
 	return is_number_at(i, n);
 }
+
+/* tag::prerelease_version[]
+[#prerelease_version-func]
+=== Class `versioned::prerelease_version` non-member functions
+end::prerelease_version[] */
 
 template <class N0, class N1>
 int compare(const prerelease_version<N0> & a, const prerelease_version<N1> & b)
@@ -666,6 +867,11 @@ template <class N>
 }
 } // namespace versioned
 
+/* tag::prerelease_version[]
+[#prerelease_version-helpers]
+=== Class `versioned::prerelease_version` helpers
+end::prerelease_version[] */
+
 namespace std {
 template <class N>
 struct hash<::versioned::prerelease_version<N>>
@@ -704,6 +910,14 @@ namespace std {
 
 /* tag::semver[]
 == `versioned::semver`
+
+The `semver` template class implements the
+https://semver.org/spec/v2.0.0.html[Semantic Versioning 2.0.0] standard.
+The implementation provides for conversion to and from strings, comparisons,
+and hashing. Which makes it possible to use them as values in containers,
+and keys in maps. The type of the version component is configurable to
+customize for size.
+
 end::semver[] */
 
 /* tag::semver[]
@@ -773,14 +987,18 @@ class semver
 end::semver[] */
 
 /* tag::semver[]
-[#semver-types]
-=== Class `versioned::semver` types
+[#semver-types-vars]
+=== Class `versioned::semver` types & variables
 
 
-[horizontal]
-`version_t`:: `version_core< _Number_, 3>`
-`prerelease_t`:: `_Prerelease_`
-`build_t`:: `_Build_`
+`version_t` <= `version_core< _Number_, 3>`::
+The type of the core version component. Default is `version_core<int,3>`.
+
+`prerelease_t` <= `_Prerelease_`::
+The type of the prerelease component. Default is `prerelease_version<int>.
+
+`build_t` <= `_Build_`::
+The type of the build tag component. Default is `build_metadata`.
 
 end::semver[] */
 
@@ -1060,9 +1278,26 @@ typename ::std::enable_if<I == 2,
 
 } // namespace versioned
 
+/* tag::semver[]
+[#semver-helpers]
+=== Class `versioned::semver` helpers
+end::semver[] */
+
 namespace std {
+/* tag::semver[]
+[#semver-std-hash]
+==== Class `std::hash`
+
+[source]
+----
+end::semver[] */
+// tag::semver[]
 template <class N, class P, class B>
 struct hash<::versioned::semver<N, P, B>>
+// end::semver[]
+/* tag::semver[]
+----
+end::semver[] */
 {
 	::std::size_t operator()(
 		const ::versioned::semver<N, P, B> & value) const noexcept

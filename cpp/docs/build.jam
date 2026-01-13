@@ -17,8 +17,9 @@ for local e in [ glob example*.cpp ]
     exe $(e:B) : $(e) : <use>/bfg_lyra ;
 }
 
-html versioned.html : versioned.adoc ;
+html versioned.html : versioned.adoc : <dependency>tufte.css ;
 
 install html
     : versioned.html
-    : <location>. ;
+    : <location>.
+    ;
