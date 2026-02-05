@@ -806,11 +806,11 @@ pre.rouge .ss {
 </li>
 <li><a href="#_reference">2. Reference</a>
 <ul class="sectlevel2">
-<li><a href="#_versionedsemver">2.1. <code>versioned::semver</code></a></li>
-<li><a href="#version_core">2.2. Class <code>versioned::version_core</code></a></li>
-<li><a href="#_versionedversion_tag">2.3. <code>versioned::version_tag</code></a></li>
-<li><a href="#_versionedprerelease_version">2.4. <code>versioned::prerelease_version</code></a></li>
-<li><a href="#_versionedbuild_metadata">2.5. <code>versioned::build_metadata</code></a></li>
+<li><a href="#semver">2.1. <code>semver</code></a></li>
+<li><a href="#version_core">2.2. <code>version_core</code></a></li>
+<li><a href="#version_tag">2.3. <code>version_tag</code></a></li>
+<li><a href="#prerelease_version">2.4. <code>prerelease_version</code></a></li>
+<li><a href="#build_metadata">2.5. <code>build_metadata</code></a></li>
 </ul>
 </li>
 </ul>
@@ -820,6 +820,14 @@ pre.rouge .ss {
 <div class="sect1">
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Versioned implements the Semantic Versioning Standard
+<sup class="footnote" id="_footnote_semver">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>
+and general version number concepts. Although SemVer is the first and main
+version format supported, it is not intended to be the last. The concepts in
+this library are meant to be reusable to different formats. And hopefully to
+provide for transforming between such different versioning formats.</p>
+</div>
 <div class="sect2">
 <h3 id="_license"><a class="anchor" href="#_license"></a>1.1. License</h3>
 <div class="paragraph">
@@ -833,7 +841,7 @@ pre.rouge .ss {
 <h2 id="_reference"><a class="anchor" href="#_reference"></a>2. Reference</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_versionedsemver"><a class="anchor" href="#_versionedsemver"></a>2.1. <code>versioned::semver</code></h3>
+<h3 id="semver"><a class="anchor" href="#semver"></a>2.1. <code>semver</code></h3>
 <div class="paragraph">
 <p>The <code>semver</code> template class implements the
 <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning 2.0.0</a> standard.
@@ -843,10 +851,10 @@ and keys in maps. The type of the version component is configurable to
 customize for size.</p>
 </div>
 <div class="sect3">
-<h4 id="semver-syn"><a class="anchor" href="#semver-syn"></a>Class <code>versioned::semver</code> synopsis</h4>
+<h4 id="semver-syn"><a class="anchor" href="#semver-syn"></a>Class <code>semver</code> synopsis</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">bfg</span> <span class="p">{</span> <span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Number</span> <span class="o">=</span> <span class="kt">int</span><span class="p">,</span>
     <span class="k">class</span> <span class="nc">Prerelease</span> <span class="o">=</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">Number</span><span class="p">&gt;,</span>
     <span class="k">class</span> <span class="nc">Build</span> <span class="o">=</span> <span class="n">build_metadata</span><span class="o">&gt;</span>
@@ -869,12 +877,12 @@ customize for size.</p>
     <span class="k">typename</span> <span class="n">version_t</span><span class="o">::</span><span class="n">element_t</span> <span class="n">minor</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
     <span class="k">typename</span> <span class="n">version_t</span><span class="o">::</span><span class="n">element_t</span> <span class="n">patch</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 <span class="p">};</span>
-<span class="p">}</span> <span class="c1">// namespace versioned</span></code></pre>
+<span class="p">}}</span> <span class="c1">// namespace bfg::versioned</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="semver-types-vars"><a class="anchor" href="#semver-types-vars"></a>Class <code>versioned::semver</code> types &amp; variables</h4>
+<h4 id="semver-types-vars"><a class="anchor" href="#semver-types-vars"></a>Class <code>semver</code> types &amp; variables</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>version_t</code> &#8656; <code>version_core&lt; <em>Number</em>, 3&gt;</code></dt>
@@ -893,9 +901,9 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="semver-method"><a class="anchor" href="#semver-method"></a>Class <code>versioned::semver</code> functions</h4>
+<h4 id="semver-method"><a class="anchor" href="#semver-method"></a>Class <code>semver</code> functions</h4>
 <div class="sect4">
-<h5 id="semver-method-version"><a class="anchor" href="#semver-method-version"></a>Function <code>versioned::semver::version</code></h5>
+<h5 id="semver-method-version"><a class="anchor" href="#semver-method-version"></a>Function <code>semver::version</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -906,7 +914,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-method-prerelease"><a class="anchor" href="#semver-method-prerelease"></a>Function <code>versioned::semver::prerelease</code></h5>
+<h5 id="semver-method-prerelease"><a class="anchor" href="#semver-method-prerelease"></a>Function <code>semver::prerelease</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -918,7 +926,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-build"><a class="anchor" href="#semver-func-build"></a>Function <code>versioned::semver::build</code></h5>
+<h5 id="semver-func-build"><a class="anchor" href="#semver-func-build"></a>Function <code>semver::build</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -929,7 +937,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-major"><a class="anchor" href="#semver-func-major"></a>Function <code>versioned::semver::major</code></h5>
+<h5 id="semver-func-major"><a class="anchor" href="#semver-func-major"></a>Function <code>semver::major</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -938,7 +946,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-minor"><a class="anchor" href="#semver-func-minor"></a>Function <code>versioned::semver::minor</code></h5>
+<h5 id="semver-func-minor"><a class="anchor" href="#semver-func-minor"></a>Function <code>semver::minor</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -947,7 +955,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-patch"><a class="anchor" href="#semver-func-patch"></a>Function <code>versioned::semver::patch</code></h5>
+<h5 id="semver-func-patch"><a class="anchor" href="#semver-func-patch"></a>Function <code>semver::patch</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -957,9 +965,9 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="semver-func"><a class="anchor" href="#semver-func"></a>Class <code>versioned::semver</code> non-member functions</h4>
+<h4 id="semver-func"><a class="anchor" href="#semver-func"></a>Class <code>semver</code> non-member functions</h4>
 <div class="sect4">
-<h5 id="semver-func-from_chars"><a class="anchor" href="#semver-func-from_chars"></a>Function <code>versioned::from_chars</code></h5>
+<h5 id="semver-func-from_chars"><a class="anchor" href="#semver-func-from_chars"></a>Function <code>from_chars</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -969,7 +977,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-to_string"><a class="anchor" href="#semver-func-to_string"></a>Function <code>versioned::to_string</code></h5>
+<h5 id="semver-func-to_string"><a class="anchor" href="#semver-func-to_string"></a>Function <code>to_string</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -978,7 +986,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-compare"><a class="anchor" href="#semver-func-compare"></a>Function <code>versioned::compare</code></h5>
+<h5 id="semver-func-compare"><a class="anchor" href="#semver-func-compare"></a>Function <code>compare</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B1</span><span class="p">&gt;</span>
@@ -987,7 +995,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-equal"><a class="anchor" href="#semver-func-equal"></a>Function <code>versioned::operator==</code></h5>
+<h5 id="semver-func-equal"><a class="anchor" href="#semver-func-equal"></a>Function <code>operator==</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B1</span><span class="p">&gt;</span>
@@ -996,7 +1004,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-less"><a class="anchor" href="#semver-func-less"></a>Function <code>versioned::operator&lt;</code></h5>
+<h5 id="semver-func-less"><a class="anchor" href="#semver-func-less"></a>Function <code>operator&lt;</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B1</span><span class="p">&gt;</span>
@@ -1005,7 +1013,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-hash"><a class="anchor" href="#semver-func-hash"></a>Function <code>versioned::hash</code></h5>
+<h5 id="semver-func-hash"><a class="anchor" href="#semver-func-hash"></a>Function <code>hash</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -1014,7 +1022,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="semver-func-get"><a class="anchor" href="#semver-func-get"></a>Function <code>versioned::get</code></h5>
+<h5 id="semver-func-get"><a class="anchor" href="#semver-func-get"></a>Function <code>get</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">I</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">P</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">&gt;</span>
@@ -1025,7 +1033,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="semver-helpers"><a class="anchor" href="#semver-helpers"></a>Class <code>versioned::semver</code> helpers</h4>
+<h4 id="semver-helpers"><a class="anchor" href="#semver-helpers"></a>Class <code>semver</code> helpers</h4>
 <div class="sect4">
 <h5 id="semver-std-hash"><a class="anchor" href="#semver-std-hash"></a>Class <code>std::hash</code></h5>
 <div class="listingblock">
@@ -1038,12 +1046,12 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="version_core"><a class="anchor" href="#version_core"></a>2.2. Class <code>versioned::version_core</code></h3>
+<h3 id="version_core"><a class="anchor" href="#version_core"></a>2.2. <code>version_core</code></h3>
 <div class="sect3">
-<h4 id="version_core-syn"><a class="anchor" href="#version_core-syn"></a>Class <code>versioned::version_core</code> synopsis</h4>
+<h4 id="version_core-syn"><a class="anchor" href="#version_core-syn"></a>Class <code>version_core</code> synopsis</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">bfg</span> <span class="p">{</span> <span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Number</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">Count</span> <span class="o">=</span> <span class="mi">3</span><span class="p">&gt;</span>
 <span class="k">class</span> <span class="nc">version_core</span>
 <span class="p">{</span>
@@ -1062,12 +1070,12 @@ customize for size.</p>
     <span class="n">element_t</span> <span class="o">&amp;</span> <span class="n">at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">);</span>
     <span class="k">const</span> <span class="n">element_t</span> <span class="o">&amp;</span> <span class="n">at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 <span class="p">};</span>
-<span class="p">}</span> <span class="c1">// namespace versioned</span></code></pre>
+<span class="p">}}</span> <span class="c1">// namespace bfg::versioned</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="version_core-types-vars"><a class="anchor" href="#version_core-types-vars"></a>Class <code>versioned::version_core</code> types &amp; variables</h4>
+<h4 id="version_core-types-vars"><a class="anchor" href="#version_core-types-vars"></a>Class <code>version_core</code> types &amp; variables</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>element_t</code> &#8656; <code><em>Number</em></code></dt>
@@ -1082,9 +1090,9 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="version_core-method"><a class="anchor" href="#version_core-method"></a>Class <code>versioned::version_core</code> functions</h4>
+<h4 id="version_core-method"><a class="anchor" href="#version_core-method"></a>Class <code>version_core</code> functions</h4>
 <div class="sect4">
-<h5 id="version_core-method-ctor"><a class="anchor" href="#version_core-method-ctor"></a>Function <code>versioned::version_core::version_core</code></h5>
+<h5 id="version_core-method-ctor"><a class="anchor" href="#version_core-method-ctor"></a>Function <code>version_core::version_core</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
@@ -1094,7 +1102,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="version_core-method-at"><a class="anchor" href="#version_core-method-at"></a>Function <code>versioned::version_core::at</code></h5>
+<h5 id="version_core-method-at"><a class="anchor" href="#version_core-method-at"></a>Function <code>version_core::at</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
@@ -1107,9 +1115,9 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="version_core-func"><a class="anchor" href="#version_core-func"></a>Class <code>versioned::version_core</code> non-member functions</h4>
+<h4 id="version_core-func"><a class="anchor" href="#version_core-func"></a>Class <code>version_core</code> non-member functions</h4>
 <div class="sect4">
-<h5 id="version_core-func-from_chars"><a class="anchor" href="#version_core-func-from_chars"></a>Function <code>versioned::from_chars</code></h5>
+<h5 id="version_core-func-from_chars"><a class="anchor" href="#version_core-func-from_chars"></a>Function <code>from_chars</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
@@ -1119,7 +1127,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="version_core-func-to_string"><a class="anchor" href="#version_core-func-to_string"></a>Function <code>versioned::to_string</code></h5>
+<h5 id="version_core-func-to_string"><a class="anchor" href="#version_core-func-to_string"></a>Function <code>to_string</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
@@ -1128,7 +1136,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="version_core-func-compare"><a class="anchor" href="#version_core-func-compare"></a>Function <code>versioned::compare</code></h5>
+<h5 id="version_core-func-compare"><a class="anchor" href="#version_core-func-compare"></a>Function <code>compare</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C1</span><span class="p">&gt;</span>
@@ -1137,7 +1145,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="version_core-func-equal"><a class="anchor" href="#version_core-func-equal"></a>Function <code>versioned::operator==</code></h5>
+<h5 id="version_core-func-equal"><a class="anchor" href="#version_core-func-equal"></a>Function <code>operator==</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C1</span><span class="p">&gt;</span>
@@ -1146,7 +1154,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="version_core-func-less"><a class="anchor" href="#version_core-func-less"></a>Function <code>versioned::operator&lt;</code></h5>
+<h5 id="version_core-func-less"><a class="anchor" href="#version_core-func-less"></a>Function <code>operator&lt;</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C1</span><span class="p">&gt;</span>
@@ -1155,7 +1163,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="version_core-func-hash"><a class="anchor" href="#version_core-func-hash"></a>Function <code>versioned::hash</code></h5>
+<h5 id="version_core-func-hash"><a class="anchor" href="#version_core-func-hash"></a>Function <code>hash</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
@@ -1164,7 +1172,7 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="version_core-func-get"><a class="anchor" href="#version_core-func-get"></a>Function <code>versioned::get</code></h5>
+<h5 id="version_core-func-get"><a class="anchor" href="#version_core-func-get"></a>Function <code>get</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">I</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
@@ -1175,13 +1183,15 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="version_core-helpers"><a class="anchor" href="#version_core-helpers"></a>Class <code>versioned::version_core</code> helpers</h4>
+<h4 id="version_core-helpers"><a class="anchor" href="#version_core-helpers"></a>Class <code>version_core</code> helpers</h4>
 <div class="sect4">
 <h5 id="version_core-helpers-hash"><a class="anchor" href="#version_core-helpers-hash"></a>Class <code>std::hash&lt;::versioned::version_core&gt;</code></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
-<span class="k">struct</span> <span class="nc">hash</span><span class="o">&lt;::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_core</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="o">&gt;&gt;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">std</span> <span class="p">{</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">hash</span><span class="o">&lt;::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_core</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="o">&gt;&gt;</span>
+<span class="p">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -1189,8 +1199,12 @@ customize for size.</p>
 <h5 id="version_core-helpers-tuple_size"><a class="anchor" href="#version_core-helpers-tuple_size"></a>Class <code>std::tuple_size&lt;::versioned::version_core&gt;</code></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
-<span class="k">struct</span> <span class="nc">tuple_size</span><span class="o">&lt;::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_core</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="o">&gt;&gt;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">std</span> <span class="p">{</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">tuple_size</span><span class="o">&lt;::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_core</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="o">&gt;&gt;</span>
+    <span class="o">:</span> <span class="n">integral_constant</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">,</span>
+          <span class="o">::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_core</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="o">&gt;::</span><span class="n">element_c</span><span class="o">&gt;</span>
+<span class="p">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -1198,20 +1212,22 @@ customize for size.</p>
 <h5 id="version_core-helpers-tuple_element"><a class="anchor" href="#version_core-helpers-tuple_element"></a>Class <code>std::tuple_element&lt;size_t, ::versioned::version_core&gt;</code></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">I</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
-<span class="k">struct</span> <span class="nc">tuple_element</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span> <span class="o">::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_core</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="o">&gt;&gt;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">std</span> <span class="p">{</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">I</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">C</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">tuple_element</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span> <span class="o">::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_core</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="o">&gt;&gt;</span>
+<span class="p">}</span></code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_versionedversion_tag"><a class="anchor" href="#_versionedversion_tag"></a>2.3. <code>versioned::version_tag</code></h3>
+<h3 id="version_tag"><a class="anchor" href="#version_tag"></a>2.3. <code>version_tag</code></h3>
 <div class="sect3">
-<h4 id="version_tag-syn"><a class="anchor" href="#version_tag-syn"></a>Class <code>versioned::version_tag</code> synopsis</h4>
+<h4 id="version_tag-syn"><a class="anchor" href="#version_tag-syn"></a>Class <code>version_tag</code> synopsis</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">bfg</span> <span class="p">{</span> <span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
 <span class="k">class</span> <span class="nc">version_tag</span>
 <span class="p">{</span>
     <span class="nl">public:</span>
@@ -1234,12 +1250,12 @@ customize for size.</p>
     <span class="kt">bool</span> <span class="n">empty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
     <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 <span class="p">};</span>
-<span class="p">}</span> <span class="c1">// namespace versioned</span></code></pre>
+<span class="p">}}</span> <span class="c1">// namespace bfg::versioned</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="version_tag-types-vars"><a class="anchor" href="#version_tag-types-vars"></a>Class <code>versioned::version_tag</code> types &amp; variables</h4>
+<h4 id="version_tag-types-vars"><a class="anchor" href="#version_tag-types-vars"></a>Class <code>version_tag</code> types &amp; variables</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>element_t</code> &#8656; <code>::std::string</code></dt>
@@ -1254,9 +1270,9 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="version_tag-method"><a class="anchor" href="#version_tag-method"></a>Class <code>versioned::version_tag</code> functions</h4>
+<h4 id="version_tag-method"><a class="anchor" href="#version_tag-method"></a>Class <code>version_tag</code> functions</h4>
 <div class="sect4">
-<h5 id="version_tag-method-ctor"><a class="anchor" href="#version_tag-method-ctor"></a>Function <code>versioned::version_tag::version_tag</code></h5>
+<h5 id="version_tag-method-ctor"><a class="anchor" href="#version_tag-method-ctor"></a>Function <code>version_tag::version_tag</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span><span class="o">...</span> <span class="nc">S</span><span class="p">&gt;</span>
@@ -1266,23 +1282,113 @@ customize for size.</p>
 </div>
 </div>
 </div>
+<div class="sect4">
+<h5 id="version_tag-method-at"><a class="anchor" href="#version_tag-method-at"></a>Function <code>version_tag::at</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="n">version_tag</span><span class="o">::</span><span class="n">element_t</span> <span class="n">version_tag</span><span class="o">::</span><span class="n">at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-method-range_at"><a class="anchor" href="#version_tag-method-range_at"></a>Function <code>version_tag::range_at</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="n">version_tag</span><span class="o">::</span><span class="n">range_element_t</span> <span class="n">version_tag</span><span class="o">::</span><span class="n">range_at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-method-empty"><a class="anchor" href="#version_tag-method-empty"></a>Function <code>version_tag::empty</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="kt">bool</span> <span class="n">version_tag</span><span class="o">::</span><span class="n">empty</span><span class="p">()</span> <span class="k">const</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-method-size"><a class="anchor" href="#version_tag-method-size"></a>Function <code>version_tag::size</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">version_tag</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="version_tag-func"><a class="anchor" href="#version_tag-func"></a>Class <code>versioned::version_tag</code> non-member functions</h4>
-
+<h4 id="version_tag-func"><a class="anchor" href="#version_tag-func"></a>Class <code>version_tag</code> non-member functions</h4>
+<div class="sect4">
+<h5 id="version_tag-func-from_chars"><a class="anchor" href="#version_tag-func-from_chars"></a>Function <code>from_chars</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="n">from_chars_result</span> <span class="n">from_chars</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">first</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">last</span><span class="p">,</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-func-to_string"><a class="anchor" href="#version_tag-func-to_string"></a>Function <code>to_string</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">to_string</span><span class="p">(</span><span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-func-compare"><a class="anchor" href="#version_tag-func-compare"></a>Function <code>compare</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="kt">int</span> <span class="n">compare</span><span class="p">(</span><span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-func-equal"><a class="anchor" href="#version_tag-func-equal"></a>Function <code>operator==</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-func-less"><a class="anchor" href="#version_tag-func-less"></a>Function <code>operator&lt;</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span><span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="version_tag-func-hash"><a class="anchor" href="#version_tag-func-hash"></a>Function <code>hash</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="kr">inline</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">hash</span><span class="p">(</span><span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="version_tag-helpers"><a class="anchor" href="#version_tag-helpers"></a>Class <code>versioned::version_tag</code> helpers</h4>
-
+<h4 id="version_tag-helpers"><a class="anchor" href="#version_tag-helpers"></a>Class <code>version_tag</code> helpers</h4>
+<div class="sect4">
+<h5 id="version_tag-helpers-hash"><a class="anchor" href="#version_tag-helpers-hash"></a>Class <code>std::hash&lt;::versioned::version_tag&gt;</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">std</span> <span class="p">{</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">hash</span><span class="o">&lt;::</span><span class="n">versioned</span><span class="o">::</span><span class="n">version_tag</span><span class="o">&gt;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_versionedprerelease_version"><a class="anchor" href="#_versionedprerelease_version"></a>2.4. <code>versioned::prerelease_version</code></h3>
+<h3 id="prerelease_version"><a class="anchor" href="#prerelease_version"></a>2.4. <code>prerelease_version</code></h3>
 <div class="sect3">
-<h4 id="prerelease_version-syn"><a class="anchor" href="#prerelease_version-syn"></a>Class <code>versioned::prerelease_version</code> synopsis</h4>
+<h4 id="prerelease_version-syn"><a class="anchor" href="#prerelease_version-syn"></a>Class <code>prerelease_version</code> synopsis</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">bfg</span> <span class="p">{</span> <span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Number</span><span class="p">&gt;</span>
 <span class="k">class</span> <span class="nc">prerelease_version</span> <span class="o">:</span> <span class="k">public</span> <span class="n">version_tag</span>
 <span class="p">{</span>
@@ -1293,12 +1399,12 @@ customize for size.</p>
 
     <span class="kt">bool</span> <span class="n">is_number_at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 <span class="p">};</span>
-<span class="p">}</span> <span class="c1">// namespace versioned</span></code></pre>
+<span class="p">}}</span> <span class="c1">// namespace bfg::versioned</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="prerelease_version-types-vars"><a class="anchor" href="#prerelease_version-types-vars"></a>Class <code>versioned::prerelease_version</code> types &amp; variables</h4>
+<h4 id="prerelease_version-types-vars"><a class="anchor" href="#prerelease_version-types-vars"></a>Class <code>prerelease_version</code> types &amp; variables</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>number_element_t</code> &#8656; <code><em>Number</em></code></dt>
@@ -1309,33 +1415,104 @@ customize for size.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="prerelease_version-method"><a class="anchor" href="#prerelease_version-method"></a>Class <code>versioned::prerelease_version</code> functions</h4>
-
+<h4 id="prerelease_version-method"><a class="anchor" href="#prerelease_version-method"></a>Class <code>prerelease_version</code> functions</h4>
+<div class="sect4">
+<h5 id="prerelease_version-method-ctor"><a class="anchor" href="#prerelease_version-method-ctor"></a>Function <code>prerelease_version::prerelease_version</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">&gt;</span>
+<span class="k">typename</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;::</span><span class="n">number_element_t</span> <span class="n">prerelease_version</span><span class="o">&lt;</span>
+    <span class="n">N</span><span class="o">&gt;::</span><span class="n">number_at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="prerelease_version-method-is_number_at"><a class="anchor" href="#prerelease_version-method-is_number_at"></a>Function <code>prerelease_version::is_number_at</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">&gt;</span>
+<span class="kt">bool</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;::</span><span class="n">is_number_at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="prerelease_version-func"><a class="anchor" href="#prerelease_version-func"></a>Class <code>versioned::prerelease_version</code> non-member functions</h4>
-
+<h4 id="prerelease_version-func"><a class="anchor" href="#prerelease_version-func"></a>Class <code>prerelease_version</code> non-member functions</h4>
+<div class="sect4">
+<h5 id="prerelease_version-func-compare"><a class="anchor" href="#prerelease_version-func-compare"></a>Function <code>compare</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">&gt;</span>
+<span class="kt">int</span> <span class="n">compare</span><span class="p">(</span><span class="k">const</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N0</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N1</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="prerelease_version-func-equal"><a class="anchor" href="#prerelease_version-func-equal"></a>Function <code>operator==</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">&gt;</span>
+<span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N0</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N1</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="prerelease_version-func-less"><a class="anchor" href="#prerelease_version-func-less"></a>Function <code>operator&lt;</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N0</span><span class="p">,</span> <span class="k">class</span> <span class="nc">N1</span><span class="p">&gt;</span>
+<span class="kt">bool</span> <span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N0</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N1</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="prerelease_version-func-hash"><a class="anchor" href="#prerelease_version-func-hash"></a>Function <code>hash</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">&gt;</span>
+<span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">hash</span><span class="p">(</span><span class="k">const</span> <span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="prerelease_version-helpers"><a class="anchor" href="#prerelease_version-helpers"></a>Class <code>versioned::prerelease_version</code> helpers</h4>
-
+<h4 id="prerelease_version-helpers"><a class="anchor" href="#prerelease_version-helpers"></a>Class <code>prerelease_version</code> helpers</h4>
+<div class="sect4">
+<h5 id="prerelease_version-helpers-hash"><a class="anchor" href="#prerelease_version-helpers-hash"></a>Class <code>std::hash&lt;::versioned::prerelease_version&gt;</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="n">std</span> <span class="p">{</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">N</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">hash</span><span class="o">&lt;::</span><span class="n">versioned</span><span class="o">::</span><span class="n">prerelease_version</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;&gt;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_versionedbuild_metadata"><a class="anchor" href="#_versionedbuild_metadata"></a>2.5. <code>versioned::build_metadata</code></h3>
+<h3 id="build_metadata"><a class="anchor" href="#build_metadata"></a>2.5. <code>build_metadata</code></h3>
 <div class="sect3">
-<h4 id="build_metadata-syn"><a class="anchor" href="#build_metadata-syn"></a>Class <code>versioned::build_metadata</code> synopsis</h4>
+<h4 id="build_metadata-syn"><a class="anchor" href="#build_metadata-syn"></a>Class <code>build_metadata</code> synopsis</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
+<pre class="rouge highlight"><code data-lang="c++"><span class="k">namespace</span> <span class="n">bfg</span> <span class="p">{</span> <span class="k">namespace</span> <span class="n">versioned</span> <span class="p">{</span>
 <span class="k">class</span> <span class="nc">build_metadata</span> <span class="o">:</span> <span class="k">public</span> <span class="n">version_tag</span>
 <span class="p">{};</span>
-<span class="p">}</span> <span class="c1">// namespace versioned</span></code></pre>
+<span class="p">}}</span> <span class="c1">// namespace bfg::versioned</span></code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. SemVer 2.0.0 (<a href="https://semver.org/spec/v2.0.0.html" class="bare">https://semver.org/spec/v2.0.0.html</a>)
 </div>
 </div>
 </body>

@@ -15,7 +15,7 @@ int main()
 {
 	BOOST_TEST(true);
 	{
-		using namespace versioned::detail;
+		using namespace ::bfg::versioned::detail;
 		int v = 0;
 		const char * s = "13.72.1";
 		BOOST_TEST_EQ(from_chars_10(s, s + std::strlen(s), v), (s + 2));
@@ -77,8 +77,8 @@ int main()
 			std::cout << "TEST: " << context << "\n";
 			for (auto & v : vs) check(v, f);
 		};
-		all("versioned::detail::from_chars_10",
-			&versioned::detail::from_chars_10<int>);
+		all("::bfg::versioned::detail::from_chars_10",
+			&::bfg::versioned::detail::from_chars_10<int>);
 	}
 	{
 		const std::size_t numbers[] = {
@@ -93,7 +93,7 @@ int main()
 		for (auto n : numbers)
 		{
 			BOOST_TEST_EQ(
-				std::to_string(n), versioned::detail::to_string_10(n));
+				std::to_string(n), ::bfg::versioned::detail::to_string_10(n));
 		}
 	}
 	{
@@ -111,8 +111,8 @@ int main()
 		std::uint32_t hb = 0;
 		for (auto n : numbers)
 		{
-			ha = versioned::detail::hash_combine(ha, n);
-			hb = versioned::detail::hash_combine(n, hb);
+			ha = ::bfg::versioned::detail::hash_combine(ha, n);
+			hb = ::bfg::versioned::detail::hash_combine(n, hb);
 		}
 		std::cout << "> ha = " << ha << ", hb = " << hb << "\n";
 		BOOST_TEST_NE(ha, hb);
@@ -131,8 +131,8 @@ int main()
 		std::uint64_t hb = 0;
 		for (auto n : numbers)
 		{
-			ha = versioned::detail::hash_combine(ha, n);
-			hb = versioned::detail::hash_combine(n, hb);
+			ha = ::bfg::versioned::detail::hash_combine(ha, n);
+			hb = ::bfg::versioned::detail::hash_combine(n, hb);
 		}
 		std::cout << "> ha = " << ha << ", hb = " << hb << "\n";
 		BOOST_TEST_NE(ha, hb);

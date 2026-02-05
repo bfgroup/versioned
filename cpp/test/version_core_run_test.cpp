@@ -45,7 +45,7 @@ int main()
 		for (auto & value : good_values)
 		{
 			std::cout << "> " << value.s << "\n";
-			versioned::version_core<int> version;
+			::bfg::versioned::version_core<int> version;
 			const char * first = value.s;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, version);
@@ -83,7 +83,7 @@ int main()
 		for (auto & value : good_values)
 		{
 			std::cout << "> " << value.s << "\n";
-			versioned::version_core<int, 2> version;
+			::bfg::versioned::version_core<int, 2> version;
 			const char * first = value.s;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, version);
@@ -120,7 +120,8 @@ int main()
 		for (auto & value : good_values)
 		{
 			std::cout << "> " << value.s << "\n";
-			versioned::version_core<int, 3> version(value.x, value.y, value.z);
+			::bfg::versioned::version_core<int, 3> version(
+				value.x, value.y, value.z);
 			auto s = to_string(version);
 			BOOST_TEST_CSTR_EQ(s.c_str(), value.s);
 		}
@@ -143,8 +144,8 @@ int main()
 		{
 			std::cout << "> " << value.a << " <=> " << value.b << "\n";
 			{
-				versioned::version_core<int, 3> a;
-				versioned::version_core<int, 3> b;
+				::bfg::versioned::version_core<int, 3> a;
+				::bfg::versioned::version_core<int, 3> b;
 				BOOST_TEST_EQ(
 					int(from_chars(value.a, value.a + strlen(value.a), a).ec),
 					int(std::errc {}));
@@ -155,8 +156,8 @@ int main()
 				BOOST_TEST_LT(compare(a, b), 0);
 			}
 			{
-				versioned::version_core<int, 2> a;
-				versioned::version_core<int, 3> b;
+				::bfg::versioned::version_core<int, 2> a;
+				::bfg::versioned::version_core<int, 3> b;
 				BOOST_TEST_EQ(
 					int(from_chars(value.a, value.a + strlen(value.a), a).ec),
 					int(std::errc {}));
@@ -186,15 +187,15 @@ int main()
 			"9999999.9999999.9999999",
 			"99999999.99999999.99999999",
 		};
-		std::vector<versioned::version_core<int>> base_vals;
+		std::vector<::bfg::versioned::version_core<int>> base_vals;
 		for (auto value : values)
 		{
-			versioned::version_core<int> a;
+			::bfg::versioned::version_core<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			base_vals.push_back(a);
 		}
-		std::vector<versioned::version_core<int>> test_vals = base_vals;
+		std::vector<::bfg::versioned::version_core<int>> test_vals = base_vals;
 		std::shuffle(test_vals.begin(), test_vals.end(),
 			std::mt19937_64(732601397511647));
 		std::sort(test_vals.begin(), test_vals.end());
@@ -223,10 +224,10 @@ int main()
 			"9999999.9999999.9999999",
 			"99999999.99999999.99999999",
 		};
-		std::unordered_map<versioned::version_core<int>, const char *> m;
+		std::unordered_map<::bfg::versioned::version_core<int>, const char *> m;
 		for (auto value : values)
 		{
-			versioned::version_core<int> a;
+			::bfg::versioned::version_core<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			std::cout << "> " << value
@@ -237,7 +238,7 @@ int main()
 		for (auto value : values)
 		{
 			std::cout << "> " << value << "\n";
-			versioned::version_core<int> a;
+			::bfg::versioned::version_core<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			BOOST_TEST_EQ(m[a], value);
@@ -270,11 +271,12 @@ int main()
 		for (auto & value : values)
 		{
 			std::cout << "> " << value.s << "\n";
-			versioned::version_core<int, 3> version(value.x, value.y, value.z);
+			::bfg::versioned::version_core<int, 3> version(
+				value.x, value.y, value.z);
 			auto s = to_string(version);
-			BOOST_TEST_EQ(::versioned::get<0>(version), value.x);
-			BOOST_TEST_EQ(::versioned::get<1>(version), value.y);
-			BOOST_TEST_EQ(::versioned::get<2>(version), value.z);
+			BOOST_TEST_EQ(::bfg::versioned::get<0>(version), value.x);
+			BOOST_TEST_EQ(::bfg::versioned::get<1>(version), value.y);
+			BOOST_TEST_EQ(::bfg::versioned::get<2>(version), value.z);
 #if defined(__cpp_structured_bindings) && (__cpp_structured_bindings >= 201606L)
 			auto [a, b, c] = version;
 			BOOST_TEST_EQ(a, value.x);

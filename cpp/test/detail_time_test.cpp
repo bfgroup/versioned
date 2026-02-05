@@ -23,7 +23,8 @@ struct test
 		parse_f parse_functions[] = {
 			{ "std::from_chars", &test::std_from_chars_10 },
 			{ "std::strtox    ", &test::std_strtox_10 },
-			{ "versioned      ", &versioned::detail::from_chars_10<Int> },
+			{ "versioned      ",
+				&::bfg::versioned::detail::from_chars_10<Int> },
 		};
 		static const auto value_count = 5000000;
 		// Generate numbers to parse.

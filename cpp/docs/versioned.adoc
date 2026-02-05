@@ -29,23 +29,18 @@
 
 == Introduction
 
+Versioned implements the Semantic Versioning Standard
+footnote:semver[SemVer 2.0.0 (https://semver.org/spec/v2.0.0.html)]
+and general version number concepts. Although SemVer is the first and main
+version format supported, it is not intended to be the last. The concepts in
+this library are meant to be reusable to different formats. And hopefully to
+provide for transforming between such different versioning formats.
+
 === License
 
 Distributed under the highly permissive Boost Software License, Version 1.0.
 (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-== Reference
-
 :leveloffset: +1
-
-include::../include/versioned/versioned.hpp[tag=semver]
-
-include::../include/versioned/versioned.hpp[tag=version_core]
-
-include::../include/versioned/versioned.hpp[tag=version_tag]
-
-include::../include/versioned/versioned.hpp[tag=prerelease_version]
-
-include::../include/versioned/versioned.hpp[tag=build_metadata]
-
+include::reference.adoc[]
 :leveloffset: -1

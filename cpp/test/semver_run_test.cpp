@@ -50,7 +50,7 @@ int main()
 		for (auto & d : data)
 		{
 			std::cout << "> " << d.full << "\n";
-			versioned::semver<> ver;
+			::bfg::versioned::semver<> ver;
 			const char * first = d.full;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, ver);
@@ -92,8 +92,8 @@ int main()
 		{
 			std::cout << "> " << value.a << " <=> " << value.b << "\n";
 			{
-				versioned::semver<> a;
-				versioned::semver<> b;
+				::bfg::versioned::semver<> a;
+				::bfg::versioned::semver<> b;
 				BOOST_TEST_EQ(
 					int(from_chars(value.a, value.a + strlen(value.a), a).ec),
 					int(std::errc {}));
@@ -130,15 +130,15 @@ int main()
 			"9999999.9999999.9999999",
 			"99999999.99999999.99999999",
 		};
-		std::vector<versioned::semver<>> base_vals;
+		std::vector<::bfg::versioned::semver<>> base_vals;
 		for (auto value : values)
 		{
-			versioned::semver<> a;
+			::bfg::versioned::semver<> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			base_vals.push_back(a);
 		}
-		std::vector<versioned::semver<>> test_vals = base_vals;
+		std::vector<::bfg::versioned::semver<>> test_vals = base_vals;
 		std::shuffle(test_vals.begin(), test_vals.end(),
 			std::mt19937_64(291020249555917));
 		std::sort(test_vals.begin(), test_vals.end());
@@ -174,10 +174,10 @@ int main()
 			"1.0.0-beta.11",
 			"1.0.0-rc.1",
 		};
-		std::unordered_map<versioned::semver<>, const char *> m;
+		std::unordered_map<::bfg::versioned::semver<>, const char *> m;
 		for (auto value : values)
 		{
-			versioned::semver<> a;
+			::bfg::versioned::semver<> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			std::cout << "> " << value
@@ -188,7 +188,7 @@ int main()
 		for (auto value : values)
 		{
 			std::cout << "> " << value << "\n";
-			versioned::semver<> a;
+			::bfg::versioned::semver<> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			BOOST_TEST_EQ(m[a], value);
@@ -229,7 +229,7 @@ int main()
 		for (auto & d : data)
 		{
 			std::cout << "> " << d.full << "\n";
-			versioned::semver<> ver;
+			::bfg::versioned::semver<> ver;
 			const char * first = d.full;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, ver);

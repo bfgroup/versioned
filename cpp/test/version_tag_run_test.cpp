@@ -44,7 +44,7 @@ int main()
 		for (auto & v : good_values)
 		{
 			std::cout << "> " << v.i << "\n";
-			versioned::version_tag i;
+			::bfg::versioned::version_tag i;
 			const char * first = v.i;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, i);
@@ -74,7 +74,7 @@ int main()
 		for (auto & v : bad_values)
 		{
 			std::cout << "> " << v << "\n";
-			versioned::version_tag i;
+			::bfg::versioned::version_tag i;
 			const char * first = v;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, i);
@@ -93,7 +93,7 @@ int main()
 		};
 		for (auto & v : round_trip_values)
 		{
-			versioned::version_tag i;
+			::bfg::versioned::version_tag i;
 			from_chars(std::get<0>(v),
 				std::get<0>(v) + std::strlen(std::get<0>(v)), i);
 			std::string s = to_string(i);
@@ -119,8 +119,8 @@ int main()
 		{
 			std::cout << "> " << value.a << " <=> " << value.b << "\n";
 			{
-				versioned::version_tag a;
-				versioned::version_tag b;
+				::bfg::versioned::version_tag a;
+				::bfg::versioned::version_tag b;
 				auto ar = from_chars(value.a, value.a + strlen(value.a), a);
 				auto br = from_chars(value.b, value.b + strlen(value.b), b);
 				if (!a.empty()) BOOST_TEST_EQ(int(ar.ec), int(std::errc {}));
@@ -155,15 +155,15 @@ int main()
 			"beta.2",
 			"rc.1",
 		};
-		std::vector<versioned::version_tag> base_vals;
+		std::vector<::bfg::versioned::version_tag> base_vals;
 		for (auto value : values)
 		{
-			versioned::version_tag a;
+			::bfg::versioned::version_tag a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			base_vals.push_back(a);
 		}
-		std::vector<versioned::version_tag> test_vals = base_vals;
+		std::vector<::bfg::versioned::version_tag> test_vals = base_vals;
 		std::shuffle(test_vals.begin(), test_vals.end(),
 			std::mt19937_64(291020249555917));
 		std::sort(test_vals.begin(), test_vals.end());
@@ -199,10 +199,10 @@ int main()
 			"beta.2",
 			"rc.1",
 		};
-		std::unordered_map<versioned::version_tag, const char *> m;
+		std::unordered_map<::bfg::versioned::version_tag, const char *> m;
 		for (auto value : values)
 		{
-			versioned::version_tag a;
+			::bfg::versioned::version_tag a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			std::cout << "> " << value
@@ -213,7 +213,7 @@ int main()
 		for (auto value : values)
 		{
 			std::cout << "> " << value << "\n";
-			versioned::version_tag a;
+			::bfg::versioned::version_tag a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
 				int(std::errc {}));
 			BOOST_TEST_EQ(m[a], value);

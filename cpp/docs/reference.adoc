@@ -1,0 +1,554 @@
+= Reference
+
+[#semver]
+== `semver`
+
+The `semver` template class implements the
+https://semver.org/spec/v2.0.0.html[Semantic Versioning 2.0.0] standard.
+The implementation provides for conversion to and from strings, comparisons,
+and hashing. Which makes it possible to use them as values in containers,
+and keys in maps. The type of the version component is configurable to
+customize for size.
+
+[#semver-syn]
+=== Class `semver` synopsis
+
+[source]
+----
+include::../include/versioned/versioned.hpp[tag=semver-syn]
+----
+
+[#semver-types-vars]
+=== Class `semver` types & variables
+
+`version_t` <= `version_core< _Number_, 3>`::
+The type of the core version component. Default is `version_core<int,3>`.
+
+`prerelease_t` <= `_Prerelease_`::
+The type of the prerelease component. Default is `prerelease_version<int>.
+
+`build_t` <= `_Build_`::
+The type of the build tag component. Default is `build_metadata`.
+
+[#semver-method]
+=== Class `semver` functions
+
+[#semver-method-version]
+==== Function `semver::version`
+
+[source]
+----
+template <class N, class P, class B>
+const typename semver<N, P, B>::version_t & semver<N, P, B>::version() const
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t & semver<N, P, B>::version()
+----
+
+[#semver-method-prerelease]
+==== Function `semver::prerelease`
+
+[source]
+----
+template <class N, class P, class B>
+const typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
+	const
+template <class N, class P, class B>
+typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
+----
+
+[#semver-func-build]
+==== Function `semver::build`
+
+[source]
+----
+template <class N, class P, class B>
+const typename semver<N, P, B>::build_t & semver<N, P, B>::build() const
+template <class N, class P, class B>
+typename semver<N, P, B>::build_t & semver<N, P, B>::build()
+----
+
+[#semver-func-major]
+==== Function `semver::major`
+
+[source]
+----
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::major() const
+----
+
+[#semver-func-minor]
+==== Function `semver::minor`
+
+[source]
+----
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::minor() const
+----
+
+[#semver-func-patch]
+==== Function `semver::patch`
+
+[source]
+----
+template <class N, class P, class B>
+typename semver<N, P, B>::version_t::element_t semver<N, P, B>::patch() const
+----
+
+[#semver-func]
+=== Class `semver` non-member functions
+
+[#semver-func-from_chars]
+==== Function `from_chars`
+
+[source]
+----
+template <class N, class P, class B>
+from_chars_result from_chars(
+	const char * first, const char * last, semver<N, P, B> & value)
+----
+[#semver-func-to_string]
+==== Function `to_string`
+
+[source]
+----
+template <class N, class P, class B>
+::std::string to_string(const semver<N, P, B> & value)
+----
+
+[#semver-func-compare]
+==== Function `compare`
+
+[source]
+----
+template <class N0, class P0, class B0, class N1, class P1, class B1>
+int compare(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
+----
+
+[#semver-func-equal]
+==== Function `operator==`
+
+[source]
+----
+template <class N0, class P0, class B0, class N1, class P1, class B1>
+bool operator==(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
+----
+
+[#semver-func-less]
+==== Function `operator<`
+
+[source]
+----
+template <class N0, class P0, class B0, class N1, class P1, class B1>
+bool operator<(const semver<N0, P0, B0> & a, const semver<N1, P1, B1> & b)
+----
+
+[#semver-func-hash]
+==== Function `hash`
+
+[source]
+----
+template <class N, class P, class B>
+::std::size_t hash(const semver<N, P, B> & value)
+----
+
+[#semver-func-get]
+==== Function `get`
+
+[source]
+----
+template <::std::size_t I, class N, class P, class B>
+const typename ::std::tuple_element<I, semver<N, P, B>>::type &
+	get(const semver<N, P, B> & value)
+----
+
+[#semver-helpers]
+=== Class `semver` helpers
+
+[#semver-std-hash]
+==== Class `std::hash`
+
+[source]
+----
+template <class N, class P, class B>
+struct hash<::versioned::semver<N, P, B>>
+----
+
+[#version_core]
+== `version_core`
+
+[#version_core-syn]
+=== Class `version_core` synopsis
+
+[source]
+----
+include::../include/versioned/versioned.hpp[tag=version_core-sym]
+----
+
+[#version_core-types-vars]
+=== Class `version_core` types & variables
+
+`element_t` <= `_Number_`::
+The type of the components of the version. This is a numeric type.
+
+`element_c` <= `_Count_`::
+The number of components of the version. Default is `3`.
+
+[#version_core-method]
+=== Class `version_core` functions
+
+[#version_core-method-ctor]
+==== Function `version_core::version_core`
+
+[source]
+----
+template <class N, ::std::size_t C>
+template <class... I>
+version_core<N, C>::version_core(element_t a0, I... an)
+----
+
+[#version_core-method-at]
+==== Function `version_core::at`
+
+[source]
+----
+template <class N, ::std::size_t C>
+typename version_core<N, C>::element_t & version_core<N, C>::at(::std::size_t i)
+template <class N, ::std::size_t C>
+const typename version_core<N, C>::element_t & version_core<N, C>::at(
+	::std::size_t i) const
+----
+
+[#version_core-func]
+=== Class `version_core` non-member functions
+
+[#version_core-func-from_chars]
+==== Function `from_chars`
+
+[source]
+----
+template <class N, ::std::size_t C>
+from_chars_result from_chars(
+	const char * first, const char * last, version_core<N, C> & value)
+----
+
+[#version_core-func-to_string]
+==== Function `to_string`
+
+[source]
+----
+template <class N, ::std::size_t C>
+::std::string to_string(const version_core<N, C> & value)
+----
+
+[#version_core-func-compare]
+==== Function `compare`
+
+[source]
+----
+template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
+int compare(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
+----
+
+[#version_core-func-equal]
+==== Function `operator==`
+
+[source]
+----
+template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
+bool operator==(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
+----
+
+[#version_core-func-less]
+==== Function `operator<`
+
+[source]
+----
+template <class N0, ::std::size_t C0, class N1, ::std::size_t C1>
+bool operator<(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
+----
+
+[#version_core-func-hash]
+==== Function `hash`
+
+[source]
+----
+template <class N, ::std::size_t C>
+::std::size_t hash(const version_core<N, C> & value)
+----
+
+[#version_core-func-get]
+==== Function `get`
+
+[source]
+----
+template <size_t I, class N, ::std::size_t C>
+const typename version_core<N, C>::element_t & get(
+	const version_core<N, C> & value)
+----
+
+[#version_core-helpers]
+=== Class `version_core` helpers
+
+[#version_core-helpers-hash]
+==== Class `std::hash<::versioned::version_core>`
+
+[source]
+----
+namespace std {
+template <class N, ::std::size_t C>
+struct hash<::versioned::version_core<N, C>>
+}
+----
+
+[#version_core-helpers-tuple_size]
+==== Class `std::tuple_size<::versioned::version_core>`
+
+[source]
+----
+namespace std {
+template <class N, ::std::size_t C>
+struct tuple_size<::versioned::version_core<N, C>>
+	: integral_constant<::std::size_t,
+		  ::versioned::version_core<N, C>::element_c>
+}
+----
+
+[#version_core-helpers-tuple_element]
+==== Class `std::tuple_element<size_t, ::versioned::version_core>`
+
+[source]
+----
+namespace std {
+template <size_t I, class N, ::std::size_t C>
+struct tuple_element<I, ::versioned::version_core<N, C>>
+}
+----
+
+[#version_tag]
+== `version_tag`
+
+[#version_tag-syn]
+=== Class `version_tag` synopsis
+
+[source]
+----
+include::../include/versioned/versioned.hpp[tag=version_tag-syn]
+----
+
+[#version_tag-types-vars]
+=== Class `version_tag` types & variables
+
+
+`element_t` <= `::std::string`::
+The type of the tag value.
+
+`range_element_t` <= `::std::tuple<const char *, const char *>`::
+The type for subranges of the components of the tag.
+
+[#version_tag-method]
+=== Class `version_tag` functions
+
+[#version_tag-method-ctor]
+==== Function `version_tag::version_tag`
+
+[source]
+----
+template <class... S>
+version_tag::version_tag(const char * a0, S... an)
+template <class... S>
+version_tag::version_tag(const ::std::string & a0, S... an)
+----
+
+[#version_tag-method-at]
+==== Function `version_tag::at`
+
+[source]
+----
+inline version_tag::element_t version_tag::at(::std::size_t i) const
+----
+
+[#version_tag-method-range_at]
+==== Function `version_tag::range_at`
+
+[source]
+----
+inline version_tag::range_element_t version_tag::range_at(::std::size_t i) const
+----
+
+[#version_tag-method-empty]
+==== Function `version_tag::empty`
+
+[source]
+----
+inline bool version_tag::empty() const
+----
+
+[#version_tag-method-size]
+==== Function `version_tag::size`
+
+[source]
+----
+inline ::std::size_t version_tag::size() const
+----
+
+[#version_tag-func]
+=== Class `version_tag` non-member functions
+
+[#version_tag-func-from_chars]
+==== Function `from_chars`
+
+[source]
+----
+inline from_chars_result from_chars(
+	const char * first, const char * last, version_tag & value)
+----
+
+[#version_tag-func-to_string]
+==== Function `to_string`
+
+[source]
+----
+inline ::std::string to_string(const version_tag & value)
+----
+
+[#version_tag-func-compare]
+==== Function `compare`
+
+[source]
+----
+inline int compare(const version_tag & a, const version_tag & b)
+----
+
+[#version_tag-func-equal]
+==== Function `operator==`
+
+[source]
+----
+inline bool operator==(const version_tag & a, const version_tag & b)
+----
+
+[#version_tag-func-less]
+==== Function `operator<`
+
+[source]
+----
+inline bool operator<(const version_tag & a, const version_tag & b)
+----
+
+[#version_tag-func-hash]
+==== Function `hash`
+
+[source]
+----
+inline ::std::size_t hash(const version_tag & value)
+----
+
+[#version_tag-helpers]
+=== Class `version_tag` helpers
+
+[#version_tag-helpers-hash]
+==== Class `std::hash<::versioned::version_tag>`
+
+[source]
+----
+namespace std {
+template <>
+struct hash<::versioned::version_tag>
+}
+----
+
+[#prerelease_version]
+== `prerelease_version`
+
+[#prerelease_version-syn]
+=== Class `prerelease_version` synopsis
+
+[source]
+----
+include::../include/versioned/versioned.hpp[tag=prerelease_version-syn]
+----
+
+[#prerelease_version-types-vars]
+=== Class `prerelease_version` types & variables
+
+
+`number_element_t` <= `_Number_`::
+The type of the pre-release version component, if a component is numeric.
+
+[#prerelease_version-method]
+=== Class `prerelease_version` functions
+
+[#prerelease_version-method-ctor]
+==== Function `prerelease_version::prerelease_version`
+
+[source]
+----
+template <class N>
+typename prerelease_version<N>::number_element_t prerelease_version<
+	N>::number_at(::std::size_t i) const
+----
+
+[#prerelease_version-method-is_number_at]
+==== Function `prerelease_version::is_number_at`
+----
+template <class N>
+bool prerelease_version<N>::is_number_at(::std::size_t i) const
+----
+
+[#prerelease_version-func]
+=== Class `prerelease_version` non-member functions
+
+[#prerelease_version-func-compare]
+==== Function `compare`
+----
+template <class N0, class N1>
+int compare(const prerelease_version<N0> & a, const prerelease_version<N1> & b)
+----
+
+[#prerelease_version-func-equal]
+==== Function `operator==`
+----
+template <class N0, class N1>
+bool operator==(
+	const prerelease_version<N0> & a, const prerelease_version<N1> & b)
+----
+
+[#prerelease_version-func-less]
+==== Function `operator<`
+----
+template <class N0, class N1>
+bool operator<(
+	const prerelease_version<N0> & a, const prerelease_version<N1> & b)
+----
+
+[#prerelease_version-func-hash]
+==== Function `hash`
+----
+template <class N>
+::std::size_t hash(const prerelease_version<N> & value)
+----
+
+[#prerelease_version-helpers]
+=== Class `prerelease_version` helpers
+
+[#prerelease_version-helpers-hash]
+==== Class `std::hash<::versioned::prerelease_version>`
+
+[source]
+----
+std {
+template <class N>
+struct hash<::versioned::prerelease_version<N>>
+}
+----
+
+[#build_metadata]
+== `build_metadata`
+
+[#build_metadata-syn]
+=== Class `build_metadata` synopsis
+
+[source]
+----
+include::../include/versioned/versioned.hpp[tag=build_metadata-syn]
+----
