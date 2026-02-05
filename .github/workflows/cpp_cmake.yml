@@ -8,6 +8,9 @@ on:
     branches: ["main"]
     paths: [".github/workflows/cpp_cmake.yml", "cpp/**"]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   cpp-matrix:
     runs-on: ubuntu-latest
