@@ -60,7 +60,7 @@ jobs:
           set -x
           apt-get update
           apt-get install -y curl xz-utils
-          curl -LO https://unofficial-builds.nodejs.org/download/release/v24.9.0/node-v24.9.0-linux-musl.tar.xz
+          curl -LO https://unofficial-builds.nodejs.org/download/release/v24.9.0/node-v24.9.0-linux-x64-musl.tar.xz
           tar -xf node-v24.9.0-linux-x64-musl.tar.xz --strip-components 1 -C /node24
           ldd /__e/node24/bin/node
 
