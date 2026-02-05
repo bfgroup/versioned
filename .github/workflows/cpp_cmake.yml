@@ -16,7 +16,7 @@ jobs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
     steps:
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@master
+        uses: grafikrobot/cpp-actions/cpp-matrix@patch-1
         id: cpp-matrix
         with:
           compilers: |
@@ -53,16 +53,16 @@ jobs:
       # GitHub Actions no longer support older containers.
       # The workaround is to install our own Node.js for the actions.
       - name: Patch Node
-        # The containers that need Node.js 20 will have volumes set up so that
-        # the Node.js 20 installation can go there.
+        # The containers that need Node.js 24 will have volumes set up so that
+        # the Node.js 24 installation can go there.
         if: ${{ matrix.container.volumes }}
         run: |
           set -x
           apt-get update
           apt-get install -y curl xz-utils
-          curl -LO https://unofficial-builds.nodejs.org/download/release/v20.9.0/node-v20.9.0-linux-x64-glibc-217.tar.xz
-          tar -xf node-v20.9.0-linux-x64-glibc-217.tar.xz --strip-components 1 -C /node20217
-          ldd /__e/node20/bin/node
+          curl -LO https://unofficial-builds.nodejs.org/download/release/v24.9.0/node-v24.9.0-linux-musl.tar.xz
+          tar -xf node-v24.9.0-linux-x64-musl.tar.xz --strip-components 1 -C /node24
+          ldd /__e/node24/bin/node
 
       - name: Setup C++ Compiler
         uses: alandefreitas/cpp-actions/setup-cpp@master
