@@ -66,7 +66,7 @@ jobs:
           curl -LO https://unofficial-builds.nodejs.org/download/release/v24.9.0/node-v24.9.0-linux-x64-musl.tar.xz
           ls -laF /
           tar -xf node-v24.9.0-linux-x64-musl.tar.xz --strip-components 1 -C /node24
-          ldd /__e/node24/bin/node
+          ldd /node24/bin/node
 
       - name: Setup C++ Compiler
         uses: alandefreitas/cpp-actions/setup-cpp@master
