@@ -116,6 +116,15 @@ struct from_chars_result
 	{
 		return (a.ptr == b.ptr) && (a.ec == b.ec);
 	}
+
+#if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
+	constexpr operator std::from_chars_result() { return { ptr, ec }; }
+	constexpr from_chars_result & operator=(
+		const std::from_chars_result & other) noexcept
+	{
+		return *this = { other.ptr, other.ec };
+	}
+#endif
 };
 }} // namespace bfg::versioned
 
@@ -125,27 +134,30 @@ template <class Number, ::std::size_t Count = 3>
 class version_core
 {
 	public:
+	// types
 	using element_t = Number;
 	static constexpr ::std::size_t element_c = Count;
 
+	// construction, destruction, and assignment
 	version_core() = default;
 	version_core(version_core &&) = default;
 	version_core(const version_core &) = default;
 	version_core & operator=(const version_core &) = default;
-
 	template <class... I>
 	explicit version_core(element_t a0, I... an);
 
+	// observers
 	element_t & at(::std::size_t i);
 	const element_t & at(::std::size_t i) const;
-	// end::version_core-sym[]
 
 	private:
 	static_assert(::std::is_integral<Number>::value,
-		"Version element type is not an integral type.");
-	static_assert(Count > 0, "Version must contain at least one part.");
+		"Version element type is not an integral type."); // exposition only
+	static_assert(Count > 0,
+		"Version must contain at least one part."); // exposition only
 
-	element_t number[element_c] = {};
+	element_t number[element_c] = {}; // exposition only
+	// end::version_core-sym[]
 
 	template <class N, ::std::size_t C>
 	friend from_chars_result from_chars(
@@ -316,20 +328,21 @@ namespace bfg { namespace versioned {
 class version_tag
 {
 	public:
+	// types
 	using element_t = ::std::string;
 	using range_element_t = ::std::tuple<const char *, const char *>;
 
+	// construction, destruction, and assignment
 	version_tag() = default;
 	version_tag(version_tag &&) = default;
 	version_tag(const version_tag &) = default;
 	version_tag & operator=(const version_tag &) = default;
-
 	template <class... S>
 	explicit version_tag(const char * a0, S... an);
-
 	template <class... S>
 	explicit version_tag(const ::std::string & a0, S... an);
 
+	// observers
 	element_t at(::std::size_t i) const;
 	range_element_t range_at(::std::size_t i) const;
 	bool empty() const;
@@ -515,10 +528,14 @@ template <class Number>
 class prerelease_version : public version_tag
 {
 	public:
+	// types
 	using number_element_t = Number;
 
-	number_element_t number_at(::std::size_t i) const;
+	// construction, destruction, and assignment
+	using version_tag::version_tag;
 
+	// observers
+	number_element_t number_at(::std::size_t i) const;
 	bool is_number_at(::std::size_t i) const;
 	// end::prerelease_version-syn[]
 
@@ -639,7 +656,11 @@ struct hash<::bfg::versioned::prerelease_version<N>>
 // tag::build_metadata-syn[]
 namespace bfg { namespace versioned {
 class build_metadata : public version_tag
-{};
+{
+	public:
+    // construction, destruction, and assignment
+	using version_tag::version_tag;
+};
 }} // namespace bfg::versioned
 // end::build_metadata-syn[]
 
@@ -651,27 +672,29 @@ template <class Number = int,
 class semver
 {
 	public:
+	// types
 	using version_t = version_core<Number, 3>;
 	using prerelease_t = Prerelease;
 	using build_t = Build;
 
+	// construction, destruction, and assignment
+
+	// observers
 	const version_t & version() const;
-	const prerelease_t & prerelease() const;
-	const build_t & build() const;
-
 	version_t & version();
+	const prerelease_t & prerelease() const;
 	prerelease_t & prerelease();
+	const build_t & build() const;
 	build_t & build();
-
 	typename version_t::element_t major() const;
 	typename version_t::element_t minor() const;
 	typename version_t::element_t patch() const;
-	// end::semver-syn[]
 
 	private:
-	version_t core_;
-	prerelease_t pre_;
-	build_t build_;
+	version_t core_; // exposition only
+	prerelease_t pre_; // exposition only
+	build_t build_; // exposition only
+	// end::semver-syn[]
 
 	template <class N, class P, class B>
 	friend from_chars_result from_chars(
@@ -705,6 +728,7 @@ const typename semver<N, P, B>::version_t & semver<N, P, B>::version() const
 {
 	return core_;
 }
+
 template <class N, class P, class B>
 typename semver<N, P, B>::version_t & semver<N, P, B>::version()
 {
@@ -717,6 +741,7 @@ const typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
 {
 	return pre_;
 }
+
 template <class N, class P, class B>
 typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
 {
@@ -728,6 +753,7 @@ const typename semver<N, P, B>::build_t & semver<N, P, B>::build() const
 {
 	return build_;
 }
+
 template <class N, class P, class B>
 typename semver<N, P, B>::build_t & semver<N, P, B>::build()
 {

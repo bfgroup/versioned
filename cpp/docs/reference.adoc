@@ -3,8 +3,9 @@
 [#semver]
 == `semver`
 
-The `semver` template class implements the
-https://semver.org/spec/v2.0.0.html[Semantic Versioning 2.0.0] standard.
+The `semver` template class implements the SemVer standard
+footnote:semver[] as a composite of the <<version_core>>,
+<<prerelease_version>>, and <<build_metadata>> components.
 The implementation provides for conversion to and from strings, comparisons,
 and hashing. Which makes it possible to use them as values in containers,
 and keys in maps. The type of the version component is configurable to
@@ -21,7 +22,7 @@ include::../include/versioned/versioned.hpp[tag=semver-syn]
 [#semver-types-vars]
 === Class `semver` types & variables
 
-`version_t` <= `version_core< _Number_, 3>`::
+`version_t` <= `version_core< _Number_, 3 >`::
 The type of the core version component. Default is `version_core<int,3>`.
 
 `prerelease_t` <= `_Prerelease_`::
@@ -38,61 +39,63 @@ The type of the build tag component. Default is `build_metadata`.
 
 [source]
 ----
-template <class N, class P, class B>
-const typename semver<N, P, B>::version_t & semver<N, P, B>::version() const
-template <class N, class P, class B>
-typename semver<N, P, B>::version_t & semver<N, P, B>::version()
+const version_t & version() const;
+version_t & version();
 ----
+
+Returns a reference to the version component of the sematic version.
 
 [#semver-method-prerelease]
 ==== Function `semver::prerelease`
 
 [source]
 ----
-template <class N, class P, class B>
-const typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
-	const
-template <class N, class P, class B>
-typename semver<N, P, B>::prerelease_t & semver<N, P, B>::prerelease()
+const prerelease_t & prerelease() const;
+prerelease_t & prerelease();
 ----
+
+Returns a reference to the prerelease component of the semantic version.
 
 [#semver-func-build]
 ==== Function `semver::build`
 
 [source]
 ----
-template <class N, class P, class B>
-const typename semver<N, P, B>::build_t & semver<N, P, B>::build() const
-template <class N, class P, class B>
-typename semver<N, P, B>::build_t & semver<N, P, B>::build()
+const build_t & build() const;
+build_t & build();
 ----
+
+Returns a reference to the build metadata component of the semantic version.
 
 [#semver-func-major]
 ==== Function `semver::major`
 
 [source]
 ----
-template <class N, class P, class B>
-typename semver<N, P, B>::version_t::element_t semver<N, P, B>::major() const
+typename version_t::element_t major() const;
 ----
+
+Returns element `0` of the version component.
 
 [#semver-func-minor]
 ==== Function `semver::minor`
 
 [source]
 ----
-template <class N, class P, class B>
-typename semver<N, P, B>::version_t::element_t semver<N, P, B>::minor() const
+typename version_t::element_t minor() const;
 ----
+
+Returns element `1` of the version component.
 
 [#semver-func-patch]
 ==== Function `semver::patch`
 
 [source]
 ----
-template <class N, class P, class B>
-typename semver<N, P, B>::version_t::element_t semver<N, P, B>::patch() const
+typename version_t::element_t patch() const;
 ----
+
+Returns element `2` of the version component.
 
 [#semver-func]
 === Class `semver` non-member functions
@@ -106,6 +109,19 @@ template <class N, class P, class B>
 from_chars_result from_chars(
 	const char * first, const char * last, semver<N, P, B> & value)
 ----
+
+Parses the given string as a core version setting `value` to the version. If
+parsing fails for any reason the `value` is unchanged.
+
+Parameters::
+	*first, last* - range of characters to parse;
+	*value* - where the parsed value is stored.
+
+Return::
+	Returns a value of type `from_chars_result` that is compatible with
+	the {CPP}17 `std::from_chars_result` type
+	footnote:from_chars_result[`std::from_chars_result` (https://cppreference.com/w/cpp/utility/from_chars_result.html)].
+
 [#semver-func-to_string]
 ==== Function `to_string`
 
@@ -114,6 +130,28 @@ from_chars_result from_chars(
 template <class N, class P, class B>
 ::std::string to_string(const semver<N, P, B> & value)
 ----
+
+Returns the formatted string representation following the SemVer footnote:semver[]
+syntax.
+
+Parameters::
+	*value* - the `semver` to format.
+
+Return::
+	The SemVer footnote:semver[] string representation of the *value*.
+
+Example::
++
+[source]
+----
+include::example_semver_to_string.cpp[tag=example-code]
+----
++
+Output:
++
+....
+include::example_semver_to_string.out.txt[]
+....
 
 [#semver-func-compare]
 ==== Function `compare`
@@ -201,9 +239,8 @@ The number of components of the version. Default is `3`.
 
 [source]
 ----
-template <class N, ::std::size_t C>
 template <class... I>
-version_core<N, C>::version_core(element_t a0, I... an)
+explicit version_core(element_t a0, I... an);
 ----
 
 [#version_core-method-at]
@@ -211,11 +248,8 @@ version_core<N, C>::version_core(element_t a0, I... an)
 
 [source]
 ----
-template <class N, ::std::size_t C>
-typename version_core<N, C>::element_t & version_core<N, C>::at(::std::size_t i)
-template <class N, ::std::size_t C>
-const typename version_core<N, C>::element_t & version_core<N, C>::at(
-	::std::size_t i) const
+element_t & at(::std::size_t i);
+const element_t & at(::std::size_t i) const;
 ----
 
 [#version_core-func]
@@ -354,9 +388,9 @@ The type for subranges of the components of the tag.
 [source]
 ----
 template <class... S>
-version_tag::version_tag(const char * a0, S... an)
+explicit version_tag(const char * a0, S... an);
 template <class... S>
-version_tag::version_tag(const ::std::string & a0, S... an)
+explicit version_tag(const ::std::string & a0, S... an);
 ----
 
 [#version_tag-method-at]
@@ -364,7 +398,7 @@ version_tag::version_tag(const ::std::string & a0, S... an)
 
 [source]
 ----
-inline version_tag::element_t version_tag::at(::std::size_t i) const
+element_t at(::std::size_t i) const;
 ----
 
 [#version_tag-method-range_at]
@@ -372,7 +406,7 @@ inline version_tag::element_t version_tag::at(::std::size_t i) const
 
 [source]
 ----
-inline version_tag::range_element_t version_tag::range_at(::std::size_t i) const
+range_element_t range_at(::std::size_t i) const;
 ----
 
 [#version_tag-method-empty]
@@ -380,7 +414,7 @@ inline version_tag::range_element_t version_tag::range_at(::std::size_t i) const
 
 [source]
 ----
-inline bool version_tag::empty() const
+bool empty() const;
 ----
 
 [#version_tag-method-size]
@@ -388,7 +422,7 @@ inline bool version_tag::empty() const
 
 [source]
 ----
-inline ::std::size_t version_tag::size() const
+::std::size_t size() const;
 ----
 
 [#version_tag-func]
@@ -478,21 +512,18 @@ The type of the pre-release version component, if a component is numeric.
 [#prerelease_version-method]
 === Class `prerelease_version` functions
 
-[#prerelease_version-method-ctor]
-==== Function `prerelease_version::prerelease_version`
+[#prerelease_version-method-number_at]
+==== Function `prerelease_version::number_at`
 
 [source]
 ----
-template <class N>
-typename prerelease_version<N>::number_element_t prerelease_version<
-	N>::number_at(::std::size_t i) const
+number_element_t number_at(::std::size_t i) const;
 ----
 
 [#prerelease_version-method-is_number_at]
 ==== Function `prerelease_version::is_number_at`
 ----
-template <class N>
-bool prerelease_version<N>::is_number_at(::std::size_t i) const
+bool is_number_at(::std::size_t i) const;
 ----
 
 [#prerelease_version-func]

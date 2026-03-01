@@ -7,17 +7,33 @@ http://www.boost.org/LICENSE_1_0.txt)
 
 using asciidoctor ;
 
+path-constant HERE : . ;
+
 rule locate ( target : source : properties * )
 {
     LOCATE on $(target) = [ on $(source) return $(LOCATE) ] ;
 }
 
-for local e in [ glob example*.cpp ]
+rule example_output ( target : source + : properties * )
 {
-    exe $(e:B) : $(e) : <use>/bfg_lyra ;
+    LOCATE on $(target) = $(HERE) ;
 }
 
-html versioned.html : versioned.adoc : <dependency>tufte.css ;
+actions example_output
+{
+    "$(>[1])" > "$(<)"
+}
+
+local examples ;
+for local e in [ glob example*.cpp ]
+{
+    examples += $(e:B) $(e:B).out.txt ;
+    exe $(e:B) : $(e) : <use>/bfg/versioned ;
+    make $(e:B).out.txt : $(e:B) $(e) : @example_output ;
+}
+
+html versioned.html : versioned.adoc
+    : <dependency>tufte.css <dependency>$(examples) ;
 
 install html
     : versioned.html
