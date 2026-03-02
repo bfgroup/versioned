@@ -62,11 +62,9 @@ jobs:
         run: |
           set -x
           uname -a
-          env | sort
-          find / -name docker
-          /usr/bin/docker ps
           apt-get update
-          apt-get install -y curl xz-utils
+          apt-get install -y curl xz-utils docker
+          docker ps
           curl -LO https://nodejs.org/dist/v24.13.0/node-v24.13.0-linux-x64.tar.xz
           ls -laF /
           tar -xf node-v24.13.0-linux-x64.tar.xz --strip-components 1 -C /node24
