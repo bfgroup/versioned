@@ -72,7 +72,7 @@ jobs:
         run: |
           set -x
           apt-get update
-          apt-get install -y curl xz-utils musl
+          apt-get install -y curl xz-utils musl libstdc++6
           curl -LO https://unofficial-builds.nodejs.org/download/release/v24.14.0/node-v24.14.0-linux-x64-musl.tar.xz
           ls -laF /
           tar -xf node-v24.14.0-linux-x64-musl.tar.xz --strip-components 1 -C /node24
