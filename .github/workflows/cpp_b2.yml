@@ -63,7 +63,7 @@ jobs:
           set -x
           uname -a
           apt-get update
-          apt-get install -y curl xz-utils docker
+          apt-get install -y curl xz-utils docker-ce docker-ce-cli
           docker ps
           curl -LO https://nodejs.org/dist/v24.13.0/node-v24.13.0-linux-x64.tar.xz
           ls -laF /
