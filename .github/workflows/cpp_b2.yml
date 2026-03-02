@@ -62,7 +62,7 @@ jobs:
         run: |
           set -x
           env | sort
-          docker ps
+          /usr/bin/docker ps
           apt-get update
           apt-get install -y curl xz-utils
           curl -LO https://nodejs.org/dist/v24.13.0/node-v24.13.0-linux-x64.tar.xz
