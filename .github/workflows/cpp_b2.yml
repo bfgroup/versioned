@@ -61,6 +61,7 @@ jobs:
         if: ${{ matrix.container.volumes }}
         run: |
           set -x
+          uname -a
           env | sort
           /usr/bin/docker ps
           apt-get update
