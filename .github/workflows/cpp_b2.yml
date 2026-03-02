@@ -78,6 +78,7 @@ jobs:
           ls -laF /
           tar -xf node-v24.14.0-linux-x64-musl.tar.xz --strip-components 1 -C /node24
           ldd /node24/bin/node
+          ldd /__e/node24/bin/node
 
       - name: Setup C++ Compiler
         uses: alandefreitas/cpp-actions/setup-cpp@master
