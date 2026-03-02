@@ -12,6 +12,16 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    name: Debug Information
+    steps:
+      - name: Information
+        run: |
+          set -x
+          uname -a
+          docker ps
+
   cpp-matrix:
     runs-on: ubuntu-latest
     name: Generate Test Matrix
@@ -61,11 +71,9 @@ jobs:
         if: ${{ matrix.container.volumes }}
         run: |
           set -x
-          uname -a
           apt-get update
-          apt-get install -y curl xz-utils docker-ce docker-ce-cli
-          docker ps
-          curl -LO https://nodejs.org/dist/v24.13.0/node-v24.13.0-linux-x64.tar.xz
+          apt-get install -y curl xz-utils
+          curl -LO https://unofficial-builds.nodejs.org/download/release/v24.14.0/node-v24.14.0-linux-x64-musl.tar.xz
           ls -laF /
           tar -xf node-v24.13.0-linux-x64.tar.xz --strip-components 1 -C /node24
           ldd /node24/bin/node
