@@ -12,15 +12,15 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    name: Debug Information
-    steps:
-      - name: Information
-        run: |
-          set -x
-          uname -a
-          docker ps
+  # debug:
+  #   runs-on: ubuntu-latest
+  #   name: Debug Information
+  #   steps:
+  #     - name: Information
+  #       run: |
+  #         set -x
+  #         uname -a
+  #         docker ps
 
   cpp-matrix:
     runs-on: ubuntu-latest
@@ -72,10 +72,10 @@ jobs:
         run: |
           set -x
           apt-get update
-          apt-get install -y curl xz-utils
+          apt-get install -y curl xz-utils musl
           curl -LO https://unofficial-builds.nodejs.org/download/release/v24.14.0/node-v24.14.0-linux-x64-musl.tar.xz
           ls -laF /
-          tar -xf node-v24.13.0-linux-x64.tar.xz --strip-components 1 -C /node24
+          tar -xf node-v24.14.0-linux-x64-musl.tar.xz --strip-components 1 -C /node24
           ldd /node24/bin/node
 
       - name: Setup C++ Compiler
