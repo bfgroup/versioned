@@ -73,12 +73,12 @@ jobs:
           set -x
           apt-get update
           apt-get install -y curl xz-utils musl
-          ln -s /lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1
+          ln /lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1
           curl -LO https://unofficial-builds.nodejs.org/download/release/v24.14.0/node-v24.14.0-linux-x64-musl.tar.xz
           ls -laF /
           tar -xf node-v24.14.0-linux-x64-musl.tar.xz --strip-components 1 -C /node24
-          ldd /node24/bin/node
-          ldd /__e/node24/bin/node
+          ldd -v /node24/bin/node
+          ldd -v /__e/node24/bin/node
 
       - name: Setup C++ Compiler
         uses: alandefreitas/cpp-actions/setup-cpp@master
