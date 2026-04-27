@@ -76,8 +76,6 @@ jobs:
           curl -LO https://archives.boost.io/misc/node/node-v24.15.0-linux-x64-glibc-217.tar.xz
           ls -laF /
           tar -xf node-v24.15.0-linux-x64-glibc-217.tar.xz --strip-components 1 -C /node24
-          ldd -v /node24/bin/node
-          ldd -v /__e/node24/bin/node
 
       - name: Setup C++ Compiler
         uses: alandefreitas/cpp-actions/setup-cpp@master
