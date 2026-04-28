@@ -89,7 +89,7 @@ jobs:
         uses: alandefreitas/cpp-actions/package-install@master
         id: package-install
         with:
-          apt-get: ${{ matrix.install }} unzip wget
+          apt-get: ${{ matrix.install }} unzip wget git
 
       - name: Setup B2
         if: runner.os != 'Windows'
