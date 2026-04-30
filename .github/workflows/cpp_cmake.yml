@@ -19,7 +19,7 @@ jobs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
     steps:
       - name: Generate Test Matrix
-        uses: grafikrobot/cpp-actions/cpp-matrix@patch-1
+        uses: alandefreitas/cpp-actions/cpp-matrix@develop
         id: cpp-matrix
         with:
           compilers: |
@@ -69,7 +69,7 @@ jobs:
           ldd /node24/bin/node
 
       - name: Setup C++ Compiler
-        uses: alandefreitas/cpp-actions/setup-cpp@master
+        uses: alandefreitas/cpp-actions/setup-cpp@develop
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -77,13 +77,13 @@ jobs:
 
       - name: Install Packages
         if: matrix.install != ''
-        uses: alandefreitas/cpp-actions/package-install@master
+        uses: alandefreitas/cpp-actions/package-install@develop
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
 
       - name: Setup CMake
-        uses: alandefreitas/cpp-actions/setup-cmake@master
+        uses: alandefreitas/cpp-actions/setup-cmake@develop
         id: setup-cmake
         with:
           version: ">=3.31"
@@ -94,7 +94,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Test
-        uses: alandefreitas/cpp-actions/cmake-workflow@master
+        uses: alandefreitas/cpp-actions/cmake-workflow@develop
         with:
           source-dir: cpp
           cmake-path: ${{ steps.setup-cmake.outputs.path }}

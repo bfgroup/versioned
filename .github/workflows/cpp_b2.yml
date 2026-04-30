@@ -29,7 +29,7 @@ jobs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
     steps:
       - name: Generate Test Matrix
-        uses: grafikrobot/cpp-actions/cpp-matrix@patch-1
+        uses: alandefreitas/cpp-actions/cpp-matrix@develop
         id: cpp-matrix
         with:
           compilers: |
@@ -78,7 +78,7 @@ jobs:
           tar -xf node-v24.15.0-linux-x64-glibc-217.tar.xz --strip-components 1 -C /node24
 
       - name: Setup C++ Compiler
-        uses: alandefreitas/cpp-actions/setup-cpp@master
+        uses: alandefreitas/cpp-actions/setup-cpp@develop
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -86,7 +86,7 @@ jobs:
 
       - name: Install Packages
         if: matrix.install != ''
-        uses: alandefreitas/cpp-actions/package-install@master
+        uses: alandefreitas/cpp-actions/package-install@develop
         id: package-install
         with:
           apt-get: ${{ matrix.install }} unzip wget git
@@ -100,9 +100,9 @@ jobs:
         run: |
           set -e
           cd $HOME
-          wget "https://github.com/bfgroup/b2/archive/release.zip" -O b2.zip
+          wget "https://github.com/bfgroup/b2/archive/main.zip" -O b2.zip
           unzip b2.zip
-          cd b2-release
+          cd b2-main
           ./bootstrap.sh
           ./b2 -d+2 install b2-install-layout=portable --prefix=/usr/local/bin
           echo "using ${B2_TOOLSET} : : ${CXX_PATH} ;" > ${HOME}/user-config.jam
@@ -115,7 +115,7 @@ jobs:
         shell: cmd
         run: |
           cd %HOME%
-          git clone --branch=release --depth=1 https://github.com/bfgroup/b2.git 
+          git clone --branch=main --depth=1 https://github.com/bfgroup/b2.git 
           cd b2
           cmd.exe /c bootstrap.bat
           .\b2.exe -d+2 install b2-install-layout=portable
