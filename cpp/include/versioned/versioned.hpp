@@ -7,6 +7,7 @@
 #define VERSIONED_VERSIONED_HPP
 
 #include <algorithm>
+#include <charconv>
 #include <limits>
 #include <system_error>
 #include <tuple>
@@ -122,7 +123,7 @@ struct from_chars_result
 	constexpr from_chars_result & operator=(
 		const std::from_chars_result & other) noexcept
 	{
-		return *this = { other.ptr, other.ec };
+		return *this = from_chars_result { other.ptr, other.ec };
 	}
 #endif
 };
