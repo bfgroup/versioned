@@ -108,7 +108,7 @@ struct from_chars_result
 
 	constexpr explicit operator bool() const noexcept
 	{
-		return ec == ::std::errc {};
+		return ec == ::std::errc { };
 	}
 
 	friend constexpr bool operator==(
@@ -144,7 +144,7 @@ class version_core
 	version_core(const version_core &) = default;
 	version_core & operator=(const version_core &) = default;
 	template <class... I>
-	explicit version_core(element_t a0, I... an);
+	version_core(element_t a0, I... an);
 
 	// observers
 	element_t & at(::std::size_t i);
@@ -156,7 +156,7 @@ class version_core
 	static_assert(Count > 0,
 		"Version must contain at least one part."); // exposition only
 
-	element_t number[element_c] = {}; // exposition only
+	element_t number[element_c] = { }; // exposition only
 	// end::version_core-sym[]
 
 	template <class N, ::std::size_t C>
@@ -223,7 +223,7 @@ from_chars_result from_chars(
 
 	from_chars_result result { first, ::std::errc(0) };
 	typename version_core<N, C>::element_t
-		number[version_core<N, C>::element_c] {};
+		number[version_core<N, C>::element_c] { };
 
 	for (::std::size_t i = 0; i < version_core<N, C>::element_c; ++i)
 	{
@@ -284,7 +284,7 @@ bool operator<(const version_core<N0, C0> & a, const version_core<N1, C1> & b)
 template <class N, ::std::size_t C>
 ::std::size_t hash(const version_core<N, C> & value)
 {
-	::std::hash<typename version_core<N, C>::element_t> h {};
+	::std::hash<typename version_core<N, C>::element_t> h { };
 	::std::size_t result = 0;
 	for (auto n : value.number) result = detail::hash_combine(result, h(n));
 	return result;
@@ -314,7 +314,7 @@ template <class N, ::std::size_t C>
 struct tuple_size<::bfg::versioned::version_core<N, C>>
 	: integral_constant<::std::size_t,
 		  ::bfg::versioned::version_core<N, C>::element_c>
-{};
+{ };
 
 template <size_t I, class N, ::std::size_t C>
 struct tuple_element<I, ::bfg::versioned::version_core<N, C>>
@@ -338,9 +338,9 @@ class version_tag
 	version_tag(const version_tag &) = default;
 	version_tag & operator=(const version_tag &) = default;
 	template <class... S>
-	explicit version_tag(const char * a0, S... an);
+	version_tag(const char * a0, S... an);
 	template <class... S>
-	explicit version_tag(const ::std::string & a0, S... an);
+	version_tag(const ::std::string & a0, S... an);
 
 	// observers
 	element_t at(::std::size_t i) const;
@@ -425,7 +425,7 @@ inline from_chars_result from_chars(
 	if (first == last)
 		return from_chars_result { first, ::std::errc::invalid_argument };
 
-	from_chars_result result {};
+	from_chars_result result { };
 	::std::vector<::std::size_t> parts;
 
 	for (auto begin = first; begin < last;)
@@ -464,7 +464,7 @@ inline from_chars_result from_chars(
 		}
 	}
 
-	if (result.ec == ::std::errc {})
+	if (result.ec == ::std::errc { })
 	{
 		result.ptr = first + parts.back();
 		value.info_ = ::std::string(first, result.ptr);
@@ -506,7 +506,7 @@ inline bool operator<(const version_tag & a, const version_tag & b)
 
 inline ::std::size_t hash(const version_tag & value)
 {
-	return ::std::hash<decltype(value.info_)> {}(value.info_);
+	return ::std::hash<decltype(value.info_)> { }(value.info_);
 }
 }} // namespace bfg::versioned
 
@@ -572,7 +572,7 @@ template <class N>
 typename prerelease_version<N>::number_element_t prerelease_version<
 	N>::number_at(::std::size_t i) const
 {
-	number_element_t n {};
+	number_element_t n { };
 	if (!is_number_at(i, n))
 		throw ::std::invalid_argument("Element is not a number.");
 	return n;
@@ -581,7 +581,7 @@ typename prerelease_version<N>::number_element_t prerelease_version<
 template <class N>
 bool prerelease_version<N>::is_number_at(::std::size_t i) const
 {
-	number_element_t n {};
+	number_element_t n { };
 	return is_number_at(i, n);
 }
 
@@ -592,9 +592,9 @@ int compare(const prerelease_version<N0> & a, const prerelease_version<N1> & b)
 	if (a.empty() && !b.empty()) return 1;
 	for (::std::size_t i = 0; i < a.size() && i < b.size(); ++i)
 	{
-		typename prerelease_version<N0>::number_element_t a_n {};
+		typename prerelease_version<N0>::number_element_t a_n { };
 		bool a_is_num = a.is_number_at(i, a_n);
-		typename prerelease_version<N1>::number_element_t b_n {};
+		typename prerelease_version<N1>::number_element_t b_n { };
 		bool b_is_num = b.is_number_at(i, b_n);
 		if (a_is_num && b_is_num)
 		{
@@ -658,7 +658,7 @@ namespace bfg { namespace versioned {
 class build_metadata : public version_tag
 {
 	public:
-    // construction, destruction, and assignment
+	// construction, destruction, and assignment
 	using version_tag::version_tag;
 };
 }} // namespace bfg::versioned
@@ -678,6 +678,11 @@ class semver
 	using build_t = Build;
 
 	// construction, destruction, and assignment
+	semver() = default;
+	semver(semver &&) = default;
+	semver(const semver &) = default;
+	semver(version_t, prerelease_t = { }, build_t = { });
+	semver & operator=(semver &&) = default;
 
 	// observers
 	const version_t & version() const;
@@ -723,6 +728,14 @@ class semver
 // end::semver-syn[]
 
 namespace bfg { namespace versioned {
+
+template <class N, class P, class B>
+semver<N, P, B>::semver(version_t v, prerelease_t p, build_t b)
+	: core_(v)
+	, pre_(p)
+	, build_(b)
+{ }
+
 template <class N, class P, class B>
 const typename semver<N, P, B>::version_t & semver<N, P, B>::version() const
 {
@@ -785,12 +798,12 @@ from_chars_result from_chars(
 	if (first == last)
 		return from_chars_result { first, ::std::errc::invalid_argument };
 
-	from_chars_result result {};
+	from_chars_result result { };
 
 	typename semver<N, P, B>::version_t v;
 	{
 		result = from_chars(first, last, v);
-		if (result.ec != ::std::errc {}) return result;
+		if (result.ec != ::std::errc { }) return result;
 		first = result.ptr;
 	}
 
@@ -798,7 +811,7 @@ from_chars_result from_chars(
 	if (first != last && *first == '-')
 	{
 		result = from_chars(first + 1, last, p);
-		if (result.ec != ::std::errc {}) return result;
+		if (result.ec != ::std::errc { }) return result;
 		first = result.ptr;
 	}
 
@@ -806,7 +819,7 @@ from_chars_result from_chars(
 	if (first != last && *first == '+')
 	{
 		result = from_chars(first + 1, last, b);
-		if (result.ec != ::std::errc {}) return result;
+		if (result.ec != ::std::errc { }) return result;
 		first = result.ptr;
 	}
 
@@ -894,7 +907,7 @@ struct hash<::bfg::versioned::semver<N, P, B>>
 template <class N, class P, class B>
 struct tuple_size<::bfg::versioned::semver<N, P, B>>
 	: integral_constant<size_t, 3>
-{};
+{ };
 
 template <size_t I, class N, class P, class B>
 struct tuple_element<I, ::bfg::versioned::semver<N, P, B>>

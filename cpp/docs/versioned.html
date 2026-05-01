@@ -869,6 +869,11 @@ customize for size.</p>
     <span class="k">using</span> <span class="n">build_t</span> <span class="o">=</span> <span class="n">Build</span><span class="p">;</span>
 
     <span class="c1">// construction, destruction, and assignment</span>
+    <span class="n">semver</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="n">semver</span><span class="p">(</span><span class="n">semver</span> <span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="n">semver</span><span class="p">(</span><span class="k">const</span> <span class="n">semver</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="n">semver</span><span class="p">(</span><span class="n">version_t</span><span class="p">,</span> <span class="n">prerelease_t</span> <span class="o">=</span> <span class="p">{</span> <span class="p">},</span> <span class="n">build_t</span> <span class="o">=</span> <span class="p">{</span> <span class="p">});</span>
+    <span class="n">semver</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">semver</span> <span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
 
     <span class="c1">// observers</span>
     <span class="k">const</span> <span class="n">version_t</span> <span class="o">&amp;</span> <span class="n">version</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
@@ -881,7 +886,7 @@ customize for size.</p>
     <span class="k">typename</span> <span class="n">version_t</span><span class="o">::</span><span class="n">element_t</span> <span class="n">minor</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
     <span class="k">typename</span> <span class="n">version_t</span><span class="o">::</span><span class="n">element_t</span> <span class="n">patch</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 
-    <span class="nl">private:</span>
+    <span class="k">private</span><span class="o">:</span>
     <span class="n">version_t</span> <span class="n">core_</span><span class="p">;</span> <span class="c1">// exposition only</span>
     <span class="n">prerelease_t</span> <span class="n">pre_</span><span class="p">;</span> <span class="c1">// exposition only</span>
     <span class="n">build_t</span> <span class="n">build_</span><span class="p">;</span> <span class="c1">// exposition only</span>
@@ -911,6 +916,49 @@ customize for size.</p>
 </div>
 <div class="sect3">
 <h4 id="semver-method"><a class="anchor" href="#semver-method"></a>Class <code>semver</code> functions</h4>
+<div class="sect4">
+<h5 id="semver-method-ctor"><a class="anchor" href="#semver-method-ctor"></a>Function <code>semver::semver</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="n">semver</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="n">semver</span><span class="p">(</span><span class="n">semver</span> <span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="n">semver</span><span class="p">(</span><span class="k">const</span> <span class="n">semver</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="n">semver</span><span class="p">(</span><span class="n">version_t</span><span class="p">,</span> <span class="n">prerelease_t</span> <span class="o">=</span> <span class="p">{</span> <span class="p">},</span> <span class="n">build_t</span> <span class="o">=</span> <span class="p">{</span> <span class="p">});</span></code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Example</dt>
+<dd>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c++"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="cp">#include</span> <span class="cpf">&lt;versioned/versioned.hpp&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">bfg</span><span class="o">::</span><span class="n">versioned</span><span class="o">::</span><span class="n">semver</span><span class="p">;</span>
+    <span class="n">semver</span><span class="o">&lt;&gt;</span> <span class="n">a</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span> <span class="p">}</span> <span class="p">};</span>
+    <span class="n">semver</span><span class="o">&lt;&gt;</span> <span class="n">b</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">},</span> <span class="s">"beta"</span> <span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">to_string</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">to_string</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>3.1.4
+1.2.3-beta</pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
 <div class="sect4">
 <h5 id="semver-method-version"><a class="anchor" href="#semver-method-version"></a>Function <code>semver::version</code></h5>
 <div class="listingblock">
@@ -1148,7 +1196,7 @@ syntax.</p>
     <span class="n">version_core</span><span class="p">(</span><span class="k">const</span> <span class="n">version_core</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
     <span class="n">version_core</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">version_core</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
     <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span><span class="o">...</span> <span class="nc">I</span><span class="p">&gt;</span>
-    <span class="k">explicit</span> <span class="n">version_core</span><span class="p">(</span><span class="n">element_t</span> <span class="n">a0</span><span class="p">,</span> <span class="n">I</span><span class="p">...</span> <span class="n">an</span><span class="p">);</span>
+    <span class="n">version_core</span><span class="p">(</span><span class="n">element_t</span> <span class="n">a0</span><span class="p">,</span> <span class="n">I</span><span class="p">...</span> <span class="n">an</span><span class="p">);</span>
 
     <span class="c1">// observers</span>
     <span class="n">element_t</span> <span class="o">&amp;</span> <span class="n">at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">);</span>
@@ -1160,7 +1208,7 @@ syntax.</p>
     <span class="k">static_assert</span><span class="p">(</span><span class="n">Count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
         <span class="s">"Version must contain at least one part."</span><span class="p">);</span> <span class="c1">// exposition only</span>
 
-    <span class="n">element_t</span> <span class="n">number</span><span class="p">[</span><span class="n">element_c</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// exposition only</span>
+    <span class="n">element_t</span> <span class="n">number</span><span class="p">[</span><span class="n">element_c</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">};</span> <span class="c1">// exposition only</span>
 <span class="p">};</span>
 <span class="p">}}</span> <span class="c1">// namespace bfg::versioned</span></code></pre>
 </div>
@@ -1329,9 +1377,9 @@ syntax.</p>
     <span class="n">version_tag</span><span class="p">(</span><span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
     <span class="n">version_tag</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">version_tag</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
     <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span><span class="o">...</span> <span class="nc">S</span><span class="p">&gt;</span>
-    <span class="k">explicit</span> <span class="n">version_tag</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">a0</span><span class="p">,</span> <span class="n">S</span><span class="p">...</span> <span class="n">an</span><span class="p">);</span>
+    <span class="n">version_tag</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">a0</span><span class="p">,</span> <span class="n">S</span><span class="p">...</span> <span class="n">an</span><span class="p">);</span>
     <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span><span class="o">...</span> <span class="nc">S</span><span class="p">&gt;</span>
-    <span class="k">explicit</span> <span class="n">version_tag</span><span class="p">(</span><span class="k">const</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">a0</span><span class="p">,</span> <span class="n">S</span><span class="p">...</span> <span class="n">an</span><span class="p">);</span>
+    <span class="n">version_tag</span><span class="p">(</span><span class="k">const</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">a0</span><span class="p">,</span> <span class="n">S</span><span class="p">...</span> <span class="n">an</span><span class="p">);</span>
 
     <span class="c1">// observers</span>
     <span class="n">element_t</span> <span class="n">at</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>

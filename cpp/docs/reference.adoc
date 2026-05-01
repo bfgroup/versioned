@@ -34,6 +34,30 @@ The type of the build tag component. Default is `build_metadata`.
 [#semver-method]
 === Class `semver` functions
 
+[#semver-method-ctor]
+==== Function `semver::semver`
+
+[source]
+----
+semver() = default;
+semver(semver &&) = default;
+semver(const semver &) = default;
+semver(version_t, prerelease_t = { }, build_t = { });
+----
+
+Example::
++
+[source]
+----
+include::example_semver_ctor.cpp[tag=example-code]
+----
++
+Output:
++
+....
+include::example_semver_ctor.out.txt[]
+....
+
 [#semver-method-version]
 ==== Function `semver::version`
 
