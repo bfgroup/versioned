@@ -63,10 +63,9 @@ jobs:
           set -x
           apt-get update
           apt-get install -y curl xz-utils
-          curl -LO https://nodejs.org/dist/v24.13.0/node-v24.13.0-linux-x64.tar.xz
+          curl -LO https://archives.boost.io/misc/node/node-v24.15.0-linux-x64-glibc-217.tar.xz
           ls -laF /
-          tar -xf node-v24.13.0-linux-x64.tar.xz --strip-components 1 -C /node24
-          ldd /node24/bin/node
+          tar -xf node-v24.15.0-linux-x64-glibc-217.tar.xz --strip-components 1 -C /node24
 
       - name: Setup C++ Compiler
         uses: alandefreitas/cpp-actions/setup-cpp@develop
@@ -80,7 +79,11 @@ jobs:
         uses: alandefreitas/cpp-actions/package-install@develop
         id: package-install
         with:
-          apt-get: ${{ matrix.install }}
+          apt-get: ${{ matrix.install }} unzip wget git
+          apt-get-sources: 'ppa:git-core/ppa'
+
+      - name: Clone Library
+        uses: actions/checkout@master
 
       - name: Setup CMake
         uses: alandefreitas/cpp-actions/setup-cmake@develop
@@ -89,9 +92,6 @@ jobs:
           version: ">=3.31"
           check-latest: true
           trace-commands: true
-
-      - name: Clone Library
-        uses: actions/checkout@master
 
       - name: Test
         uses: alandefreitas/cpp-actions/cmake-workflow@develop
