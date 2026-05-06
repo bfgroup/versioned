@@ -7,12 +7,15 @@
 #define VERSIONED_VERSIONED_HPP
 
 #include <algorithm>
-#include <charconv>
 #include <limits>
 #include <system_error>
 #include <tuple>
 #include <type_traits>
 #include <vector>
+
+#if defined(__cpp_lib_to_chars)
+#	include <charconv>
+#endif
 
 namespace bfg { namespace versioned { namespace detail {
 
