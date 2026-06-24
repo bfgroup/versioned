@@ -106,7 +106,7 @@ T hash_combine(T seed, N... an)
 	result ^= (result >> (16 * 2 / sizeof(T)));
 	result *= masked_max<T>(448100074733706);
 	result ^= (result << (8 * 2 / sizeof(T)));
-	result += masked_max<T>(190056597654806);
+	result *= masked_max<T>(190056597654806);
 	result ^= (result >> (11 * 2 / sizeof(T)));
 	return result;
 }
