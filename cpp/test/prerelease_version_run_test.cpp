@@ -22,14 +22,14 @@ struct V
 	V(const char * a, T... b)
 		: i(a)
 		, p({ b... })
-	{}
+	{ }
 };
 int main()
 {
 	BOOST_TEST(true);
 	{
 		std::cout << "TEST: prerelease_version<int> from_chars\n";
-		std::tuple<const char *, int> number_values[] = {
+		std::pair<const char *, int> number_values[] = {
 			{ "a.1.x", 1 },
 			{ "b.2.x", 2 },
 			{ "c.3.x", 3 },
@@ -43,7 +43,7 @@ int main()
 			const char * first = std::get<0>(v);
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, i);
-			BOOST_TEST_EQ(int(r.ec), int(std::errc {}));
+			BOOST_TEST_EQ(int(r.ec), int(std::errc { }));
 			BOOST_TEST(i.is_number_at(1));
 			BOOST_TEST_EQ(std::get<1>(v), i.number_at(1));
 			BOOST_TEST_THROWS(i.number_at(0), std::invalid_argument);
@@ -52,7 +52,7 @@ int main()
 	}
 	{
 		std::cout << "TEST: prerelease_version<int> to_string\n";
-		std::tuple<const char *, const char *> round_trip_values[] = {
+		std::pair<const char *, const char *> round_trip_values[] = {
 			{ "a.1.x", "a.1.x" },
 			{ "b.2.x*1", "b.2.x" },
 			{ "c.3.x^&$e", "c.3.x" },
@@ -90,7 +90,7 @@ int main()
 				::bfg::versioned::prerelease_version<int> a;
 				BOOST_TEST_EQ(
 					int(from_chars(value, value + strlen(value), a).ec),
-					int(std::errc {}));
+					int(std::errc { }));
 				BOOST_TEST_EQ(a.size(),
 					std::count(value, value + strlen(value), '.') + 1);
 				BOOST_TEST_EQ(to_string(a), value);
@@ -135,8 +135,8 @@ int main()
 				::bfg::versioned::prerelease_version<int> b;
 				auto ar = from_chars(value.a, value.a + strlen(value.a), a);
 				auto br = from_chars(value.b, value.b + strlen(value.b), b);
-				if (!a.empty()) BOOST_TEST_EQ(int(ar.ec), int(std::errc {}));
-				if (!b.empty()) BOOST_TEST_EQ(int(br.ec), int(std::errc {}));
+				if (!a.empty()) BOOST_TEST_EQ(int(ar.ec), int(std::errc { }));
+				if (!b.empty()) BOOST_TEST_EQ(int(br.ec), int(std::errc { }));
 				BOOST_TEST_NO_THROW(compare(a, b));
 				BOOST_TEST_LT(compare(a, b), 0);
 			}
@@ -172,7 +172,7 @@ int main()
 		{
 			::bfg::versioned::prerelease_version<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			base_vals.push_back(a);
 		}
 		std::vector<::bfg::versioned::prerelease_version<int>> test_vals
@@ -219,7 +219,7 @@ int main()
 		{
 			::bfg::versioned::prerelease_version<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			std::cout << "> " << value
 					  << std::string(40 - std::strlen(value), ' ')
 					  << " hash == " << hash(a) << "\n";
@@ -230,7 +230,7 @@ int main()
 			std::cout << "> " << value << "\n";
 			::bfg::versioned::prerelease_version<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			BOOST_TEST_EQ(m[a], value);
 		}
 	}
