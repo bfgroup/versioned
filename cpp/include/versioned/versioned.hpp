@@ -17,6 +17,30 @@
 #	include <charconv>
 #endif
 
+#define VERSIONED_VERSION_MAJOR 0
+#define VERSIONED_VERSION_MINOR 1
+#define VERSIONED_VERSION_PATCH 0
+
+#define VERSIONED_VERSION \
+	(((VERSIONED_VERSION_MAJOR) * 10000000) \
+		+ ((VERSIONED_VERSION_MINOR) * 100000) + (VERSIONED_VERSION_PATCH))
+
+// Some platform define inconvenient macros.
+#ifdef major
+#	undef major
+#endif
+#ifdef minor
+#	undef minor
+#endif
+
+// Old versions of libc++ define tuple_size as a class instead of the
+// standardize struct.
+#if defined(__LIBCPP_VERSION) && (_LIBCPP_VERSION < 8000)
+#	define VERSIONED_TUPLE_SIZE_STRUCT_K class
+#else
+#	define VERSIONED_TUPLE_SIZE_STRUCT_K struct
+#endif
+
 namespace bfg { namespace versioned { namespace detail {
 
 // The decimal digits.
@@ -315,10 +339,9 @@ struct hash<::bfg::versioned::version_core<N, C>>
 };
 
 template <class N, ::std::size_t C>
-struct tuple_size<::bfg::versioned::version_core<N, C>>
+VERSIONED_TUPLE_SIZE_STRUCT_K tuple_size<::bfg::versioned::version_core<N, C>>
 	: integral_constant<::std::size_t,
-		  ::bfg::versioned::version_core<N, C>::element_c>
-{ };
+		  ::bfg::versioned::version_core<N, C>::element_c> { };
 
 template <size_t I, class N, ::std::size_t C>
 struct tuple_element<I, ::bfg::versioned::version_core<N, C>>
@@ -909,9 +932,8 @@ struct hash<::bfg::versioned::semver<N, P, B>>
 };
 
 template <class N, class P, class B>
-struct tuple_size<::bfg::versioned::semver<N, P, B>>
-	: integral_constant<size_t, 3>
-{ };
+VERSIONED_TUPLE_SIZE_STRUCT_K tuple_size<::bfg::versioned::semver<N, P, B>>
+	: integral_constant<size_t, 3> { };
 
 template <size_t I, class N, class P, class B>
 struct tuple_element<I, ::bfg::versioned::semver<N, P, B>>
