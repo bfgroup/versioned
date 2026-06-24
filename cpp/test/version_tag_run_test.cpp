@@ -83,7 +83,7 @@ int main()
 	}
 	{
 		std::cout << "TEST: version_tag to_string\n";
-		std::tuple<const char *, const char *> round_trip_values[] = {
+		std::pair<const char *, const char *> round_trip_values[] = {
 			{ "a.1.x", "a.1.x" },
 			{ "b.2.x*1", "b.2.x" },
 			{ "c.3.x^&$e", "c.3.x" },
