@@ -83,6 +83,9 @@ constexpr N masked_max(U value)
 // Simple hash values combine.
 template <class T, class... N>
 T hash_combine(T seed, N... an)
+#if defined(__clang__)
+	__attribute__((no_sanitize("unsigned-integer-overflow")))
+#endif
 {
 	T args[] = { an... };
 	// Init.
