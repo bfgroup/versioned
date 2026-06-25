@@ -33,14 +33,6 @@
 #	undef minor
 #endif
 
-// Old versions of libc++ define tuple_size as a class instead of the
-// standardize struct.
-#if defined(__LIBCPP_VERSION) && (_LIBCPP_VERSION < 8000)
-#	define VERSIONED_TUPLE_SIZE_STRUCT_K class
-#else
-#	define VERSIONED_TUPLE_SIZE_STRUCT_K struct
-#endif
-
 namespace bfg { namespace versioned { namespace detail {
 
 // The decimal digits.
@@ -338,16 +330,26 @@ struct hash<::bfg::versioned::version_core<N, C>>
 	}
 };
 
+#if defined(__clang__)
+#	pragma clang diagnostic push
+#	pragma clang diagnostic ignored "-Wmismatched-tags"
+#endif
+
 template <class N, ::std::size_t C>
-VERSIONED_TUPLE_SIZE_STRUCT_K tuple_size<::bfg::versioned::version_core<N, C>>
+struct tuple_size<::bfg::versioned::version_core<N, C>>
 	: integral_constant<::std::size_t,
-		  ::bfg::versioned::version_core<N, C>::element_c> { };
+		  ::bfg::versioned::version_core<N, C>::element_c>
+{ };
 
 template <size_t I, class N, ::std::size_t C>
 struct tuple_element<I, ::bfg::versioned::version_core<N, C>>
 {
 	using type = const typename ::bfg::versioned::version_core<N, C>::element_t;
 };
+
+#if defined(__clang__)
+#	pragma clang diagnostic pop
+#endif
 } // namespace std
 
 // tag::version_tag-syn[]
@@ -931,9 +933,15 @@ struct hash<::bfg::versioned::semver<N, P, B>>
 	}
 };
 
+#if defined(__clang__)
+#	pragma clang diagnostic push
+#	pragma clang diagnostic ignored "-Wmismatched-tags"
+#endif
+
 template <class N, class P, class B>
-VERSIONED_TUPLE_SIZE_STRUCT_K tuple_size<::bfg::versioned::semver<N, P, B>>
-	: integral_constant<size_t, 3> { };
+struct tuple_size<::bfg::versioned::semver<N, P, B>>
+	: integral_constant<size_t, 3>
+{ };
 
 template <size_t I, class N, class P, class B>
 struct tuple_element<I, ::bfg::versioned::semver<N, P, B>>
@@ -946,6 +954,10 @@ struct tuple_element<I, ::bfg::versioned::semver<N, P, B>>
 		version_t,
 		typename conditional<I == 1, prerelease_t, build_t>::type>::type;
 };
+
+#if defined(__clang__)
+#	pragma clang diagnostic pop
+#endif
 
 } // namespace std
 
