@@ -49,7 +49,7 @@ int main()
 			const char * first = value.s;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, version);
-			BOOST_TEST_EQ(int(r.ec), int(std::errc {}));
+			BOOST_TEST_EQ(int(r.ec), int(std::errc { }));
 			BOOST_TEST_EQ(value.x, version.at(0));
 			BOOST_TEST_EQ(value.y, version.at(1));
 			BOOST_TEST_EQ(value.z, version.at(2));
@@ -87,7 +87,7 @@ int main()
 			const char * first = value.s;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, version);
-			BOOST_TEST_EQ(int(r.ec), int(std::errc {}));
+			BOOST_TEST_EQ(int(r.ec), int(std::errc { }));
 			BOOST_TEST_EQ(value.x, version.at(0));
 			BOOST_TEST_EQ(value.y, version.at(1));
 			BOOST_TEST_THROWS(version.at(3), std::out_of_range);
@@ -148,10 +148,10 @@ int main()
 				::bfg::versioned::version_core<int, 3> b;
 				BOOST_TEST_EQ(
 					int(from_chars(value.a, value.a + strlen(value.a), a).ec),
-					int(std::errc {}));
+					int(std::errc { }));
 				BOOST_TEST_EQ(
 					int(from_chars(value.b, value.b + strlen(value.b), b).ec),
-					int(std::errc {}));
+					int(std::errc { }));
 				BOOST_TEST_NO_THROW(compare(a, b));
 				BOOST_TEST_LT(compare(a, b), 0);
 			}
@@ -160,10 +160,10 @@ int main()
 				::bfg::versioned::version_core<int, 3> b;
 				BOOST_TEST_EQ(
 					int(from_chars(value.a, value.a + strlen(value.a), a).ec),
-					int(std::errc {}));
+					int(std::errc { }));
 				BOOST_TEST_EQ(
 					int(from_chars(value.b, value.b + strlen(value.b), b).ec),
-					int(std::errc {}));
+					int(std::errc { }));
 				BOOST_TEST_NO_THROW(compare(a, b));
 				BOOST_TEST_LT(compare(a, b), 0);
 			}
@@ -192,7 +192,7 @@ int main()
 		{
 			::bfg::versioned::version_core<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			base_vals.push_back(a);
 		}
 		std::vector<::bfg::versioned::version_core<int>> test_vals = base_vals;
@@ -229,7 +229,7 @@ int main()
 		{
 			::bfg::versioned::version_core<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			std::cout << "> " << value
 					  << std::string(40 - std::strlen(value), ' ')
 					  << " hash == " << hash(a) << "\n";
@@ -240,7 +240,7 @@ int main()
 			std::cout << "> " << value << "\n";
 			::bfg::versioned::version_core<int> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			BOOST_TEST_EQ(m[a], value);
 		}
 	}

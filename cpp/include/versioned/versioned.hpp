@@ -85,7 +85,9 @@ template <class T, class... N>
 T hash_combine(T seed, N... an)
 #if defined(__clang__)
 	__attribute__((no_sanitize("unsigned-integer-overflow")))
+#	if (__clang_major__ >= 12)
 	__attribute__((no_sanitize("unsigned-shift-base")))
+#	endif
 #endif
 {
 	T args[] = { an... };

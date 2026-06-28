@@ -22,7 +22,7 @@ struct V
 	V(const char * a, T... b)
 		: i(a)
 		, p({ b... })
-	{}
+	{ }
 };
 int main()
 {
@@ -48,8 +48,8 @@ int main()
 			const char * first = v.i;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, i);
-			BOOST_TEST_EQ(int(r.ec), int(std::errc {}));
-			if (r.ec == std::errc {})
+			BOOST_TEST_EQ(int(r.ec), int(std::errc { }));
+			if (r.ec == std::errc { })
 			{
 				BOOST_TEST_EQ(r.ptr, last);
 				BOOST_TEST_EQ(i.size(), v.p.size());
@@ -78,7 +78,7 @@ int main()
 			const char * first = v;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, i);
-			BOOST_TEST_NE(int(r.ec), int(std::errc {}));
+			BOOST_TEST_NE(int(r.ec), int(std::errc { }));
 		}
 	}
 	{
@@ -123,8 +123,8 @@ int main()
 				::bfg::versioned::version_tag b;
 				auto ar = from_chars(value.a, value.a + strlen(value.a), a);
 				auto br = from_chars(value.b, value.b + strlen(value.b), b);
-				if (!a.empty()) BOOST_TEST_EQ(int(ar.ec), int(std::errc {}));
-				if (!b.empty()) BOOST_TEST_EQ(int(br.ec), int(std::errc {}));
+				if (!a.empty()) BOOST_TEST_EQ(int(ar.ec), int(std::errc { }));
+				if (!b.empty()) BOOST_TEST_EQ(int(br.ec), int(std::errc { }));
 				BOOST_TEST_NO_THROW(compare(a, b));
 				BOOST_TEST_LT(compare(a, b), 0);
 			}
@@ -160,7 +160,7 @@ int main()
 		{
 			::bfg::versioned::version_tag a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			base_vals.push_back(a);
 		}
 		std::vector<::bfg::versioned::version_tag> test_vals = base_vals;
@@ -204,7 +204,7 @@ int main()
 		{
 			::bfg::versioned::version_tag a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			std::cout << "> " << value
 					  << std::string(40 - std::strlen(value), ' ')
 					  << " hash == " << hash(a) << "\n";
@@ -215,7 +215,7 @@ int main()
 			std::cout << "> " << value << "\n";
 			::bfg::versioned::version_tag a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			BOOST_TEST_EQ(m[a], value);
 		}
 	}

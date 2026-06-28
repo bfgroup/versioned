@@ -54,7 +54,7 @@ int main()
 			const char * first = d.full;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, ver);
-			BOOST_TEST_EQ(int(r.ec), int(std::errc {}));
+			BOOST_TEST_EQ(int(r.ec), int(std::errc { }));
 			BOOST_TEST_EQ(ver.major(), d.major);
 			BOOST_TEST_EQ(ver.minor(), d.minor);
 			BOOST_TEST_EQ(ver.patch(), d.patch);
@@ -96,10 +96,10 @@ int main()
 				::bfg::versioned::semver<> b;
 				BOOST_TEST_EQ(
 					int(from_chars(value.a, value.a + strlen(value.a), a).ec),
-					int(std::errc {}));
+					int(std::errc { }));
 				BOOST_TEST_EQ(
 					int(from_chars(value.b, value.b + strlen(value.b), b).ec),
-					int(std::errc {}));
+					int(std::errc { }));
 				BOOST_TEST_NO_THROW(compare(a, b));
 				BOOST_TEST_LT(compare(a, b), 0);
 			}
@@ -135,7 +135,7 @@ int main()
 		{
 			::bfg::versioned::semver<> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			base_vals.push_back(a);
 		}
 		std::vector<::bfg::versioned::semver<>> test_vals = base_vals;
@@ -179,7 +179,7 @@ int main()
 		{
 			::bfg::versioned::semver<> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			std::cout << "> " << value
 					  << std::string(40 - std::strlen(value), ' ')
 					  << " hash == " << hash(a) << "\n";
@@ -190,7 +190,7 @@ int main()
 			std::cout << "> " << value << "\n";
 			::bfg::versioned::semver<> a;
 			BOOST_TEST_EQ(int(from_chars(value, value + strlen(value), a).ec),
-				int(std::errc {}));
+				int(std::errc { }));
 			BOOST_TEST_EQ(m[a], value);
 		}
 	}
@@ -233,7 +233,7 @@ int main()
 			const char * first = d.full;
 			const char * last = first + std::strlen(first);
 			auto r = from_chars(first, last, ver);
-			BOOST_TEST_EQ(int(r.ec), int(std::errc {}));
+			BOOST_TEST_EQ(int(r.ec), int(std::errc { }));
 #if defined(__cpp_structured_bindings) && (__cpp_structured_bindings >= 201606L)
 			auto [v, p, b] = ver;
 			auto [x, y, z] = v;
